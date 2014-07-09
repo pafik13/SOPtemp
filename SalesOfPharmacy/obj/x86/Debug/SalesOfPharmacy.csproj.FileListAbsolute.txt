@@ -1,0 +1,12 @@
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\bin\Debug\SalesOfPharmacy.exe.config
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\bin\Debug\SalesOfPharmacy.exe
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\bin\Debug\SalesOfPharmacy.pdb
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.Properties.Resources.resources
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.csproj.GenerateResource.Cache
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.exe
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.pdb
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.MainForm.resources
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.csprojResolveAssemblyReference.cache
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fEditPOS.resources
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fEditDrug.resources
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fListChains.resources
