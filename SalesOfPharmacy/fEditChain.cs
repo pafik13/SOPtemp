@@ -10,14 +10,12 @@ using MySql.Data.MySqlClient;
 
 namespace SalesOfPharmacy
 {
-    public partial class fEditPOS : Form
+    public partial class fEditChain : Form
     {
         Dictionary<string, string> context;
         private MySqlConnection conn = null;
 
-        List<int> chains = null;
-
-        public fEditPOS()
+        public fEditChain()
         {
             InitializeComponent();
 
@@ -34,12 +32,11 @@ namespace SalesOfPharmacy
             conn = connection;
         }
 
-        private void fEditPOS_Shown(object sender, EventArgs e)
+        private void fEditChain_Shown(object sender, EventArgs e)
         {
-            LoadChains();
             if (context.ContainsKey("ID"))
             {
-                string command = "SELECT p.id, p.name, p.chain_id FROM dbsop.tbl_poses p WHERE p.id = @id";
+                string command = "SELECT c.id, c.name FROM dbsop.tbl_chains c WHERE c.id = @id";
                 MySqlCommand cmd = new MySqlCommand(command, conn);
 
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
@@ -48,8 +45,7 @@ namespace SalesOfPharmacy
 
                 if (myReader.Read())
                 {
-                    txtPOS.Text = myReader.GetString(1);
-                    cbChain.SelectedIndex = chains.IndexOf(myReader.GetInt32(2));
+                    txtChain.Text = myReader.GetString(1);
                 }
                 else
                 {
@@ -60,26 +56,6 @@ namespace SalesOfPharmacy
                 // always call Close when done reading.
                 myReader.Close();
             }
-        }
-
-        private void LoadChains()
-        {
-            string command = "SELECT c.id, c.name FROM dbsop.tbl_chains c";
-            MySqlCommand cmd = new MySqlCommand(command, conn);
-
-            MySqlDataReader myReader = cmd.ExecuteReader();
-
-            chains = new List<int>();
-
-            // Always call Read before accessing data.
-            while (myReader.Read())
-            {
-                //MessageBox.Show(myReader.GetInt32(0) + ", " + myReader.GetString(1));
-                chains.Add(myReader.GetInt32(0));
-                cbChain.Items.Add(myReader.GetString(1));
-            }
-            // always call Close when done reading.
-            myReader.Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -94,16 +70,15 @@ namespace SalesOfPharmacy
 
             if (context.ContainsKey("ID"))
             {
-                cmd.CommandText = "UPDATE dbsop.tbl_poses SET name = @name, chain_id = @chain_id WHERE id = @id";
+                cmd.CommandText = "UPDATE dbsop.tbl_chains SET name = @name WHERE id = @id";
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
+                cmd.Parameters.AddWithValue("@name", txtChain.Text);
             }
             else
             {
-                cmd.CommandText = "INSERT INTO dbsop.tbl_poses ( name, chain_id ) VALUES ( @name, @chain_id )";
+                cmd.CommandText = "INSERT INTO dbsop.tbl_chains ( name ) VALUES ( @name )";
+                cmd.Parameters.AddWithValue("@name", txtChain.Text);
             }
-
-            cmd.Parameters.AddWithValue("@name", txtPOS.Text);
-            cmd.Parameters.AddWithValue("@chain_id", chains[cbChain.SelectedIndex]);
 
             if (cmd.ExecuteNonQuery() == 1)
             {
@@ -114,6 +89,16 @@ namespace SalesOfPharmacy
             {
                 MessageBox.Show("Not success!");
             }
+        }
+
+        private void fEditChain_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (e.KeyCode == Keys.Enter) { 
+            //    btnSave_Click(this, null); 
+            //}
+            //if (e.KeyCode == Keys.Escape) {
+            //    btnCancel_Click(this, null); 
+            //}
         }
     }
 }

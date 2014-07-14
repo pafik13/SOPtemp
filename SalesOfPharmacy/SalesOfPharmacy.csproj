@@ -54,23 +54,41 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="dbRecord.cs" />
-    <Compile Include="fEditDrug.cs">
+    <Compile Include="fEditChain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fEditDrug.Designer.cs">
-      <DependentUpon>fEditDrug.cs</DependentUpon>
+    <Compile Include="fEditChain.Designer.cs">
+      <DependentUpon>fEditChain.cs</DependentUpon>
     </Compile>
-    <Compile Include="fEditPOS.cs">
+    <Compile Include="fEdit_MD_Drug.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fEditPOS.Designer.cs">
-      <DependentUpon>fEditPOS.cs</DependentUpon>
+    <Compile Include="fEdit_MD_Drug.Designer.cs">
+      <DependentUpon>fEdit_MD_Drug.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fEdit_MD_POS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fEdit_MD_POS.Designer.cs">
+      <DependentUpon>fEdit_MD_POS.cs</DependentUpon>
     </Compile>
     <Compile Include="fListChains.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="fListChains.Designer.cs">
       <DependentUpon>fListChains.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fListDrugs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fListDrugs.Designer.cs">
+      <DependentUpon>fListDrugs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fLoadNewFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fLoadNewFile.Designer.cs">
+      <DependentUpon>fLoadNewFile.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -80,14 +98,53 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="fEditDrug.resx">
+    <Compile Include="fEditDrug.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fEditDrug.Designer.cs">
       <DependentUpon>fEditDrug.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="fEditPOS.resx">
+    </Compile>
+    <Compile Include="fList_MD_Drugs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fList_MD_Drugs.Designer.cs">
+      <DependentUpon>fList_MD_Drugs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fList_MD_POSes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fList_MD_POSes.Designer.cs">
+      <DependentUpon>fList_MD_POSes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fListPOSes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fListPOSes.Designer.cs">
+      <DependentUpon>fListPOSes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fEditPOS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fEditPOS.Designer.cs">
       <DependentUpon>fEditPOS.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="fEditChain.resx">
+      <DependentUpon>fEditChain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fEdit_MD_Drug.resx">
+      <DependentUpon>fEdit_MD_Drug.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fEdit_MD_POS.resx">
+      <DependentUpon>fEdit_MD_POS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fListChains.resx">
       <DependentUpon>fListChains.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fListDrugs.resx">
+      <DependentUpon>fListDrugs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fLoadNewFile.resx">
+      <DependentUpon>fLoadNewFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -101,6 +158,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="fEditDrug.resx">
+      <DependentUpon>fEditDrug.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fList_MD_Drugs.resx">
+      <DependentUpon>fList_MD_Drugs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fList_MD_POSes.resx">
+      <DependentUpon>fList_MD_POSes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fListPOSes.resx">
+      <DependentUpon>fListPOSes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fEditPOS.resx">
+      <DependentUpon>fEditPOS.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>

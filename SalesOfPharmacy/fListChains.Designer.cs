@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gvChains = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,14 +46,14 @@
             this.gvChains.AllowUserToAddRows = false;
             this.gvChains.AllowUserToDeleteRows = false;
             this.gvChains.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gvChains.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvChains.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.gvChains.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvChains.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
@@ -68,6 +68,7 @@
             this.gvChains.TabIndex = 0;
             this.gvChains.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gvChains_CellContextMenuStripNeeded);
             this.gvChains.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gvChains_CellMouseDown);
+            this.gvChains.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gvChains_MouseDown);
             // 
             // id
             // 
@@ -92,19 +93,21 @@
             this.EditChain,
             this.DelChain});
             this.gvMenu.Name = "gvMenu";
-            this.gvMenu.Size = new System.Drawing.Size(238, 92);
+            this.gvMenu.Size = new System.Drawing.Size(238, 70);
             // 
             // AddChain
             // 
             this.AddChain.Name = "AddChain";
             this.AddChain.Size = new System.Drawing.Size(237, 22);
             this.AddChain.Text = "Добавить аптечную сеть";
+            this.AddChain.Click += new System.EventHandler(this.AddChain_Click);
             // 
             // EditChain
             // 
             this.EditChain.Name = "EditChain";
             this.EditChain.Size = new System.Drawing.Size(237, 22);
             this.EditChain.Text = "Редактировать аптечную сеть";
+            this.EditChain.Click += new System.EventHandler(this.EditChain_Click);
             // 
             // DelChain
             // 

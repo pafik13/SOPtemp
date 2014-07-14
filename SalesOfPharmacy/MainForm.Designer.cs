@@ -34,6 +34,12 @@
             this.menu = new System.Windows.Forms.MenuStrip();
             this.mi_Load_File = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_LastR = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_Chains = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_POS = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_Drug = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_MD = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_MD_Drugs = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_MD_POSes = new System.Windows.Forms.ToolStripMenuItem();
             this.oFileDlg = new System.Windows.Forms.OpenFileDialog();
             this.gvResult = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,11 +53,6 @@
             this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mi_AddPos = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_AddDrug = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_Chains = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_Drug = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_MD = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_MD_Drug = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
             this.menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvResult)).BeginInit();
             this.gvMenu.SuspendLayout();
@@ -63,6 +64,7 @@
             this.mi_Load_File,
             this.mi_LastR,
             this.mi_Chains,
+            this.mi_POS,
             this.mi_Drug,
             this.mi_MD});
             this.menu.Location = new System.Drawing.Point(0, 0);
@@ -84,6 +86,50 @@
             this.mi_LastR.Size = new System.Drawing.Size(188, 20);
             this.mi_LastR.Text = "Показать последний результат";
             this.mi_LastR.Click += new System.EventHandler(this.mi_LastR_Click);
+            // 
+            // mi_Chains
+            // 
+            this.mi_Chains.Name = "mi_Chains";
+            this.mi_Chains.Size = new System.Drawing.Size(101, 20);
+            this.mi_Chains.Text = "Аптечные сети";
+            this.mi_Chains.Click += new System.EventHandler(this.mi_Chains_Click);
+            // 
+            // mi_POS
+            // 
+            this.mi_POS.Name = "mi_POS";
+            this.mi_POS.Size = new System.Drawing.Size(98, 20);
+            this.mi_POS.Text = "Точки продаж";
+            this.mi_POS.Click += new System.EventHandler(this.mi_POS_Click);
+            // 
+            // mi_Drug
+            // 
+            this.mi_Drug.Name = "mi_Drug";
+            this.mi_Drug.Size = new System.Drawing.Size(81, 20);
+            this.mi_Drug.Text = "Препараты";
+            this.mi_Drug.Click += new System.EventHandler(this.mi_Drug_Click);
+            // 
+            // mi_MD
+            // 
+            this.mi_MD.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mi_MD_Drugs,
+            this.mi_MD_POSes});
+            this.mi_MD.Name = "mi_MD";
+            this.mi_MD.Size = new System.Drawing.Size(116, 20);
+            this.mi_MD.Text = "Ключевые фразы";
+            // 
+            // mi_MD_Drugs
+            // 
+            this.mi_MD_Drugs.Name = "mi_MD_Drugs";
+            this.mi_MD_Drugs.Size = new System.Drawing.Size(163, 22);
+            this.mi_MD_Drugs.Text = "Препараты";
+            this.mi_MD_Drugs.Click += new System.EventHandler(this.mi_MD_Drugs_Click);
+            // 
+            // mi_MD_POSes
+            // 
+            this.mi_MD_POSes.Name = "mi_MD_POSes";
+            this.mi_MD_POSes.Size = new System.Drawing.Size(163, 22);
+            this.mi_MD_POSes.Text = "Торговые точки";
+            this.mi_MD_POSes.Click += new System.EventHandler(this.mi_MD_POSes_Click);
             // 
             // oFileDlg
             // 
@@ -213,40 +259,6 @@
             this.mi_AddDrug.Text = "Добавить препарат";
             this.mi_AddDrug.Click += new System.EventHandler(this.mi_AddDrug_Click);
             // 
-            // mi_Chains
-            // 
-            this.mi_Chains.Name = "mi_Chains";
-            this.mi_Chains.Size = new System.Drawing.Size(101, 20);
-            this.mi_Chains.Text = "Аптечные сети";
-            this.mi_Chains.Click += new System.EventHandler(this.mi_Chains_Click);
-            // 
-            // mi_Drug
-            // 
-            this.mi_Drug.Name = "mi_Drug";
-            this.mi_Drug.Size = new System.Drawing.Size(81, 20);
-            this.mi_Drug.Text = "Препараты";
-            // 
-            // mi_MD
-            // 
-            this.mi_MD.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mi_MD_Drug,
-            this.mi_MD_POS});
-            this.mi_MD.Name = "mi_MD";
-            this.mi_MD.Size = new System.Drawing.Size(116, 20);
-            this.mi_MD.Text = "Ключевые фразы";
-            // 
-            // mi_MD_Drug
-            // 
-            this.mi_MD_Drug.Name = "mi_MD_Drug";
-            this.mi_MD_Drug.Size = new System.Drawing.Size(163, 22);
-            this.mi_MD_Drug.Text = "Препараты";
-            // 
-            // mi_MD_POS
-            // 
-            this.mi_MD_POS.Name = "mi_MD_POS";
-            this.mi_MD_POS.Size = new System.Drawing.Size(163, 22);
-            this.mi_MD_POS.Text = "Торговые точки";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -287,8 +299,9 @@
         private System.Windows.Forms.ToolStripMenuItem mi_Chains;
         private System.Windows.Forms.ToolStripMenuItem mi_Drug;
         private System.Windows.Forms.ToolStripMenuItem mi_MD;
-        private System.Windows.Forms.ToolStripMenuItem mi_MD_Drug;
-        private System.Windows.Forms.ToolStripMenuItem mi_MD_POS;
+        private System.Windows.Forms.ToolStripMenuItem mi_MD_Drugs;
+        private System.Windows.Forms.ToolStripMenuItem mi_MD_POSes;
+        private System.Windows.Forms.ToolStripMenuItem mi_POS;
     }
 }
 

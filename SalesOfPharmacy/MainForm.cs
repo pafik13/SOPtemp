@@ -19,6 +19,7 @@ namespace SalesOfPharmacy
 {
     public partial class MainForm : Form
     {
+        private Dictionary<string, string> context;
         private MySqlConnection conn = null;
         private Excel.Application excelApp = null;
 
@@ -31,6 +32,9 @@ namespace SalesOfPharmacy
         public MainForm()
         {
             InitializeComponent();
+
+            context = new Dictionary<string, string>();
+
             conn = new MySqlConnection(ConfigurationManager.AppSettings["connString"]);
             try
             {
@@ -41,7 +45,7 @@ namespace SalesOfPharmacy
                 MessageBox.Show(ex.Message);
             }
 
-            if (bool.Parse(ConfigurationManager.AppSettings["isShowConnectionInfo"])) {
+            if ((conn.State != ConnectionState.Closed) && bool.Parse(ConfigurationManager.AppSettings["isShowConnectionInfo"])) {
                 MessageBox.Show( "   ServerVersion : " + conn.ServerVersion
                                + "\n Connection State : " + conn.State.ToString());
             }
@@ -201,76 +205,88 @@ namespace SalesOfPharmacy
 
         private void mi_Load_File_Click(object sender, EventArgs e)
         {
-            if (gvResult.Visible) { gvResult.Visible = true; }
+            if (gvResult.Visible) { gvResult.Visible = false; }
 
-            if (oFileDlg.ShowDialog() == DialogResult.OK)
+            fLoadNewFile lFile = new fLoadNewFile();
+            lFile.AddContext(conn);
+            lFile.AddContext(context);
+
+            if (lFile.ShowDialog(this) == DialogResult.OK)
             {
-                if (GetInfoFromExcel(oFileDlg.FileName))
-                {
-                    byte[] file = File.ReadAllBytes(oFileDlg.FileName);
-
-                    MySqlTransaction trans = conn.BeginTransaction();
-
-                    string command = "INSERT INTO dbsop.tbl_file_raw ( bFile, file_name ) VALUES ( @bFile, @file_name )";
-
-                    MySqlCommand cmd = new MySqlCommand(command, conn, trans);
-
-                    MySqlParameter pFile = new MySqlParameter("@bFile", MySqlDbType.Blob, file.Length);
-                    MySqlParameter pName = new MySqlParameter("@file_name", MySqlDbType.String, oFileDlg.FileName.Length);
-
-                    pFile.Value = file;
-                    pName.Value = Path.GetFileName(oFileDlg.FileName);
-
-                    cmd.Parameters.Add(pFile);
-                    cmd.Parameters.Add(pName);
-
-                    try
-                    {
-                        if (cmd.ExecuteNonQuery() == 1)
-                        {
-                            cmd.CommandText = "SELECT LAST_INSERT_ID()";
-                            string file_id = cmd.ExecuteScalar().ToString();
-
-                            if (InsertSalesToDB(cmd, file_id))
-                            {
-                                switch (MessageBox.Show("Сохранить изменения?", "Сохранить изменения?", MessageBoxButtons.YesNo))
-                                {
-                                    case DialogResult.Yes: trans.Commit(); ShowResult(file_id); break;
-                                    case DialogResult.No: trans.Rollback(); break;
-                                }
-                            }
-                            else
-                            {
-                                MessageBox.Show("Не удалось сохранить информацию о продажах!");
-                                try
-                                {
-                                    trans.Rollback();
-                                }
-                                catch (MySqlException exc)
-                                {
-                                    MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("Не удалось сохранить файл!");
-                            try
-                            {
-                                trans.Rollback();
-                            }
-                            catch (MySqlException exc)
-                            {
-                                MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
-                            }
-                        }
-                    }
-                    catch (MySqlException exc)
-                    {
-                        MessageBox.Show("Произошла выполнения запроса к базе данных! Текст ошибки: \n {0}", exc.Message);
-                    }
-                }
+                if (!gvResult.Visible) { gvResult.Visible = true; }
+                MessageBox.Show(String.Format("SHOW parameter = {0}", context["SHOW"]));
+                ShowResult(context["SHOW"]);
             }
+
+            lFile.Dispose();
+            //if (oFileDlg.ShowDialog() == DialogResult.OK)
+            //{
+            //    if (GetInfoFromExcel(oFileDlg.FileName))
+            //    {
+            //        byte[] file = File.ReadAllBytes(oFileDlg.FileName);
+
+            //        MySqlTransaction trans = conn.BeginTransaction();
+
+            //        string command = "INSERT INTO dbsop.tbl_file_raw ( bFile, file_name ) VALUES ( @bFile, @file_name )";
+
+            //        MySqlCommand cmd = new MySqlCommand(command, conn, trans);
+
+            //        MySqlParameter pFile = new MySqlParameter("@bFile", MySqlDbType.Blob, file.Length);
+            //        MySqlParameter pName = new MySqlParameter("@file_name", MySqlDbType.String, oFileDlg.FileName.Length);
+
+            //        pFile.Value = file;
+            //        pName.Value = Path.GetFileName(oFileDlg.FileName);
+
+            //        cmd.Parameters.Add(pFile);
+            //        cmd.Parameters.Add(pName);
+
+            //        try
+            //        {
+            //            if (cmd.ExecuteNonQuery() == 1)
+            //            {
+            //                cmd.CommandText = "SELECT LAST_INSERT_ID()";
+            //                string file_id = cmd.ExecuteScalar().ToString();
+
+            //                if (InsertSalesToDB(cmd, file_id))
+            //                {
+            //                    switch (MessageBox.Show("Сохранить изменения?", "Сохранить изменения?", MessageBoxButtons.YesNo))
+            //                    {
+            //                        case DialogResult.Yes: trans.Commit(); ShowResult(file_id); break;
+            //                        case DialogResult.No: trans.Rollback(); break;
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    MessageBox.Show("Не удалось сохранить информацию о продажах!");
+            //                    try
+            //                    {
+            //                        trans.Rollback();
+            //                    }
+            //                    catch (MySqlException exc)
+            //                    {
+            //                        MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
+            //                    }
+            //                }
+            //            }
+            //            else
+            //            {
+            //                MessageBox.Show("Не удалось сохранить файл!");
+            //                try
+            //                {
+            //                    trans.Rollback();
+            //                }
+            //                catch (MySqlException exc)
+            //                {
+            //                    MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
+            //                }
+            //            }
+            //        }
+            //        catch (MySqlException exc)
+            //        {
+            //            MessageBox.Show("Произошла выполнения запроса к базе данных! Текст ошибки: \n {0}", exc.Message);
+            //        }
+            //    }
+            //}
 
         }
 
@@ -302,10 +318,11 @@ namespace SalesOfPharmacy
         {
             MessageBox.Show(String.Format("Row : {0} \n Text : {1}", currentRow, gvResult.Rows[currentRow].Cells[2].Value));
 
-            fEditPOS edt = new fEditPOS();
+            fEdit_MD_POS edt = new fEdit_MD_POS();
             edt.AddContext("POS", gvResult.Rows[currentRow].Cells[2].Value.ToString());
             edt.AddContext(conn);
-            edt.Show();
+            edt.ShowDialog(this);
+            edt.Dispose();
         }
 
         private void gvResult_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -324,15 +341,42 @@ namespace SalesOfPharmacy
         {
             MessageBox.Show(String.Format("Row : {0} \n Text : {1}", currentRow, gvResult.Rows[currentRow].Cells[4].Value));
 
-            fEditDrug edt = new fEditDrug();
+            fEdit_MD_Drug edt = new fEdit_MD_Drug();
             edt.AddContext("Drug", gvResult.Rows[currentRow].Cells[4].Value.ToString());
             edt.AddContext(conn);
-            edt.Show();
+            edt.ShowDialog();
+            edt.Dispose();
         }
 
         private void mi_Chains_Click(object sender, EventArgs e)
         {
             fListChains lst = new fListChains();
+            lst.AddContext(conn);
+            lst.Show();
+        }
+
+        private void mi_Drug_Click(object sender, EventArgs e)
+        {
+            fListDrugs lst = new fListDrugs();
+            lst.AddContext(conn);
+            lst.Show();
+        }
+
+        private void mi_MD_Drugs_Click(object sender, EventArgs e)
+        {
+            fList_MD_Drugs lst = new fList_MD_Drugs();
+            lst.AddContext(conn);
+            lst.Show();
+        }
+
+        private void mi_MD_POSes_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void mi_POS_Click(object sender, EventArgs e)
+        {
+            fListPOSes lst = new fListPOSes();
             lst.AddContext(conn);
             lst.Show();
         }

@@ -1,6 +1,6 @@
 ﻿namespace SalesOfPharmacy
 {
-    partial class fEditDrug
+    partial class fEditChain
     {
         /// <summary>
         /// Требуется переменная конструктора.
@@ -28,30 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblDrug = new System.Windows.Forms.Label();
-            this.txtDrug = new System.Windows.Forms.TextBox();
+            this.lblChain = new System.Windows.Forms.Label();
+            this.txtChain = new System.Windows.Forms.TextBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // lblDrug
+            // lblChain
             // 
-            this.lblDrug.AutoSize = true;
-            this.lblDrug.Location = new System.Drawing.Point(12, 15);
-            this.lblDrug.Name = "lblDrug";
-            this.lblDrug.Size = new System.Drawing.Size(59, 13);
-            this.lblDrug.TabIndex = 3;
-            this.lblDrug.Text = "Препарат:";
+            this.lblChain.AutoSize = true;
+            this.lblChain.Location = new System.Drawing.Point(12, 15);
+            this.lblChain.Name = "lblChain";
+            this.lblChain.Size = new System.Drawing.Size(83, 13);
+            this.lblChain.TabIndex = 3;
+            this.lblChain.Text = "Аптечная сеть:";
             // 
-            // txtDrug
+            // txtChain
             // 
-            this.txtDrug.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.txtChain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDrug.Location = new System.Drawing.Point(101, 12);
-            this.txtDrug.Name = "txtDrug";
-            this.txtDrug.Size = new System.Drawing.Size(261, 20);
-            this.txtDrug.TabIndex = 2;
+            this.txtChain.Location = new System.Drawing.Point(101, 12);
+            this.txtChain.Name = "txtChain";
+            this.txtChain.Size = new System.Drawing.Size(261, 20);
+            this.txtChain.TabIndex = 2;
             // 
             // btnCancel
             // 
@@ -77,20 +77,21 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // fEditDrug
+            // fEditChain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(374, 72);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.lblDrug);
-            this.Controls.Add(this.txtDrug);
+            this.Controls.Add(this.lblChain);
+            this.Controls.Add(this.txtChain);
             this.MinimumSize = new System.Drawing.Size(390, 38);
-            this.Name = "fEditDrug";
+            this.Name = "fEditChain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "fEditDrug";
+            this.Text = "fEditChain";
             this.Shown += new System.EventHandler(this.fEditChain_Shown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.fEditChain_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,8 +99,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblDrug;
-        private System.Windows.Forms.TextBox txtDrug;
+        private System.Windows.Forms.Label lblChain;
+        private System.Windows.Forms.TextBox txtChain;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
     }
