@@ -34,9 +34,9 @@
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mi_Add_MD_Drug = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_Edit_MD_Drug = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_Del_MD_Drug = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_Add_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_Edit_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_Del_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gv_MD_POSes)).BeginInit();
             this.gvMenu.SuspendLayout();
             this.SuspendLayout();
@@ -68,7 +68,6 @@
             this.gv_MD_POSes.TabIndex = 0;
             this.gv_MD_POSes.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gv_MD_Drugs_CellContextMenuStripNeeded);
             this.gv_MD_POSes.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gv_MD_Drugs_CellMouseDown);
-            this.gv_MD_POSes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gv_MD_Drugs_MouseDown);
             // 
             // id
             // 
@@ -89,32 +88,32 @@
             // gvMenu
             // 
             this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mi_Add_MD_Drug,
-            this.mi_Edit_MD_Drug,
-            this.mi_Del_MD_Drug});
+            this.mi_Add_MD_POS,
+            this.mi_Edit_MD_POS,
+            this.mi_Del_MD_POS});
             this.gvMenu.Name = "gvMenu";
-            this.gvMenu.Size = new System.Drawing.Size(334, 70);
+            this.gvMenu.Size = new System.Drawing.Size(363, 92);
             // 
-            // mi_Add_MD_Drug
+            // mi_Add_MD_POS
             // 
-            this.mi_Add_MD_Drug.Name = "mi_Add_MD_Drug";
-            this.mi_Add_MD_Drug.Size = new System.Drawing.Size(333, 22);
-            this.mi_Add_MD_Drug.Text = "Добавить ключевую фразу для препарата";
-            this.mi_Add_MD_Drug.Click += new System.EventHandler(this.mi_Add_MD_Drug_Click);
+            this.mi_Add_MD_POS.Name = "mi_Add_MD_POS";
+            this.mi_Add_MD_POS.Size = new System.Drawing.Size(362, 22);
+            this.mi_Add_MD_POS.Text = "Добавить ключевую фразу для торговой точки";
+            this.mi_Add_MD_POS.Click += new System.EventHandler(this.mi_Add_MD_POS_Click);
             // 
-            // mi_Edit_MD_Drug
+            // mi_Edit_MD_POS
             // 
-            this.mi_Edit_MD_Drug.Name = "mi_Edit_MD_Drug";
-            this.mi_Edit_MD_Drug.Size = new System.Drawing.Size(333, 22);
-            this.mi_Edit_MD_Drug.Text = "Редактировать ключевую фразу для препарата";
-            this.mi_Edit_MD_Drug.Click += new System.EventHandler(this.mi_Edit_MD_Drug_Click);
+            this.mi_Edit_MD_POS.Name = "mi_Edit_MD_POS";
+            this.mi_Edit_MD_POS.Size = new System.Drawing.Size(362, 22);
+            this.mi_Edit_MD_POS.Text = "Редактировать ключевую фразу для торговой точки";
+            this.mi_Edit_MD_POS.Click += new System.EventHandler(this.mi_Edit_MD_POS_Click);
             // 
-            // mi_Del_MD_Drug
+            // mi_Del_MD_POS
             // 
-            this.mi_Del_MD_Drug.Name = "mi_Del_MD_Drug";
-            this.mi_Del_MD_Drug.Size = new System.Drawing.Size(333, 22);
-            this.mi_Del_MD_Drug.Text = "Удалить ключевую фразу для препарата";
-            this.mi_Del_MD_Drug.Click += new System.EventHandler(this.mi_Del_MD_Drug_Click);
+            this.mi_Del_MD_POS.Name = "mi_Del_MD_POS";
+            this.mi_Del_MD_POS.Size = new System.Drawing.Size(362, 22);
+            this.mi_Del_MD_POS.Text = "Удалить ключевую фразу для торговой точки";
+            this.mi_Del_MD_POS.Click += new System.EventHandler(this.mi_Del_MD_POS_Click);
             // 
             // fList_MD_POSes
             // 
@@ -124,6 +123,7 @@
             this.Controls.Add(this.gv_MD_POSes);
             this.Name = "fList_MD_POSes";
             this.Text = "fList_MD_Drugs";
+            this.Shown += new System.EventHandler(this.fList_MD_POSes_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.gv_MD_POSes)).EndInit();
             this.gvMenu.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -136,8 +136,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.ContextMenuStrip gvMenu;
-        private System.Windows.Forms.ToolStripMenuItem mi_Add_MD_Drug;
-        private System.Windows.Forms.ToolStripMenuItem mi_Edit_MD_Drug;
-        private System.Windows.Forms.ToolStripMenuItem mi_Del_MD_Drug;
+        private System.Windows.Forms.ToolStripMenuItem mi_Add_MD_POS;
+        private System.Windows.Forms.ToolStripMenuItem mi_Edit_MD_POS;
+        private System.Windows.Forms.ToolStripMenuItem mi_Del_MD_POS;
     }
 }

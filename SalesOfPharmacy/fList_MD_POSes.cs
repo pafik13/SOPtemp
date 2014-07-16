@@ -41,16 +41,17 @@ namespace SalesOfPharmacy
 
         private void Load_MD_POSes()
         {
-            string command = "SELECT tmdod.id                       "
-                           + "     , tmdod.model_name               "
-                           + "     , tmdod.drug_id                  "
-                           //+ "     , td.id                          "
-                           + "     , td.name                        "
-                           + "  FROM tbl_model_data_of_drugs tmdod  "
-                           + "  JOIN tbl_drugs td                   "
-                           + "    ON ( td.id = tmdod.drug_id )      "
-                           + " ORDER                                "
-                           + "    BY td.name                        ";
+            string command = "SELECT mdop.id                       "
+                           + "     , mdop.model_name               "
+                           + "     , p.id                          "
+                           + "     , p.name                        "
+                           + "     , p.chain_id                    "
+                           + "     , p.chain_name                  "
+                           + "  FROM tbl_model_data_of_poses mdop  "
+                           + "  JOIN vw_poses p                    "
+                           + "    ON ( mdop.pos_id = p.id )        "
+                           + " ORDER                               "
+                           + "    BY p.chain_name, p.name          ";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -76,7 +77,7 @@ namespace SalesOfPharmacy
             }
         }
 
-        private void mi_Del_MD_Drug_Click(object sender, EventArgs e)
+        private void mi_Del_MD_POS_Click(object sender, EventArgs e)
         {
             if (currentRow != -1)
             {
@@ -98,31 +99,33 @@ namespace SalesOfPharmacy
         }
 
 
-        private void gv_MD_Drugs_MouseDown(object sender, MouseEventArgs e)
+        private void gv_MD_POSes_MouseDown(object sender, MouseEventArgs e)
         {
             if (gv_MD_POSes.RowCount == 0) {
-                mi_Edit_MD_Drug.Enabled = false;
-                mi_Del_MD_Drug.Enabled  = false;
+                mi_Edit_MD_POS.Enabled = false;
+                mi_Del_MD_POS.Enabled  = false;
             } else {
-                mi_Edit_MD_Drug.Enabled = true;
-                mi_Del_MD_Drug.Enabled  = true;
+                mi_Edit_MD_POS.Enabled = true;
+                mi_Del_MD_POS.Enabled  = true;
             }
         }
 
-        private void mi_Add_MD_Drug_Click(object sender, EventArgs e)
+        private void mi_Add_MD_POS_Click(object sender, EventArgs e)
         {
-            fEdit_MD_Drug edt = new fEdit_MD_Drug();
+            fEdit_MD_POS edt = new fEdit_MD_POS();
             edt.AddContext(conn);
+            edt.AddContext("POS", "");
             if (edt.ShowDialog() == DialogResult.OK)
             {
                 Load_MD_POSes();
                 gv_MD_POSes.CurrentCell = gv_MD_POSes.Rows[gv_MD_POSes.RowCount - 1].Cells[1];
             }
+            edt.Dispose();
         }
 
-        private void mi_Edit_MD_Drug_Click(object sender, EventArgs e)
+        private void mi_Edit_MD_POS_Click(object sender, EventArgs e)
         {
-            fEdit_MD_Drug edt = new fEdit_MD_Drug();
+            fEdit_MD_POS edt = new fEdit_MD_POS();
             edt.AddContext(conn);
             if (currentRow != -1) { edt.AddContext("ID", gv_MD_POSes.Rows[currentRow].Cells[0].Value.ToString()); }
             if (edt.ShowDialog() == DialogResult.OK)
@@ -130,6 +133,7 @@ namespace SalesOfPharmacy
                 Load_MD_POSes();
                 gv_MD_POSes.CurrentCell = gv_MD_POSes.Rows[currentRow].Cells[1];
             }
+            edt.Dispose();
         }
     }
 }

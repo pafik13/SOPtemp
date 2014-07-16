@@ -11,6 +11,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using System.Threading;
 using MySql.Data.MySqlClient;
+using System.Runtime.InteropServices;
 
 namespace SalesOfPharmacy
 {
@@ -105,7 +106,6 @@ namespace SalesOfPharmacy
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            bool canProcess = true;
             pcontext["Errors"] = "";
 
             if (cbChain.SelectedIndex == -1)
@@ -160,14 +160,15 @@ namespace SalesOfPharmacy
                     {
                         if (cmd.ExecuteNonQuery() == 1)
                         {
-                            cmd.CommandText = "SELECT LAST_INSERT_ID()";
-                            string file_id = cmd.ExecuteScalar().ToString();
+                           // cmd.LastInsertedId;
+                           // cmd.CommandText = "SELECT LAST_INSERT_ID()";
+                            string file_id = cmd.LastInsertedId.ToString(); //cmd.ExecuteScalar().ToString();
 
                             if (InsertSalesToDB(cmd, file_id))
                             {
                                 switch (MessageBox.Show("Сохранить изменения?", "Сохранить изменения?", MessageBoxButtons.YesNo))
                                 {
-                                    case DialogResult.Yes: trans.Commit(); pcontext.Add("SHOW", file_id); break;
+                                    case DialogResult.Yes: trans.Commit(); pcontext["SHOW"] = file_id; break;
                                     case DialogResult.No: trans.Rollback(); break;
                                 }
                             }
@@ -213,46 +214,213 @@ namespace SalesOfPharmacy
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing
                 );
 
-            excelApp.Visible = true;
+           // excelApp.Visible = true;
             excelApp.UserControl = false;
 
             POSes = new List<string>();
             drugs = new List<string>();
             nums = new List<string>();
 
-            for (int i = 1; i <= excelApp.Worksheets.Count; i++)
+            if (1 == 2)
             {
-                excelApp.Visible = true;
+                for (int i = 1; i <= excelApp.Worksheets.Count; i++)
+                {
+                    excelApp.Visible = true;
 
-                Excel.Worksheet workSheet = excelApp.Worksheets.get_Item(i);
+                    Excel.Worksheet workSheet = excelApp.Worksheets.get_Item(i);
 
-                workSheet.Select(Type.Missing);
+                    workSheet.Select(Type.Missing);
 
-                POSes.AddRange(GetValues("Точки", workSheet, excelApp));
-                drugs.AddRange(GetValues("Препараты", workSheet, excelApp));
-                nums.AddRange(GetValues("Количество", workSheet, excelApp));
+                    POSes.AddRange(GetValues("Точки", workSheet, excelApp));
+                    drugs.AddRange(GetValues("Препараты", workSheet, excelApp));
+                    nums.AddRange(GetValues("Количество", workSheet, excelApp));
 
-                //pointOfSales = GetValues("Точки", wS);
-                //drugs = GetValues("Препараты", wS);
-                //numbers = GetValues("Количество", wS);
-
-                //Thread.Sleep(3000);
-
-                //workSheet.Range["Препараты"].Select();
-
-                //Thread.Sleep(3000);
-
-                //workSheet.Range["Количество"].Select();
-
-                //Thread.Sleep(3000);
-
+                }
             }
+            else 
+            {
+                if (1 == 2)
+                {
+                    for (int i = 1; i <= excelApp.Worksheets.Count; i++)
+                    {
+                        excelApp.Visible = true;
+
+                        Excel.Worksheet workSheet = excelApp.Worksheets.get_Item(i);
+
+                        workSheet.Select(Type.Missing);
+
+                        GetSalesWithUPDrugs(workSheet, excelApp);
+
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i <= excelApp.Worksheets.Count; i++)
+                    {
+                        excelApp.Visible = true;
+
+                        Excel.Worksheet workSheet = excelApp.Worksheets.get_Item(i);
+
+                        workSheet.Select(Type.Missing);
+
+                        GetSalesWithLEFTDrugs(workSheet, excelApp);
+                    }
+                }
+            }
+
+            // Garbage collecting
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
 
             excelApp.Workbooks.Close();
 
             excelApp.Quit();
 
+
+            // Clean up references to all COM objects
+            // As per above, you're just using a Workbook and Excel Application instance, so release them:
+            //Marshal.FinalReleaseComObject(workbook);
+            Marshal.FinalReleaseComObject(excelApp);
+
             return ((POSes.Count == drugs.Count) && (nums.Count == drugs.Count));
+        }
+
+        private void GetSalesWithLEFTDrugs(Excel.Worksheet wSheet, Excel.Application app)
+        {
+            try
+            {
+                Excel.Range range = wSheet.get_Range("Продажи", Type.Missing);
+                range.Select();
+                object[,] obj = range.Value;
+
+                if (obj != null)
+                {
+                    int r = obj.GetLength(0);
+                    int f = obj.GetLength(1);
+
+                    StringBuilder log = new StringBuilder();
+
+                    for (int j = 2; j <= f; j++)
+                    {
+
+                        for (int i = 2; i <= r; i++)
+                        {
+                            if (obj[i, j] != null)
+                            {
+                                bool isCorrectRecord = true;
+
+                                if (obj[1, j] == null)
+                                {
+                                    isCorrectRecord = false;
+                                    log.AppendLine(String.Format("В столбце {0} строки {1} не найдена точка продаж.", j, i));
+                                    //MessageBox.Show("В строке " + i.ToString() + "", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+
+                                if (obj[i, 1] == null)
+                                {
+                                    isCorrectRecord = false;
+                                    log.AppendLine(String.Format("В столбце {0} строки {1} не найден препарат.", j, i));
+                                    //MessageBox.Show("В строке " + i.ToString() + ".", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+
+                                if (isCorrectRecord)
+                                {
+                                    drugs.Add(obj[i, 1].ToString());
+                                    POSes.Add(obj[1, j].ToString());
+                                    nums.Add(obj[i, j].ToString());
+                                }
+                            }
+                        }
+                    }
+
+                    using (StreamWriter outfile = new StreamWriter(@"log.txt"))
+                    {
+                        outfile.Write(log.ToString());
+                    }
+                }
+
+                Thread.Sleep(3000);
+            }
+            catch (Exception exc)
+            {
+                app.Visible = false;
+                MessageBox.Show(String.Format("Не найдена область '{0}' на листе '{1}';\nОшибка Excel: {2}", "Продажи", wSheet.Name, exc.Message));
+            }
+        }
+
+        private void GetSalesWithUPDrugs(Excel.Worksheet wSheet, Excel.Application app)
+        {
+            try
+            {
+                Excel.Range range = wSheet.get_Range("Продажи", Type.Missing);
+                range.Select();
+                object[,] obj = range.Value;
+
+                if (obj != null)
+                {
+                    int r = obj.GetLength(0);
+                    int f = obj.GetLength(1);
+
+                    StringBuilder log = new StringBuilder();
+
+                    for (int i = 2; i <= r; i++)
+                    {
+
+                        for (int j = 2; j <= f; j++)
+                        {
+                            if (obj[i, j] != null)
+                            {
+                                bool isCorrectRecord = true;
+
+                                if (obj[i, 1] == null)
+                                {
+                                    isCorrectRecord = false;
+                                    log.AppendLine("В строке " + i.ToString() + " не найдена точка продаж.");
+                                    //MessageBox.Show(, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+
+                                if (obj[1, j] == null)
+                                {
+                                    isCorrectRecord = false;
+                                    log.AppendLine("В строке " + i.ToString() + " не найден препарат.");
+                                    //MessageBox.Show("В строке " + i.ToString() + "не найден препарат.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+
+                                if (isCorrectRecord) {
+                                    drugs.Add(obj[1, j].ToString());
+                                    POSes.Add(obj[i, 1].ToString());
+                                    nums.Add(obj[i, j].ToString());
+                                }
+                            }
+                        }
+
+                        //if (cnt_value == 0)
+                        //{
+                        //    MessageBox.Show("В строке " + i.ToString() + "не найдено значение продаж.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //}
+                        //if (cnt_value > 0)
+                        //{
+                        //    MessageBox.Show("В строке " + i.ToString() + "найдено более одного значения продаж.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //}
+                        //if (cnt_value == 1)
+                        //{
+                           
+                        //}
+                    }
+
+                    using (StreamWriter outfile = new StreamWriter(@"log.txt"))
+                    {
+                        outfile.Write(log.ToString());
+                    }
+                }
+
+                Thread.Sleep(3000);
+            }
+            catch (Exception exc)
+            {
+                app.Visible = false;
+                MessageBox.Show(String.Format("Не найдена область '{0}' на листе '{1}';\nОшибка Excel: {2}", "Продажи", wSheet.Name, exc.Message));
+            }
         }
 
         private List<string> GetValues(string rangeName, Excel.Worksheet wSheet, Excel.Application app)
@@ -268,7 +436,14 @@ namespace SalesOfPharmacy
                 {
                     foreach (object item in array)
                     {
-                        list.Add(item.ToString());
+                        if (item != null)
+                        {
+                            list.Add(item.ToString());
+                        }
+                        else
+                        {
+                            list.Add("");
+                        }
                     }
                 }
 

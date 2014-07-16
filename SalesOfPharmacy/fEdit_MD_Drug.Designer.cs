@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cb_mdDrug = new System.Windows.Forms.ComboBox();
+            this.cbDrug = new System.Windows.Forms.ComboBox();
             this.lbl_mdDrug = new System.Windows.Forms.Label();
             this.lblDrug = new System.Windows.Forms.Label();
             this.txt_MD_Drug = new System.Windows.Forms.TextBox();
@@ -36,13 +36,13 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // cb_mdDrug
+            // cbDrug
             // 
-            this.cb_mdDrug.FormattingEnabled = true;
-            this.cb_mdDrug.Location = new System.Drawing.Point(99, 38);
-            this.cb_mdDrug.Name = "cb_mdDrug";
-            this.cb_mdDrug.Size = new System.Drawing.Size(300, 21);
-            this.cb_mdDrug.TabIndex = 9;
+            this.cbDrug.FormattingEnabled = true;
+            this.cbDrug.Location = new System.Drawing.Point(99, 38);
+            this.cbDrug.Name = "cbDrug";
+            this.cbDrug.Size = new System.Drawing.Size(300, 21);
+            this.cbDrug.TabIndex = 9;
             // 
             // lbl_mdDrug
             // 
@@ -97,7 +97,7 @@
             this.ClientSize = new System.Drawing.Size(414, 92);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.cb_mdDrug);
+            this.Controls.Add(this.cbDrug);
             this.Controls.Add(this.lbl_mdDrug);
             this.Controls.Add(this.lblDrug);
             this.Controls.Add(this.txt_MD_Drug);
@@ -113,7 +113,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cb_mdDrug;
+        private System.Windows.Forms.ComboBox cbDrug;
         private System.Windows.Forms.Label lbl_mdDrug;
         private System.Windows.Forms.Label lblDrug;
         private System.Windows.Forms.TextBox txt_MD_Drug;

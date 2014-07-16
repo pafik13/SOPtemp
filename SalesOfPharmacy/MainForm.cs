@@ -51,6 +51,8 @@ namespace SalesOfPharmacy
             }
 
             excelApp = new Excel.Application();
+
+            context.Add("SHOW", "-1");
         }
 
         void Test()
@@ -292,7 +294,7 @@ namespace SalesOfPharmacy
 
         private void mi_LastR_Click(object sender, EventArgs e)
         {
-            ShowResult("16");
+            ShowResult(context["SHOW"]);
         }
 
         private void gvResult_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
@@ -316,12 +318,15 @@ namespace SalesOfPharmacy
 
         private void mi_AddPos_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(String.Format("Row : {0} \n Text : {1}", currentRow, gvResult.Rows[currentRow].Cells[2].Value));
+            //MessageBox.Show(String.Format("Row : {0} \n Text : {1}", currentRow, gvResult.Rows[currentRow].Cells[2].Value));
 
             fEdit_MD_POS edt = new fEdit_MD_POS();
             edt.AddContext("POS", gvResult.Rows[currentRow].Cells[2].Value.ToString());
             edt.AddContext(conn);
-            edt.ShowDialog(this);
+            if (edt.ShowDialog(this) == DialogResult.OK)
+            {
+                ShowResult(context["SHOW"]);
+            };
             edt.Dispose();
         }
 
@@ -339,12 +344,15 @@ namespace SalesOfPharmacy
 
         private void mi_AddDrug_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(String.Format("Row : {0} \n Text : {1}", currentRow, gvResult.Rows[currentRow].Cells[4].Value));
+            //MessageBox.Show(String.Format("Row : {0} \n Text : {1}", currentRow, gvResult.Rows[currentRow].Cells[4].Value));
 
             fEdit_MD_Drug edt = new fEdit_MD_Drug();
             edt.AddContext("Drug", gvResult.Rows[currentRow].Cells[4].Value.ToString());
             edt.AddContext(conn);
-            edt.ShowDialog();
+            if (edt.ShowDialog(this) == DialogResult.OK)
+            {
+                ShowResult(context["SHOW"]);
+            };
             edt.Dispose();
         }
 
@@ -371,7 +379,9 @@ namespace SalesOfPharmacy
 
         private void mi_MD_POSes_Click(object sender, EventArgs e)
         {
-            this.Close();
+            fList_MD_POSes lst = new fList_MD_POSes();
+            lst.AddContext(conn);
+            lst.Show(this);
         }
 
         private void mi_POS_Click(object sender, EventArgs e)

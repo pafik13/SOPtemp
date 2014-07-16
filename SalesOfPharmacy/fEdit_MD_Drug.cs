@@ -14,7 +14,7 @@ namespace SalesOfPharmacy
     {
         Dictionary<string, string> context;
         private MySqlConnection conn = null;
-        private List<int> mdDrug = null;
+        private List<int> drugs = null;
 
         public fEdit_MD_Drug()
         {
@@ -48,7 +48,7 @@ namespace SalesOfPharmacy
                 if (myReader.Read())
                 {
                     txt_MD_Drug.Text = myReader.GetString(1);
-                    cb_mdDrug.SelectedIndex = mdDrug.IndexOf(myReader.GetInt32(2));
+                    cbDrug.SelectedIndex = drugs.IndexOf(myReader.GetInt32(2));
                 }
                 else
                 {
@@ -73,14 +73,14 @@ namespace SalesOfPharmacy
 
             MySqlDataReader myReader = cmd.ExecuteReader();
 
-            mdDrug = new List<int>();
+            drugs = new List<int>();
 
             // Always call Read before accessing data.
             while (myReader.Read())
             {
                 //MessageBox.Show(myReader.GetInt32(0) + ", " + myReader.GetString(1));
-                mdDrug.Add(myReader.GetInt32(0));
-                cb_mdDrug.Items.Add(myReader.GetString(1));
+                drugs.Add(myReader.GetInt32(0));
+                cbDrug.Items.Add(myReader.GetString(1));
             }
             // always call Close when done reading.
             myReader.Close();
@@ -101,13 +101,13 @@ namespace SalesOfPharmacy
                 cmd.CommandText = "UPDATE dbsop.tbl_chains SET name = @name WHERE id = @id";
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
                 cmd.Parameters.AddWithValue("@mdname", txt_MD_Drug.Text);
-                cmd.Parameters.AddWithValue("@drug_id", mdDrug[cb_mdDrug.SelectedIndex]);
+                cmd.Parameters.AddWithValue("@drug_id", drugs[cbDrug.SelectedIndex]);
             }
             else
             {
                 cmd.CommandText = "INSERT INTO dbsop.tbl_model_data_of_drugs ( model_name, drug_id ) VALUES ( @mdname, @drug_id )";
                 cmd.Parameters.AddWithValue("@mdname", txt_MD_Drug.Text);
-                cmd.Parameters.AddWithValue("@drug_id", mdDrug[cb_mdDrug.SelectedIndex]);
+                cmd.Parameters.AddWithValue("@drug_id", drugs[cbDrug.SelectedIndex]);
             }
 
             if (cmd.ExecuteNonQuery() == 1)

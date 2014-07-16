@@ -56,12 +56,14 @@
             // 
             // cbChain
             // 
+            this.cbChain.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbChain.FormattingEnabled = true;
             this.cbChain.Location = new System.Drawing.Point(99, 38);
             this.cbChain.Name = "cbChain";
             this.cbChain.Size = new System.Drawing.Size(303, 21);
             this.cbChain.TabIndex = 2;
             this.cbChain.TextChanged += new System.EventHandler(this.cbChain_TextChanged);
+            this.cbChain.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbChain_KeyDown);
             // 
             // lblChain
             // 
@@ -83,6 +85,8 @@
             // 
             // cbPOS
             // 
+            this.cbPOS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPOS.Enabled = false;
             this.cbPOS.FormattingEnabled = true;
             this.cbPOS.Location = new System.Drawing.Point(99, 65);
             this.cbPOS.Name = "cbPOS";
@@ -99,6 +103,7 @@
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
