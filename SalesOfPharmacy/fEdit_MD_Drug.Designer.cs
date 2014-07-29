@@ -38,6 +38,7 @@
             // 
             // cbDrug
             // 
+            this.cbDrug.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDrug.FormattingEnabled = true;
             this.cbDrug.Location = new System.Drawing.Point(99, 38);
             this.cbDrug.Name = "cbDrug";

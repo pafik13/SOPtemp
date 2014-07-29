@@ -1,0 +1,30 @@
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 8 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 10 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 11 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 13 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 14 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 15 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 16 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 17 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 18 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------
+---------------------------------------
+SELECT rs.* FROM vw_report_sales rs WHERE  rs.chain_id = 19 AND (  (rs.year_id = 6 AND rs.month_id = 1)  OR  (rs.year_id = 6 AND rs.month_id = 2)  OR  (rs.year_id = 6 AND rs.month_id = 3)  OR  (rs.year_id = 6 AND rs.month_id = 4)  OR  (rs.year_id = 6 AND rs.month_id = 5)  )  ORDER BY rs.year, rs.month_id 
+---------------------------------------

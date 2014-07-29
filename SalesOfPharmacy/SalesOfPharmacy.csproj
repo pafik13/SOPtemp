@@ -84,11 +84,23 @@
     <Compile Include="fListDrugs.Designer.cs">
       <DependentUpon>fListDrugs.cs</DependentUpon>
     </Compile>
+    <Compile Include="fListFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fListFiles.Designer.cs">
+      <DependentUpon>fListFiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="fLoadNewFile.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="fLoadNewFile.Designer.cs">
       <DependentUpon>fLoadNewFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fReportSales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fReportSales.Designer.cs">
+      <DependentUpon>fReportSales.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -116,17 +128,23 @@
     <Compile Include="fList_MD_POSes.Designer.cs">
       <DependentUpon>fList_MD_POSes.cs</DependentUpon>
     </Compile>
-    <Compile Include="fListPOSes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="fListPOSes.Designer.cs">
-      <DependentUpon>fListPOSes.cs</DependentUpon>
-    </Compile>
     <Compile Include="fEditPOS.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="fEditPOS.Designer.cs">
       <DependentUpon>fEditPOS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fResult.Designer.cs">
+      <DependentUpon>fResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fListPOSes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fListPOSes.Designer.cs">
+      <DependentUpon>fListPOSes.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="fEditChain.resx">
       <DependentUpon>fEditChain.cs</DependentUpon>
@@ -143,8 +161,14 @@
     <EmbeddedResource Include="fListDrugs.resx">
       <DependentUpon>fListDrugs.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="fListFiles.resx">
+      <DependentUpon>fListFiles.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="fLoadNewFile.resx">
       <DependentUpon>fLoadNewFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fReportSales.resx">
+      <DependentUpon>fReportSales.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -167,11 +191,14 @@
     <EmbeddedResource Include="fList_MD_POSes.resx">
       <DependentUpon>fList_MD_POSes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fListPOSes.resx">
-      <DependentUpon>fListPOSes.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="fEditPOS.resx">
       <DependentUpon>fEditPOS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fResult.resx">
+      <DependentUpon>fResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fListPOSes.resx">
+      <DependentUpon>fListPOSes.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config">
       <SubType>Designer</SubType>

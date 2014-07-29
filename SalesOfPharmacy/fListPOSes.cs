@@ -34,21 +34,14 @@ namespace SalesOfPharmacy
             conn = connection;
         }
 
-        private void fListPOSes_Shown(object sender, EventArgs e)
+        private void fListChains_Shown(object sender, EventArgs e)
         {
             LoadPOSes();
         }
 
         private void LoadPOSes()
         {
-            string command = " SELECT tp.id,             " +
-                             "        tp.name,           " +
-                             "        tp.chain_id,       " +
-                             "        tc.name chain_name " +
-                             "   FROM tbl_poses tp       " +
-                             "   JOIN tbl_chains tc      " +
-                             "     ON tp.chain_id = tc.id";
-
+            string command = "SELECT * FROM vw_poses";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -58,60 +51,62 @@ namespace SalesOfPharmacy
                 gvPOSes.DataSource = dataset.Tables[0];
         }
 
-        private void gvDrugs_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        private void gvPOSes_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
         {
             if (e.RowIndex > -1)
             {
                 currentRow = e.RowIndex;
-            }
-        }
-
-        private void gvDrugs_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if ((e.Button == MouseButtons.Right) && (e.RowIndex > -1))
-            {
-                // Add this
                 gvPOSes.CurrentCell = gvPOSes.Rows[e.RowIndex].Cells[e.ColumnIndex];
             }
         }
 
-        private void mi_DelDrug_Click(object sender, EventArgs e)
+        private void mi_DelPOS_Click(object sender, EventArgs e)
         {
             if (currentRow != -1)
             {
-                string command = "DELETE FROM dbsop.tbl_poses WHERE id = @id";
-                MySqlCommand cmd = new MySqlCommand(command, conn);
-
-                cmd.Parameters.AddWithValue("@id", gvPOSes.Rows[currentRow].Cells[0].Value);
-
-                if (cmd.ExecuteNonQuery() == 1)
+                if (MessageBox.Show("Хотите удалить запись?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    MessageBox.Show("Deleted!");
-                    LoadPOSes();
-                }
-                else
-                {
-                    MessageBox.Show("Not deleted! Try again!");
+                    try
+                    {
+                        string command = "DELETE FROM tbl_poses WHERE id = @id";
+                        MySqlCommand cmd = new MySqlCommand(command, conn);
+
+                        cmd.Parameters.AddWithValue("@id", gvPOSes.Rows[currentRow].Cells[0].Value);
+
+                        if (cmd.ExecuteNonQuery() == 1)
+                        {
+                            MessageBox.Show("Deleted!");
+                            LoadPOSes();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Not deleted! Try again!");
+                        }
+                    }
+                    catch (MySqlException mysqlExc)
+                    {
+                        MessageBox.Show(mysqlExc.Message, mysqlExc.ErrorCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
 
 
-        private void gvDrugs_MouseDown(object sender, MouseEventArgs e)
+        private void gvPOSes_MouseDown(object sender, MouseEventArgs e)
         {
             if (gvPOSes.RowCount == 0)
             {
-                mi_EditDrug.Enabled = false;
-                mi_DelDrug.Enabled = false;
+                mi_EditPOS.Enabled = false;
+                mi_DelPOS.Enabled = false;
             }
             else
             {
-                mi_EditDrug.Enabled = true;
-                mi_DelDrug.Enabled = true;
+                mi_EditPOS.Enabled = true;
+                mi_DelPOS.Enabled = true;
             }
         }
 
-        private void mi_AddChain_Click(object sender, EventArgs e)
+        private void mi_AddPOS_Click(object sender, EventArgs e)
         {
             fEditPOS edt = new fEditPOS();
             edt.AddContext(conn);
@@ -119,10 +114,11 @@ namespace SalesOfPharmacy
             {
                 LoadPOSes();
                 gvPOSes.CurrentCell = gvPOSes.Rows[gvPOSes.RowCount - 1].Cells[1];
+                gvPOSes.FirstDisplayedScrollingRowIndex = gvPOSes.RowCount - 1;
             }
         }
 
-        private void mi_EditChain_Click(object sender, EventArgs e)
+        private void mi_EditPOS_Click(object sender, EventArgs e)
         {
             fEditPOS edt = new fEditPOS();
             edt.AddContext(conn);
@@ -131,6 +127,7 @@ namespace SalesOfPharmacy
             {
                 LoadPOSes();
                 gvPOSes.CurrentCell = gvPOSes.Rows[currentRow].Cells[1];
+                gvPOSes.FirstDisplayedScrollingRowIndex = currentRow;
             }
         }
     }

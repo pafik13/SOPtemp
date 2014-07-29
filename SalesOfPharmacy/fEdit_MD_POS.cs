@@ -35,15 +35,6 @@ namespace SalesOfPharmacy
             conn = connection;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            foreach (KeyValuePair<string, string> kvp in context)
-            {
-                MessageBox.Show(String.Format("Key : {0}; Val : {1}", kvp.Key, kvp.Value));
-                // do something
-            }
-        }
-
         private void fEditPOS_Shown(object sender, EventArgs e)
         {
             LoadChains();
@@ -80,7 +71,14 @@ namespace SalesOfPharmacy
             }
             else
             {
-                txt_MD_POS.Text = context["POS"];
+                if (context.ContainsKey("POS"))
+                {
+                    txt_MD_POS.Text = context["POS"];
+                }
+                if (context.ContainsKey("chain_id"))
+                {
+                    cbChain.SelectedIndex = chains.IndexOf(Int32.Parse(context["chain_id"]));
+                }
             }
         }
 
@@ -188,6 +186,15 @@ namespace SalesOfPharmacy
             else
             {
                 MessageBox.Show("Not success!");
+            }
+        }
+
+        private void cbPOS_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Back)
+             || (e.KeyCode == Keys.Delete))
+            {
+                cbChain.SelectedIndex = -1;
             }
         }
     }

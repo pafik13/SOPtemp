@@ -18,3 +18,6 @@ C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPha
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fList_MD_POSes.resources
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fListPOSes.resources
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fEditPOS.resources
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fReportSales.resources
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fListFiles.resources
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fResult.resources

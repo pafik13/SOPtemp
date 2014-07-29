@@ -32,13 +32,16 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gvPOSes = new System.Windows.Forms.DataGridView();
             this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mi_AddDrug = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_EditDrug = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_DelDrug = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_AddPOS = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_EditPOS = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_DelPOS = new System.Windows.Forms.ToolStripMenuItem();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chain_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chain_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.b_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.area_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.area_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvPOSes)).BeginInit();
             this.gvMenu.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +64,10 @@
             this.id,
             this.name,
             this.chain_id,
-            this.chain_name});
+            this.chain_name,
+            this.b_no,
+            this.area_id,
+            this.area_name});
             this.gvPOSes.ContextMenuStrip = this.gvMenu;
             this.gvPOSes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvPOSes.Location = new System.Drawing.Point(0, 0);
@@ -70,39 +76,38 @@
             this.gvPOSes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gvPOSes.Size = new System.Drawing.Size(284, 262);
             this.gvPOSes.TabIndex = 1;
-            this.gvPOSes.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gvDrugs_CellContextMenuStripNeeded);
-            this.gvPOSes.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gvDrugs_CellMouseDown);
-            this.gvPOSes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gvDrugs_MouseDown);
+            this.gvPOSes.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gvPOSes_CellContextMenuStripNeeded);
+            this.gvPOSes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gvPOSes_MouseDown);
             // 
             // gvMenu
             // 
             this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mi_AddDrug,
-            this.mi_EditDrug,
-            this.mi_DelDrug});
+            this.mi_AddPOS,
+            this.mi_EditPOS,
+            this.mi_DelPOS});
             this.gvMenu.Name = "gvMenu";
-            this.gvMenu.Size = new System.Drawing.Size(209, 70);
+            this.gvMenu.Size = new System.Drawing.Size(234, 70);
             // 
-            // mi_AddDrug
+            // mi_AddPOS
             // 
-            this.mi_AddDrug.Name = "mi_AddDrug";
-            this.mi_AddDrug.Size = new System.Drawing.Size(208, 22);
-            this.mi_AddDrug.Text = "Добавить препарат";
-            this.mi_AddDrug.Click += new System.EventHandler(this.mi_AddChain_Click);
+            this.mi_AddPOS.Name = "mi_AddPOS";
+            this.mi_AddPOS.Size = new System.Drawing.Size(233, 22);
+            this.mi_AddPOS.Text = "Добавить точку продаж";
+            this.mi_AddPOS.Click += new System.EventHandler(this.mi_AddPOS_Click);
             // 
-            // mi_EditDrug
+            // mi_EditPOS
             // 
-            this.mi_EditDrug.Name = "mi_EditDrug";
-            this.mi_EditDrug.Size = new System.Drawing.Size(208, 22);
-            this.mi_EditDrug.Text = "Редактировать препарат";
-            this.mi_EditDrug.Click += new System.EventHandler(this.mi_EditChain_Click);
+            this.mi_EditPOS.Name = "mi_EditPOS";
+            this.mi_EditPOS.Size = new System.Drawing.Size(233, 22);
+            this.mi_EditPOS.Text = "Редактировать точку продаж";
+            this.mi_EditPOS.Click += new System.EventHandler(this.mi_EditPOS_Click);
             // 
-            // mi_DelDrug
+            // mi_DelPOS
             // 
-            this.mi_DelDrug.Name = "mi_DelDrug";
-            this.mi_DelDrug.Size = new System.Drawing.Size(208, 22);
-            this.mi_DelDrug.Text = "Удалить препарат";
-            this.mi_DelDrug.Click += new System.EventHandler(this.mi_DelDrug_Click);
+            this.mi_DelPOS.Name = "mi_DelPOS";
+            this.mi_DelPOS.Size = new System.Drawing.Size(233, 22);
+            this.mi_DelPOS.Text = "Удалить точку продаж";
+            this.mi_DelPOS.Click += new System.EventHandler(this.mi_DelPOS_Click);
             // 
             // id
             // 
@@ -115,10 +120,10 @@
             // name
             // 
             this.name.DataPropertyName = "name";
-            this.name.HeaderText = "Наименование точки продаж";
+            this.name.HeaderText = "Наименование";
             this.name.Name = "name";
             this.name.ReadOnly = true;
-            this.name.Width = 130;
+            this.name.Width = 108;
             // 
             // chain_id
             // 
@@ -132,10 +137,34 @@
             // chain_name
             // 
             this.chain_name.DataPropertyName = "chain_name";
-            this.chain_name.HeaderText = "Наименование аптечной сети";
+            this.chain_name.HeaderText = "Аптечная сеть";
             this.chain_name.Name = "chain_name";
             this.chain_name.ReadOnly = true;
-            this.chain_name.Width = 146;
+            this.chain_name.Width = 96;
+            // 
+            // b_no
+            // 
+            this.b_no.DataPropertyName = "b_no";
+            this.b_no.HeaderText = "№ из выгрузки";
+            this.b_no.Name = "b_no";
+            this.b_no.ReadOnly = true;
+            // 
+            // area_id
+            // 
+            this.area_id.DataPropertyName = "area_id";
+            this.area_id.HeaderText = "AREA_ID";
+            this.area_id.Name = "area_id";
+            this.area_id.ReadOnly = true;
+            this.area_id.Visible = false;
+            this.area_id.Width = 78;
+            // 
+            // area_name
+            // 
+            this.area_name.DataPropertyName = "area_name";
+            this.area_name.HeaderText = "Город/Округ";
+            this.area_name.Name = "area_name";
+            this.area_name.ReadOnly = true;
+            this.area_name.Width = 97;
             // 
             // fListPOSes
             // 
@@ -144,8 +173,8 @@
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.gvPOSes);
             this.Name = "fListPOSes";
-            this.Text = "fListDrugs";
-            this.Shown += new System.EventHandler(this.fListPOSes_Shown);
+            this.Text = "fListPOSes";
+            this.Shown += new System.EventHandler(this.fListChains_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.gvPOSes)).EndInit();
             this.gvMenu.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -156,12 +185,15 @@
 
         private System.Windows.Forms.DataGridView gvPOSes;
         private System.Windows.Forms.ContextMenuStrip gvMenu;
-        private System.Windows.Forms.ToolStripMenuItem mi_AddDrug;
-        private System.Windows.Forms.ToolStripMenuItem mi_EditDrug;
-        private System.Windows.Forms.ToolStripMenuItem mi_DelDrug;
+        private System.Windows.Forms.ToolStripMenuItem mi_AddPOS;
+        private System.Windows.Forms.ToolStripMenuItem mi_EditPOS;
+        private System.Windows.Forms.ToolStripMenuItem mi_DelPOS;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn chain_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn chain_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn b_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn area_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn area_name;
     }
 }

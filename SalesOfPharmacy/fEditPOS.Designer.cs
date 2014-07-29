@@ -34,6 +34,10 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.lblChain = new System.Windows.Forms.Label();
             this.cbChain = new System.Windows.Forms.ComboBox();
+            this.lblB_Area = new System.Windows.Forms.Label();
+            this.cbB_Area = new System.Windows.Forms.ComboBox();
+            this.lblB_No = new System.Windows.Forms.Label();
+            this.txtB_No = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblPOS
@@ -52,14 +56,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPOS.Location = new System.Drawing.Point(101, 12);
             this.txtPOS.Name = "txtPOS";
-            this.txtPOS.Size = new System.Drawing.Size(351, 20);
+            this.txtPOS.Size = new System.Drawing.Size(350, 20);
             this.txtPOS.TabIndex = 2;
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(350, 66);
+            this.btnCancel.Location = new System.Drawing.Point(350, 119);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(102, 25);
             this.btnCancel.TabIndex = 9;
@@ -71,7 +75,7 @@
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSave.Location = new System.Drawing.Point(250, 66);
+            this.btnSave.Location = new System.Drawing.Point(250, 119);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(94, 25);
             this.btnSave.TabIndex = 8;
@@ -93,17 +97,64 @@
             this.cbChain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbChain.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbChain.FormattingEnabled = true;
             this.cbChain.Location = new System.Drawing.Point(101, 38);
             this.cbChain.Name = "cbChain";
             this.cbChain.Size = new System.Drawing.Size(350, 21);
             this.cbChain.TabIndex = 10;
+            this.cbChain.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbChain_KeyDown);
+            // 
+            // lblB_Area
+            // 
+            this.lblB_Area.AutoSize = true;
+            this.lblB_Area.Location = new System.Drawing.Point(12, 93);
+            this.lblB_Area.Name = "lblB_Area";
+            this.lblB_Area.Size = new System.Drawing.Size(75, 13);
+            this.lblB_Area.TabIndex = 15;
+            this.lblB_Area.Text = "Город/Округ:";
+            // 
+            // cbB_Area
+            // 
+            this.cbB_Area.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbB_Area.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbB_Area.FormattingEnabled = true;
+            this.cbB_Area.Location = new System.Drawing.Point(101, 90);
+            this.cbB_Area.Name = "cbB_Area";
+            this.cbB_Area.Size = new System.Drawing.Size(350, 21);
+            this.cbB_Area.TabIndex = 14;
+            this.cbB_Area.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbB_Area_KeyDown);
+            // 
+            // lblB_No
+            // 
+            this.lblB_No.AutoSize = true;
+            this.lblB_No.Location = new System.Drawing.Point(12, 67);
+            this.lblB_No.Name = "lblB_No";
+            this.lblB_No.Size = new System.Drawing.Size(87, 13);
+            this.lblB_No.TabIndex = 13;
+            this.lblB_No.Text = "№ из выгрузки:";
+            // 
+            // txtB_No
+            // 
+            this.txtB_No.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtB_No.Location = new System.Drawing.Point(101, 64);
+            this.txtB_No.Name = "txtB_No";
+            this.txtB_No.Size = new System.Drawing.Size(350, 20);
+            this.txtB_No.TabIndex = 12;
             // 
             // fEditPOS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(464, 100);
+            this.ClientSize = new System.Drawing.Size(464, 153);
+            this.Controls.Add(this.lblB_Area);
+            this.Controls.Add(this.cbB_Area);
+            this.Controls.Add(this.lblB_No);
+            this.Controls.Add(this.txtB_No);
             this.Controls.Add(this.lblChain);
             this.Controls.Add(this.cbChain);
             this.Controls.Add(this.btnCancel);
@@ -114,6 +165,7 @@
             this.Name = "fEditPOS";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "fEditDrug";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.fEditPOS_FormClosing);
             this.Shown += new System.EventHandler(this.fEditPOS_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -128,5 +180,9 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblChain;
         private System.Windows.Forms.ComboBox cbChain;
+        private System.Windows.Forms.Label lblB_Area;
+        private System.Windows.Forms.ComboBox cbB_Area;
+        private System.Windows.Forms.Label lblB_No;
+        private System.Windows.Forms.TextBox txtB_No;
     }
 }

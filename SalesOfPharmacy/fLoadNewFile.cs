@@ -23,6 +23,7 @@ namespace SalesOfPharmacy
         private MySqlConnection conn = null;
 
         private List<int> chains = null;
+        private List<int> years = null;
         private List<int> months = null;
 
         private Excel.Application excelApp = null;
@@ -62,6 +63,15 @@ namespace SalesOfPharmacy
         {
             LoadChains();
             LoadMonths();
+            LoadYears();
+            LoadFileTypes();
+        }
+
+        private void LoadFileTypes()
+        {
+            cbFileType.Items.Add("Обычный: верт. или гориз. [препараты, точки, количество]");
+            cbFileType.Items.Add("Шахматный: препараты сверху [продажи]");
+            cbFileType.Items.Add("Шахматный: препараты слева  [продажи]");
         }
 
         private void LoadChains()
@@ -86,7 +96,7 @@ namespace SalesOfPharmacy
 
         private void LoadMonths()
         {
-            string command = "SELECT m.id, m.name FROM dbsop.tbl_months m";
+            string command = "SELECT m.id, m.name FROM dbsop.tbl_months m ORDER BY m.id";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataReader myReader = cmd.ExecuteReader();
@@ -104,6 +114,40 @@ namespace SalesOfPharmacy
             myReader.Close();
         }
 
+        private void LoadYears()
+        {
+            string command = "SELECT y.id, y.name FROM dbsop.tbl_years y";
+            MySqlCommand cmd = new MySqlCommand(command, conn);
+
+            MySqlDataReader myReader = cmd.ExecuteReader();
+
+            years = new List<int>();
+
+            // Always call Read before accessing data.
+            while (myReader.Read())
+            {
+                //MessageBox.Show(myReader.GetInt32(0) + ", " + myReader.GetString(1));
+                years.Add(myReader.GetInt32(0));
+                cbYear.Items.Add(myReader.GetString(1));
+            }
+
+            // always call Close when done reading.
+            myReader.Close();
+        }
+
+        private bool IsFileAlreadyLoaded()
+        {
+            string command = "SELECT count(*) FROM tbl_file_raw WHERE chain_id = @chain_id AND year_id = @year_id AND month_id = @month_id";
+
+            MySqlCommand cmd = new MySqlCommand(command, conn);
+
+            cmd.Parameters.AddWithValue("@chain_id", chains[cbChain.SelectedIndex]);
+            cmd.Parameters.AddWithValue("@year_id", years[cbYear.SelectedIndex]);
+            cmd.Parameters.AddWithValue("@month_id", months[cbMonth.SelectedIndex]);
+
+            return (int.Parse(cmd.ExecuteScalar().ToString()) > 0);
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             pcontext["Errors"] = "";
@@ -114,11 +158,23 @@ namespace SalesOfPharmacy
                 //MessageBox.Show("Необходимо выбрать Аптечную сеть", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //canProcess = false;
             }
+            if (cbYear.SelectedIndex == -1)
+            {
+                //MessageBox.Show("Необходимо выбрать Аптечную сеть", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //canProcess = false;
+                pcontext["Errors"] = pcontext["Errors"] + "  - Не выбран Год; \n";
+            }
             if (cbMonth.SelectedIndex == -1)
             {
                 //MessageBox.Show("Необходимо выбрать Аптечную сеть", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //canProcess = false;
                 pcontext["Errors"] = pcontext["Errors"] + "  - Не выбран Месяц; \n";
+            }
+            if (cbFileType.SelectedIndex == -1)
+            {
+                //MessageBox.Show("Необходимо выбрать Аптечную сеть", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //canProcess = false;
+                pcontext["Errors"] = pcontext["Errors"] + "  - Не выбран Тип файла; \n";
             }
             if (filePath == "")
             {
@@ -131,50 +187,73 @@ namespace SalesOfPharmacy
             }
             else 
             {
-                if (GetInfoFromExcel(filePath))
+                if (IsFileAlreadyLoaded())
                 {
-                    byte[] file = File.ReadAllBytes(filePath);
-
-                    MySqlTransaction trans = conn.BeginTransaction();
-
-                    string command = "INSERT INTO dbsop.tbl_file_raw ( bFile, file_name, chain_id, month_id ) VALUES ( @bFile, @file_name, @chain_id, @month_id )";
-
-                    MySqlCommand cmd = new MySqlCommand(command, conn, trans);
-
-                    MySqlParameter pFile = new MySqlParameter("@bFile", MySqlDbType.Blob, file.Length);
-                    MySqlParameter pName = new MySqlParameter("@file_name", MySqlDbType.String, txtFile.Text.Length);
-                    MySqlParameter pChain = new MySqlParameter("@chain_id", MySqlDbType.Int32);
-                    MySqlParameter pMonth = new MySqlParameter("@month_id", MySqlDbType.Int32);
-
-                    pFile.Value = file;
-                    pName.Value = txtFile.Text;
-                    pChain.Value = chains[cbChain.SelectedIndex];
-                    pMonth.Value = months[cbMonth.SelectedIndex];
-
-                    cmd.Parameters.Add(pFile);
-                    cmd.Parameters.Add(pName);
-                    cmd.Parameters.Add(pChain);
-                    cmd.Parameters.Add(pMonth);
-
-                    try
+                    pcontext["Errors"] = "  - Данный файл уже был загружен!";
+                    MessageBox.Show("Обнаружены следующие ошибки: \n" + pcontext["Errors"], "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    if (GetInfoFromExcel(filePath))
                     {
-                        if (cmd.ExecuteNonQuery() == 1)
-                        {
-                           // cmd.LastInsertedId;
-                           // cmd.CommandText = "SELECT LAST_INSERT_ID()";
-                            string file_id = cmd.LastInsertedId.ToString(); //cmd.ExecuteScalar().ToString();
+                        byte[] file = File.ReadAllBytes(filePath);
 
-                            if (InsertSalesToDB(cmd, file_id))
+                        MySqlTransaction trans = conn.BeginTransaction();
+
+                        string command = "INSERT INTO dbsop.tbl_file_raw ( bFile, file_name, chain_id, year_id, month_id ) VALUES ( @bFile, @file_name, @chain_id, @year_id, @month_id )";
+
+                        MySqlCommand cmd = new MySqlCommand(command, conn, trans);
+
+                        MySqlParameter pFile = new MySqlParameter("@bFile", MySqlDbType.Blob, file.Length);
+                        MySqlParameter pName = new MySqlParameter("@file_name", MySqlDbType.String, txtFile.Text.Length);
+                        MySqlParameter pChain = new MySqlParameter("@chain_id", MySqlDbType.Int32);
+                        MySqlParameter pYear = new MySqlParameter("@year_id", MySqlDbType.Int32);
+                        MySqlParameter pMonth = new MySqlParameter("@month_id", MySqlDbType.Int32);
+
+                        pFile.Value = file;
+                        pName.Value = txtFile.Text;
+                        pChain.Value = chains[cbChain.SelectedIndex];
+                        pYear.Value = years[cbYear.SelectedIndex];
+                        pMonth.Value = months[cbMonth.SelectedIndex];
+
+                        cmd.Parameters.Add(pFile);
+                        cmd.Parameters.Add(pName);
+                        cmd.Parameters.Add(pChain);
+                        cmd.Parameters.Add(pYear);
+                        cmd.Parameters.Add(pMonth);
+
+                        try
+                        {
+                            if (cmd.ExecuteNonQuery() == 1)
                             {
-                                switch (MessageBox.Show("Сохранить изменения?", "Сохранить изменения?", MessageBoxButtons.YesNo))
+                                // cmd.LastInsertedId;
+                                // cmd.CommandText = "SELECT LAST_INSERT_ID()";
+                                string file_id = cmd.LastInsertedId.ToString(); //cmd.ExecuteScalar().ToString();
+
+                                if (InsertSalesToDB(cmd, file_id))
                                 {
-                                    case DialogResult.Yes: trans.Commit(); pcontext["SHOW"] = file_id; break;
-                                    case DialogResult.No: trans.Rollback(); break;
+                                    switch (MessageBox.Show("Сохранить изменения?", "Сохранить изменения?", MessageBoxButtons.YesNo))
+                                    {
+                                        case DialogResult.Yes: trans.Commit(); pcontext["SHOW"] = file_id; break;
+                                        case DialogResult.No: trans.Rollback(); break;
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Не удалось сохранить информацию о продажах!");
+                                    try
+                                    {
+                                        trans.Rollback();
+                                    }
+                                    catch (MySqlException exc)
+                                    {
+                                        MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
+                                    }
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("Не удалось сохранить информацию о продажах!");
+                                MessageBox.Show("Не удалось сохранить файл!");
                                 try
                                 {
                                     trans.Rollback();
@@ -185,22 +264,10 @@ namespace SalesOfPharmacy
                                 }
                             }
                         }
-                        else
+                        catch (MySqlException exc)
                         {
-                            MessageBox.Show("Не удалось сохранить файл!");
-                            try
-                            {
-                                trans.Rollback();
-                            }
-                            catch (MySqlException exc)
-                            {
-                                MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
-                            }
+                            MessageBox.Show("Произошла выполнения запроса к базе данных! Текст ошибки: \n {0}", exc.Message);
                         }
-                    }
-                    catch (MySqlException exc)
-                    {
-                        MessageBox.Show("Произошла выполнения запроса к базе данных! Текст ошибки: \n {0}", exc.Message);
                     }
                 }
             }
@@ -221,26 +288,24 @@ namespace SalesOfPharmacy
             drugs = new List<string>();
             nums = new List<string>();
 
-            if (1 == 2)
+            switch (cbFileType.SelectedIndex)
             {
-                for (int i = 1; i <= excelApp.Worksheets.Count; i++)
-                {
-                    excelApp.Visible = true;
+                case 0:
+                    for (int i = 1; i <= excelApp.Worksheets.Count; i++)
+                    {
+                        excelApp.Visible = true;
 
-                    Excel.Worksheet workSheet = excelApp.Worksheets.get_Item(i);
+                        Excel.Worksheet workSheet = excelApp.Worksheets.get_Item(i);
 
-                    workSheet.Select(Type.Missing);
+                        workSheet.Select(Type.Missing);
 
-                    POSes.AddRange(GetValues("Точки", workSheet, excelApp));
-                    drugs.AddRange(GetValues("Препараты", workSheet, excelApp));
-                    nums.AddRange(GetValues("Количество", workSheet, excelApp));
+                        POSes.AddRange(GetValues("Точки", workSheet, excelApp));
+                        drugs.AddRange(GetValues("Препараты", workSheet, excelApp));
+                        nums.AddRange(GetValues("Количество", workSheet, excelApp));
 
-                }
-            }
-            else 
-            {
-                if (1 == 2)
-                {
+                    }
+                    break;
+                case 1:
                     for (int i = 1; i <= excelApp.Worksheets.Count; i++)
                     {
                         excelApp.Visible = true;
@@ -252,9 +317,8 @@ namespace SalesOfPharmacy
                         GetSalesWithUPDrugs(workSheet, excelApp);
 
                     }
-                }
-                else
-                {
+                    break;
+                case 2:
                     for (int i = 1; i <= excelApp.Worksheets.Count; i++)
                     {
                         excelApp.Visible = true;
@@ -265,7 +329,7 @@ namespace SalesOfPharmacy
 
                         GetSalesWithLEFTDrugs(workSheet, excelApp);
                     }
-                }
+                    break;
             }
 
             // Garbage collecting

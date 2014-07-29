@@ -92,6 +92,7 @@
             this.cbPOS.Name = "cbPOS";
             this.cbPOS.Size = new System.Drawing.Size(303, 21);
             this.cbPOS.TabIndex = 5;
+            this.cbPOS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbPOS_KeyDown);
             // 
             // btnSave
             // 

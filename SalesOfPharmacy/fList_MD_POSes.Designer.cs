@@ -92,7 +92,7 @@
             this.mi_Edit_MD_POS,
             this.mi_Del_MD_POS});
             this.gvMenu.Name = "gvMenu";
-            this.gvMenu.Size = new System.Drawing.Size(363, 92);
+            this.gvMenu.Size = new System.Drawing.Size(363, 70);
             // 
             // mi_Add_MD_POS
             // 
@@ -122,7 +122,8 @@
             this.ClientSize = new System.Drawing.Size(514, 307);
             this.Controls.Add(this.gv_MD_POSes);
             this.Name = "fList_MD_POSes";
-            this.Text = "fList_MD_Drugs";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.Text = "fList_MD_POSes";
             this.Shown += new System.EventHandler(this.fList_MD_POSes_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.gv_MD_POSes)).EndInit();
             this.gvMenu.ResumeLayout(false);
