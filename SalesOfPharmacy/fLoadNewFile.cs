@@ -137,10 +137,13 @@ namespace SalesOfPharmacy
 
         private bool IsFileAlreadyLoaded()
         {
-            string command = "SELECT count(*) FROM tbl_file_raw WHERE chain_id = @chain_id AND year_id = @year_id AND month_id = @month_id";
+            //string command = "SELECT count(*) FROM tbl_file_raw WHERE ";
+
+            string command = "SELECT count(*) FROM tbl_file_raw WHERE file_name = @file_name AND chain_id = @chain_id AND year_id = @year_id AND month_id = @month_id";
 
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
+            cmd.Parameters.AddWithValue("@file_name", txtFile.Text);
             cmd.Parameters.AddWithValue("@chain_id", chains[cbChain.SelectedIndex]);
             cmd.Parameters.AddWithValue("@year_id", years[cbYear.SelectedIndex]);
             cmd.Parameters.AddWithValue("@month_id", months[cbMonth.SelectedIndex]);

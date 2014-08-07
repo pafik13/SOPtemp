@@ -23,12 +23,6 @@ namespace SalesOfPharmacy
         private MySqlConnection conn = null;
         private Excel.Application excelApp = null;
 
-        private List<string> POSes; //= new List<string>();
-        private List<string> drugs;//= new List<string>();
-        private List<string> nums; //= new List<string>();
-
-        private int currentRow = -1;
-
         public MainForm()
         {
             InitializeComponent();
