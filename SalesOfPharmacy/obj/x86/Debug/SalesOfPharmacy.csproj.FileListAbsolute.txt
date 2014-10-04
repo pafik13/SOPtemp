@@ -21,3 +21,5 @@ C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPha
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fReportSales.resources
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fListFiles.resources
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Debug\SalesOfPharmacy.fResult.resources
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\bin\Debug\DataGridViewAutoFilter.dll
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\bin\Debug\DataGridViewAutoFilter.pdb

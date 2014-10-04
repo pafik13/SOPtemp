@@ -43,6 +43,8 @@ namespace SalesOfPharmacy
 
         private void LoadFiles()
         {
+            gvFiles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
             string command = "SELECT f.* FROM vw_files f";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
@@ -50,7 +52,11 @@ namespace SalesOfPharmacy
             DataSet dataset = new DataSet();
             adapter.Fill(dataset);
             if (dataset.Tables.Count > 0)
-                gvFiles.DataSource = dataset.Tables[0];
+            {
+                gvFiles.DataSource = new BindingSource() { DataSource = dataset.Tables[0] };
+            }
+
+            gvFiles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
         }
 
         private void fListFiles_Shown(object sender, EventArgs e)
@@ -87,6 +93,12 @@ namespace SalesOfPharmacy
             if (currentRow != -1)
             {
                 fResult fRes = new fResult();
+                fRes.Text = string.Format("АС - {0}; Год - {1}; Месяц - {2}; Файл - {3}"
+                                         , gvFiles.Rows[currentRow].Cells[3].Value
+                                         , gvFiles.Rows[currentRow].Cells[7].Value
+                                         , gvFiles.Rows[currentRow].Cells[5].Value
+                                         , gvFiles.Rows[currentRow].Cells[1].Value
+                                         );
                 fRes.AddContext(conn);
                 fRes.AddContext("FILE_ID", gvFiles.Rows[currentRow].Cells[0].Value.ToString());
                 fRes.MdiParent = this.MdiParent;
@@ -123,6 +135,11 @@ namespace SalesOfPharmacy
                     }
                 }
             }
+        }
+
+        private void gvFiles_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
 

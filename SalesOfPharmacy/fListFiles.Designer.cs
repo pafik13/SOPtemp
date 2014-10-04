@@ -31,18 +31,18 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gvFiles = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chain_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.month_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.month = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.year_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.year = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mi_LoadFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_ViewResult = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_DelDrug = new System.Windows.Forms.ToolStripMenuItem();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.chain_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chain = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.month_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.month = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.year_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.year = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvFiles)).BeginInit();
             this.gvMenu.SuspendLayout();
             this.SuspendLayout();
@@ -51,7 +51,6 @@
             // 
             this.gvFiles.AllowUserToAddRows = false;
             this.gvFiles.AllowUserToDeleteRows = false;
-            this.gvFiles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -78,74 +77,8 @@
             this.gvFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gvFiles.Size = new System.Drawing.Size(525, 389);
             this.gvFiles.TabIndex = 2;
+            this.gvFiles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvFiles_CellContentClick);
             this.gvFiles.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gvFiles_CellContextMenuStripNeeded);
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Width = 43;
-            // 
-            // name
-            // 
-            this.name.DataPropertyName = "file_name";
-            this.name.HeaderText = "Наименование";
-            this.name.Name = "name";
-            this.name.ReadOnly = true;
-            this.name.Width = 108;
-            // 
-            // chain_id
-            // 
-            this.chain_id.DataPropertyName = "chain_id";
-            this.chain_id.HeaderText = "CHAIN_ID";
-            this.chain_id.Name = "chain_id";
-            this.chain_id.ReadOnly = true;
-            this.chain_id.Visible = false;
-            this.chain_id.Width = 82;
-            // 
-            // chain
-            // 
-            this.chain.DataPropertyName = "chain";
-            this.chain.HeaderText = "Аптечная сеть";
-            this.chain.Name = "chain";
-            this.chain.ReadOnly = true;
-            this.chain.Width = 96;
-            // 
-            // month_id
-            // 
-            this.month_id.DataPropertyName = "month_id";
-            this.month_id.HeaderText = "MONTH_ID";
-            this.month_id.Name = "month_id";
-            this.month_id.ReadOnly = true;
-            this.month_id.Visible = false;
-            this.month_id.Width = 89;
-            // 
-            // month
-            // 
-            this.month.DataPropertyName = "month";
-            this.month.HeaderText = "Месяц";
-            this.month.Name = "month";
-            this.month.ReadOnly = true;
-            this.month.Width = 65;
-            // 
-            // year_id
-            // 
-            this.year_id.DataPropertyName = "year_id";
-            this.year_id.HeaderText = "YEAR_ID";
-            this.year_id.Name = "year_id";
-            this.year_id.ReadOnly = true;
-            this.year_id.Visible = false;
-            this.year_id.Width = 78;
-            // 
-            // year
-            // 
-            this.year.DataPropertyName = "year";
-            this.year.HeaderText = "Год";
-            this.year.Name = "year";
-            this.year.ReadOnly = true;
-            this.year.Width = 50;
             // 
             // gvMenu
             // 
@@ -177,6 +110,78 @@
             this.mi_DelDrug.Text = "Удалить файл";
             this.mi_DelDrug.Click += new System.EventHandler(this.mi_DelDrug_Click);
             // 
+            // id
+            // 
+            this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Width = 43;
+            // 
+            // name
+            // 
+            this.name.DataPropertyName = "file_name";
+            this.name.HeaderText = "Наименование";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.name.Width = 97;
+            // 
+            // chain_id
+            // 
+            this.chain_id.DataPropertyName = "chain_id";
+            this.chain_id.HeaderText = "CHAIN_ID";
+            this.chain_id.Name = "chain_id";
+            this.chain_id.ReadOnly = true;
+            this.chain_id.Visible = false;
+            this.chain_id.Width = 82;
+            // 
+            // chain
+            // 
+            this.chain.DataPropertyName = "chain";
+            this.chain.HeaderText = "Аптечная сеть";
+            this.chain.Name = "chain";
+            this.chain.ReadOnly = true;
+            this.chain.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.chain.Width = 96;
+            // 
+            // month_id
+            // 
+            this.month_id.DataPropertyName = "month_id";
+            this.month_id.HeaderText = "MONTH_ID";
+            this.month_id.Name = "month_id";
+            this.month_id.ReadOnly = true;
+            this.month_id.Visible = false;
+            this.month_id.Width = 89;
+            // 
+            // month
+            // 
+            this.month.DataPropertyName = "month";
+            this.month.HeaderText = "Месяц";
+            this.month.Name = "month";
+            this.month.ReadOnly = true;
+            this.month.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.month.Width = 97;
+            // 
+            // year_id
+            // 
+            this.year_id.DataPropertyName = "year_id";
+            this.year_id.HeaderText = "YEAR_ID";
+            this.year_id.Name = "year_id";
+            this.year_id.ReadOnly = true;
+            this.year_id.Visible = false;
+            this.year_id.Width = 78;
+            // 
+            // year
+            // 
+            this.year.DataPropertyName = "year";
+            this.year.HeaderText = "Год";
+            this.year.Name = "year";
+            this.year.ReadOnly = true;
+            this.year.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.year.Width = 96;
+            // 
             // fListFiles
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -200,12 +205,12 @@
         private System.Windows.Forms.ToolStripMenuItem mi_ViewResult;
         private System.Windows.Forms.ToolStripMenuItem mi_DelDrug;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn chain_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn chain;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn chain;
         private System.Windows.Forms.DataGridViewTextBoxColumn month_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn month;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn month;
         private System.Windows.Forms.DataGridViewTextBoxColumn year_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn year;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn year;
     }
 }

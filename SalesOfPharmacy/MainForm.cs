@@ -1,19 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Configuration;
-using System.Collections.Specialized;
-using System.Collections;
 using System.Collections.Generic;
-//using System.ComponentModel;
 using MySql.Data.MySqlClient;
 using System.Data;
-using System.Drawing;
-//using System.Drawing;
-//using System.Linq;
-//using System.Text;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace SalesOfPharmacy
 {
@@ -21,7 +12,6 @@ namespace SalesOfPharmacy
     {
         private Dictionary<string, string> context;
         private MySqlConnection conn = null;
-        private Excel.Application excelApp = null;
 
         public MainForm()
         {
@@ -44,7 +34,7 @@ namespace SalesOfPharmacy
                                + "\n Connection State : " + conn.State.ToString());
             }
 
-            excelApp = new Excel.Application();
+            //excelApp = new Excel.Application();
 
         }
 
@@ -118,7 +108,7 @@ namespace SalesOfPharmacy
 
         private void mi_Files_Click(object sender, EventArgs e)
         {
-            fListFiles lst = (fListFiles)FindForm(typeof(fListFiles));
+            fListFiles lst = (fListFiles) FindForm(typeof(fListFiles));
             if (lst != null)
             {
                 lst.Activate();

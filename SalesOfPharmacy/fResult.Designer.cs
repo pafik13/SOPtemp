@@ -35,19 +35,19 @@
             this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mi_Add_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_Add_MD_Drug = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_Refresh = new System.Windows.Forms.ToolStripMenuItem();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rownum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rownum = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.pos = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.p_flag = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.drug = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.drug = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.d_flag = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.num = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.num = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.n_flag = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.chain_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fr_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.month_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.year_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.обновитьДанныеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gvResult)).BeginInit();
             this.gvMenu.SuspendLayout();
             this.SuspendLayout();
@@ -98,15 +98,16 @@
             this.gvResult.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gvResult_CellContextMenuStripNeeded);
             this.gvResult.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gvResult_CellMouseDown);
             this.gvResult.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.gvResult_RowPrePaint);
+            this.gvResult.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.gvResult_RowsAdded);
             // 
             // gvMenu
             // 
             this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mi_Add_MD_POS,
             this.mi_Add_MD_Drug,
-            this.обновитьДанныеToolStripMenuItem});
+            this.mi_Refresh});
             this.gvMenu.Name = "gvMenu";
-            this.gvMenu.Size = new System.Drawing.Size(181, 92);
+            this.gvMenu.Size = new System.Drawing.Size(181, 70);
             // 
             // mi_Add_MD_POS
             // 
@@ -122,59 +123,63 @@
             this.mi_Add_MD_Drug.Text = "Добавить препарат";
             this.mi_Add_MD_Drug.Click += new System.EventHandler(this.mi_Add_MD_Drug_Click);
             // 
+            // mi_Refresh
+            // 
+            this.mi_Refresh.Name = "mi_Refresh";
+            this.mi_Refresh.Size = new System.Drawing.Size(180, 22);
+            this.mi_Refresh.Text = "Обновить данные";
+            this.mi_Refresh.Click += new System.EventHandler(this.mi_Refresh_Click);
+            // 
             // id
             // 
-            this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.id.DataPropertyName = "id";
             this.id.HeaderText = "id";
             this.id.Name = "id";
             this.id.ReadOnly = true;
+            this.id.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.id.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.id.Width = 21;
             // 
             // rownum
             // 
-            this.rownum.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.rownum.DataPropertyName = "rowNum";
             this.rownum.HeaderText = "№";
             this.rownum.Name = "rownum";
             this.rownum.ReadOnly = true;
-            this.rownum.Width = 43;
+            this.rownum.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.rownum.Width = 35;
             // 
             // pos
             // 
-            this.pos.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.pos.DataPropertyName = "pos";
             this.pos.HeaderText = "Точка";
             this.pos.Name = "pos";
             this.pos.ReadOnly = true;
-            this.pos.Width = 62;
+            this.pos.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.pos.Width = 78;
             // 
             // p_flag
             // 
-            this.p_flag.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.p_flag.DataPropertyName = "p_flag";
             this.p_flag.FalseValue = "0";
             this.p_flag.HeaderText = "Точ";
             this.p_flag.Name = "p_flag";
             this.p_flag.ReadOnly = true;
             this.p_flag.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.p_flag.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.p_flag.TrueValue = "1";
-            this.p_flag.Width = 50;
+            this.p_flag.Width = 31;
             // 
             // drug
             // 
-            this.drug.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.drug.DataPropertyName = "drug";
             this.drug.HeaderText = "Препарат";
             this.drug.Name = "drug";
             this.drug.ReadOnly = true;
-            this.drug.Width = 81;
+            this.drug.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.drug.Width = 97;
             // 
             // d_flag
             // 
-            this.d_flag.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.d_flag.DataPropertyName = "d_flag";
             this.d_flag.FalseValue = "0";
             this.d_flag.HeaderText = "Пр-т";
@@ -185,16 +190,15 @@
             // 
             // num
             // 
-            this.num.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.num.DataPropertyName = "num";
             this.num.HeaderText = "Количество";
             this.num.Name = "num";
             this.num.ReadOnly = true;
-            this.num.Width = 91;
+            this.num.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.num.Width = 107;
             // 
             // n_flag
             // 
-            this.n_flag.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.n_flag.DataPropertyName = "n_flag";
             this.n_flag.FalseValue = "0";
             this.n_flag.HeaderText = "Кол";
@@ -205,7 +209,6 @@
             // 
             // chain_id
             // 
-            this.chain_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.chain_id.DataPropertyName = "chain_id";
             this.chain_id.HeaderText = "CHAIN_ID";
             this.chain_id.Name = "chain_id";
@@ -215,7 +218,6 @@
             // 
             // fr_id
             // 
-            this.fr_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.fr_id.DataPropertyName = "fr_id";
             this.fr_id.HeaderText = "FR_ID";
             this.fr_id.Name = "fr_id";
@@ -225,7 +227,6 @@
             // 
             // month_id
             // 
-            this.month_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.month_id.DataPropertyName = "month_id";
             this.month_id.HeaderText = "MONTH_ID";
             this.month_id.Name = "month_id";
@@ -235,20 +236,12 @@
             // 
             // year_id
             // 
-            this.year_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.year_id.DataPropertyName = "year_id";
             this.year_id.HeaderText = "YEAR_ID";
             this.year_id.Name = "year_id";
             this.year_id.ReadOnly = true;
             this.year_id.Visible = false;
             this.year_id.Width = 78;
-            // 
-            // обновитьДанныеToolStripMenuItem
-            // 
-            this.обновитьДанныеToolStripMenuItem.Name = "обновитьДанныеToolStripMenuItem";
-            this.обновитьДанныеToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.обновитьДанныеToolStripMenuItem.Text = "Обновить данные";
-            this.обновитьДанныеToolStripMenuItem.Click += new System.EventHandler(this.обновитьДанныеToolStripMenuItem_Click);
             // 
             // fResult
             // 
@@ -272,18 +265,18 @@
         private System.Windows.Forms.ContextMenuStrip gvMenu;
         private System.Windows.Forms.ToolStripMenuItem mi_Add_MD_POS;
         private System.Windows.Forms.ToolStripMenuItem mi_Add_MD_Drug;
+        private System.Windows.Forms.ToolStripMenuItem mi_Refresh;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn rownum;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pos;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn rownum;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn pos;
         private System.Windows.Forms.DataGridViewCheckBoxColumn p_flag;
-        private System.Windows.Forms.DataGridViewTextBoxColumn drug;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn drug;
         private System.Windows.Forms.DataGridViewCheckBoxColumn d_flag;
-        private System.Windows.Forms.DataGridViewTextBoxColumn num;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn num;
         private System.Windows.Forms.DataGridViewCheckBoxColumn n_flag;
         private System.Windows.Forms.DataGridViewTextBoxColumn chain_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn fr_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn month_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn year_id;
-        private System.Windows.Forms.ToolStripMenuItem обновитьДанныеToolStripMenuItem;
     }
 }

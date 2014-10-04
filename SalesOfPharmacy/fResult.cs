@@ -44,6 +44,8 @@ namespace SalesOfPharmacy
         {
             if (context.ContainsKey("FILE_ID"))
             {
+                gvResult.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
                 string command = "SELECT @rn := @rn + 1 AS rowNum, r.* FROM vw_results r, (select @rn := 0) rn WHERE r.fr_id = @fr_id";
 
                 MySqlCommand cmd = new MySqlCommand(command, conn);
@@ -54,15 +56,12 @@ namespace SalesOfPharmacy
                 DataSet dataset = new DataSet();
                 adapter.Fill(dataset);
 
-                for (int i = 0; i < dataset.Tables[0].Rows.Count; i++)
+                if (dataset.Tables.Count > 0)
                 {
-                    numOfDrugs = numOfDrugs + int.Parse(dataset.Tables[0].Rows[i]["num"].ToString());
+                    gvResult.DataSource = new BindingSource() { DataSource = dataset.Tables[0] };
                 }
 
-                num.HeaderText = string.Concat(num.HeaderText, " [" + numOfDrugs.ToString() + "] ");
-
-                if (dataset.Tables.Count > 0)
-                    gvResult.DataSource = dataset.Tables[0];
+                gvResult.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             }
             else
             {
@@ -73,6 +72,7 @@ namespace SalesOfPharmacy
 
         private void gvResult_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
+
             if ((Convert.ToInt32(gvResult.Rows[e.RowIndex].Cells[3].Value) == 0)
                || (Convert.ToInt32(gvResult.Rows[e.RowIndex].Cells[5].Value) == 0)
                || (Convert.ToInt32(gvResult.Rows[e.RowIndex].Cells[7].Value) == 0)
@@ -147,7 +147,7 @@ namespace SalesOfPharmacy
 
         private void Locate(string col, string val)
         {
-            if (string.IsNullOrEmpty(val))
+            if (!string.IsNullOrEmpty(val))
             {
                 foreach (DataGridViewRow row in gvResult.Rows)
                 {
@@ -192,9 +192,25 @@ namespace SalesOfPharmacy
             edt.Dispose();
         }
 
-        private void обновитьДанныеToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mi_Refresh_Click(object sender, EventArgs e)
         {
             LoadResults();
+        }
+
+        private void gvResult_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            numOfDrugs = 0;
+
+            for (int i = 0; i < gvResult.Rows.Count; i++)
+            {
+                int number = 0;
+                if (int.TryParse(gvResult.Rows[i].Cells["num"].Value.ToString(), out number))
+                {
+                    numOfDrugs = numOfDrugs + number;
+                }
+            }
+
+            gvResult.Columns["num"].HeaderText = "Количество [" + numOfDrugs.ToString() + "] ";
         }
     }
 }

@@ -41,6 +41,8 @@ namespace SalesOfPharmacy
 
         private void Load_MD_Drugs()
         {
+            gv_MD_Drugs.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
             string command = "SELECT tmdod.id                       "
                            + "     , tmdod.model_name               "
                            + "     , tmdod.drug_id                  "
@@ -57,7 +59,11 @@ namespace SalesOfPharmacy
             DataSet dataset = new DataSet();
             adapter.Fill(dataset);
             if (dataset.Tables.Count > 0)
-                gv_MD_Drugs.DataSource = dataset.Tables[0];
+            {
+                gv_MD_Drugs.DataSource = new BindingSource() { DataSource = dataset.Tables[0] };
+            }
+
+            gv_MD_Drugs.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
         }
 
         private void gv_MD_Drugs_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)

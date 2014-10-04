@@ -1,0 +1,8 @@
+C:\Users\lenovo\Downloads\DataGridViewAutoFilter\DataGridViewAutoFilter\CS\DataGridViewAutoFilter\DataGridViewAutoFilter\bin\Debug\DataGridViewAutoFilter.dll
+C:\Users\lenovo\Downloads\DataGridViewAutoFilter\DataGridViewAutoFilter\CS\DataGridViewAutoFilter\DataGridViewAutoFilter\bin\Debug\DataGridViewAutoFilter.pdb
+C:\Users\lenovo\Downloads\DataGridViewAutoFilter\DataGridViewAutoFilter\CS\DataGridViewAutoFilter\DataGridViewAutoFilter\obj\Debug\DataGridViewAutoFilter.dll
+C:\Users\lenovo\Downloads\DataGridViewAutoFilter\DataGridViewAutoFilter\CS\DataGridViewAutoFilter\DataGridViewAutoFilter\obj\Debug\DataGridViewAutoFilter.pdb
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\DataGridViewAutoFilter\bin\Debug\DataGridViewAutoFilter.dll
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\DataGridViewAutoFilter\bin\Debug\DataGridViewAutoFilter.pdb
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\DataGridViewAutoFilter\obj\Debug\DataGridViewAutoFilter.dll
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\DataGridViewAutoFilter\obj\Debug\DataGridViewAutoFilter.pdb

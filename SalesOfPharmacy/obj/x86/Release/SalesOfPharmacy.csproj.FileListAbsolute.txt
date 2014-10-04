@@ -20,3 +20,6 @@ C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPha
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Release\SalesOfPharmacy.csproj.GenerateResource.Cache
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Release\SalesOfPharmacy.exe
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Release\SalesOfPharmacy.pdb
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\bin\Release\DataGridViewAutoFilter.dll
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\bin\Release\DataGridViewAutoFilter.pdb
+C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\SalesOfPharmacy\obj\x86\Release\SalesOfPharmacy.csprojResolveAssemblyReference.cache

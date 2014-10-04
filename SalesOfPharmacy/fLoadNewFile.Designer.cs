@@ -62,7 +62,7 @@
             this.cbChain.Location = new System.Drawing.Point(101, 12);
             this.cbChain.Name = "cbChain";
             this.cbChain.Size = new System.Drawing.Size(250, 21);
-            this.cbChain.TabIndex = 4;
+            this.cbChain.TabIndex = 1;
             // 
             // btnCancel
             // 
@@ -71,7 +71,7 @@
             this.btnCancel.Location = new System.Drawing.Point(249, 150);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(102, 25);
-            this.btnCancel.TabIndex = 9;
+            this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Отменить";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -82,7 +82,7 @@
             this.btnSave.Location = new System.Drawing.Point(149, 150);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(94, 25);
-            this.btnSave.TabIndex = 8;
+            this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Загрузить";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -102,7 +102,7 @@
             this.cbMonth.Location = new System.Drawing.Point(101, 66);
             this.cbMonth.Name = "cbMonth";
             this.cbMonth.Size = new System.Drawing.Size(250, 21);
-            this.cbMonth.TabIndex = 10;
+            this.cbMonth.TabIndex = 3;
             // 
             // lblFile
             // 
@@ -120,7 +120,7 @@
             this.btnFile.Location = new System.Drawing.Point(71, 117);
             this.btnFile.Name = "btnFile";
             this.btnFile.Size = new System.Drawing.Size(24, 24);
-            this.btnFile.TabIndex = 13;
+            this.btnFile.TabIndex = 5;
             this.btnFile.UseVisualStyleBackColor = true;
             this.btnFile.Click += new System.EventHandler(this.btnFile_Click);
             // 
@@ -136,7 +136,7 @@
             this.txtFile.Name = "txtFile";
             this.txtFile.ReadOnly = true;
             this.txtFile.Size = new System.Drawing.Size(250, 20);
-            this.txtFile.TabIndex = 14;
+            this.txtFile.TabIndex = 8;
             // 
             // oFileDlg
             // 
@@ -157,7 +157,7 @@
             this.cbFileType.Location = new System.Drawing.Point(101, 93);
             this.cbFileType.Name = "cbFileType";
             this.cbFileType.Size = new System.Drawing.Size(250, 21);
-            this.cbFileType.TabIndex = 15;
+            this.cbFileType.TabIndex = 4;
             // 
             // label2
             // 
@@ -174,7 +174,7 @@
             this.cbYear.Location = new System.Drawing.Point(101, 39);
             this.cbYear.Name = "cbYear";
             this.cbYear.Size = new System.Drawing.Size(250, 21);
-            this.cbYear.TabIndex = 17;
+            this.cbYear.TabIndex = 2;
             // 
             // fLoadNewFile
             // 

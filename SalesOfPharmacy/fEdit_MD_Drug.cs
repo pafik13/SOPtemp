@@ -98,17 +98,16 @@ namespace SalesOfPharmacy
 
             if (context.ContainsKey("ID"))
             {
-                cmd.CommandText = "UPDATE dbsop.tbl_chains SET name = @name WHERE id = @id";
+                cmd.CommandText = "UPDATE tbl_model_data_of_drugs SET model_name = @mdname, drug_id = @drug_id WHERE id = @id";
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
-                cmd.Parameters.AddWithValue("@mdname", txt_MD_Drug.Text);
-                cmd.Parameters.AddWithValue("@drug_id", drugs[cbDrug.SelectedIndex]);
             }
             else
             {
-                cmd.CommandText = "INSERT INTO dbsop.tbl_model_data_of_drugs ( model_name, drug_id ) VALUES ( @mdname, @drug_id )";
-                cmd.Parameters.AddWithValue("@mdname", txt_MD_Drug.Text);
-                cmd.Parameters.AddWithValue("@drug_id", drugs[cbDrug.SelectedIndex]);
+                cmd.CommandText = "INSERT INTO tbl_model_data_of_drugs ( model_name, drug_id ) VALUES ( @mdname, @drug_id )";
             }
+
+            cmd.Parameters.AddWithValue("@mdname", txt_MD_Drug.Text);
+            cmd.Parameters.AddWithValue("@drug_id", drugs[cbDrug.SelectedIndex]);
 
             if (cmd.ExecuteNonQuery() == 1)
             {
@@ -117,7 +116,7 @@ namespace SalesOfPharmacy
             }
             else
             {
-                MessageBox.Show("Not success!");
+                MessageBox.Show("Not success! \n " + cmd.CommandText);
             }
 
         }
