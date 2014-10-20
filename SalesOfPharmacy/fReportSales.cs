@@ -129,16 +129,23 @@ namespace SalesOfPharmacy
             range.VerticalAlignment = Excel.Constants.xlCenter;
         }
 
-        private int WriteDetailInfo(string baseCell, int chainID, Excel.Worksheet wS, List<PeriodRecord> periods, List<DrugRecord> drugs)
+        private string WriteDetailInfo(string baseCell, int chainID, Excel.Worksheet wS, List<PeriodRecord> periods, List<DrugRecord> drugs)
         {
             Excel.Range r;
 
-            string bCellForDrug = wS.get_Range(baseCell).get_Offset(1, 4).Address;
+            string bCellForDrug = wS.get_Range(baseCell).get_Offset(1, 5).Address;
 
-            List<POSRecord> posRecords = GetPOSes(chainID);
+            int posCount = GetPOSCount(chainID);
+//            List<POSRecord> posRecords = GetPOSes(chainID);
+
+            string[,] subtotal = new string[posCount, 1];
+            for (int p = 0; p < posCount; p++)
+            {
+                subtotal[p, 0] = "=SUBTOTAL(9,RC[-1]:RC[" + (-drugs.Count + 1).ToString() + "])";
+            }
 
             /* Colors*/
-            r = wS.get_Range(baseCell, wS.get_Range(baseCell).get_Offset(3, 3).Address);
+            r = wS.get_Range(baseCell, wS.get_Range(baseCell).get_Offset(3, 4).Address);
             r.Interior.Color = 13434828;
 
             r = wS.get_Range(baseCell);
@@ -153,8 +160,12 @@ namespace SalesOfPharmacy
             r.Value2 = "ID";
             MergeAndCenterPos(r, wS);
             r = wS.get_Range(baseCell).get_Offset(0, 3);
+            r.Value2 = "Аптечная сеть";
+            MergeAndCenterPos(r, wS);
+            r = wS.get_Range(baseCell).get_Offset(0, 4);
             r.Value2 = "Округ";
             MergeAndCenterPos(r, wS);
+
 
             /* Всего продано */
             r = wS.get_Range( wS.get_Range(baseCell).get_Offset(1, 0).Address
@@ -175,52 +186,39 @@ namespace SalesOfPharmacy
             r.HorizontalAlignment = Excel.Constants.xlRight;
             r.VerticalAlignment = Excel.Constants.xlCenter;
 
-            foreach (POSRecord pos in posRecords)
-            {
-                r = wS.get_Range(baseCell).get_Offset(pos.order + 2, 0);
-                r.Value2 = pos.name;
+            //foreach (POSRecord pos in posRecords)
+            //{
+            //    r = wS.get_Range(baseCell).get_Offset(pos.order + 2, 0);
+            //    r.Value2 = pos.name;
 
-                //r.HorizontalAlignment = Excel.Constants.xlCenter;
-                //r.VerticalAlignment = Excel.Constants.xlCenter;
-                //r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                //r.Borders.Weight = Excel.XlBorderWeight.xlThin;
+            //    r = wS.get_Range(baseCell).get_Offset(pos.order + 2, 1);
+            //    r.Value2 = pos.address;
 
-                r = wS.get_Range(baseCell).get_Offset(pos.order + 2, 1);
-                r.Value2 = pos.address;
-                //r.HorizontalAlignment = Excel.Constants.xlCenter;
-                //r.VerticalAlignment = Excel.Constants.xlCenter;
-                //r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                //r.Borders.Weight = Excel.XlBorderWeight.xlThin;
+            //    r = wS.get_Range(baseCell).get_Offset(pos.order + 2, 2);
+            //    r.Value2 = pos.id;
 
-                r = wS.get_Range(baseCell).get_Offset(pos.order + 2, 2);
-                r.Value2 = pos.id;
-                //r.HorizontalAlignment = Excel.Constants.xlCenter;
-                //r.VerticalAlignment = Excel.Constants.xlCenter;
-                //r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                //r.Borders.Weight = Excel.XlBorderWeight.xlThin;
+            //    r = wS.get_Range(baseCell).get_Offset(pos.order + 2, 3);
+            //    r.Value2 = pos.chain_name;
 
-                r = wS.get_Range(baseCell).get_Offset(pos.order + 2, 3);
-                r.Value2 = pos.area;
-                //r.HorizontalAlignment = Excel.Constants.xlCenter;
-                //r.VerticalAlignment = Excel.Constants.xlCenter;
-                //r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                //r.Borders.Weight = Excel.XlBorderWeight.xlThin;
-            }
+            //    r = wS.get_Range(baseCell).get_Offset(pos.order + 2, 4);
+            //    r.Value2 = pos.area;
+            //}
 
             /* Borders */
             r = wS.Range[ baseCell
-                        , wS.get_Range(baseCell).get_Offset(posRecords.Count + 2, 3).Address
+                        , wS.get_Range(baseCell).get_Offset(posCount + 2, 4).Address
                         ];
             r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
             r.Borders.Weight = Excel.XlBorderWeight.xlThin;
 
             /* Alignments */
             r = wS.Range[ wS.get_Range(baseCell).get_Offset(3, 0).Address
-                        , wS.get_Range(baseCell).get_Offset(posRecords.Count + 2, 3).Address
+                        , wS.get_Range(baseCell).get_Offset(posCount + 2, 4).Address
                         ];
             r.HorizontalAlignment = Excel.Constants.xlLeft;
             r.VerticalAlignment = Excel.Constants.xlCenter;
 
+            r.Value2 = GetPOSes(chainID, posCount);
 
 
             /* ---------- */
@@ -234,17 +232,17 @@ namespace SalesOfPharmacy
 
             for (int i = 0; i < periods.Count; i++)
             {
-                List<SaleRecord> saleRecords = GetSales(chainID, periods[i].year_id, periods[i].month_id);
+                //List<SaleRecord> saleRecords = GetSales(chainID, periods[i].year_id, periods[i].month_id);
 
-                foreach (SaleRecord s in saleRecords)
-                {
-                    r = wS.get_Range(bCellForDrug).get_Offset(s.order + 2, i * drugs.Count + s.drug_id - 1);
-                    r.Value2 = s.num;
-                    //r.HorizontalAlignment = Excel.Constants.xlCenter;
-                    //r.VerticalAlignment = Excel.Constants.xlCenter;
-                    //r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                    //r.Borders.Weight = Excel.XlBorderWeight.xlThin;
-                }
+                //foreach (SaleRecord s in saleRecords)
+                //{
+                //    r = wS.get_Range(bCellForDrug).get_Offset(s.order + 2, i * drugs.Count + s.drug_id - 1);
+                //    r.Value2 = s.num;
+                //    //r.HorizontalAlignment = Excel.Constants.xlCenter;
+                //    //r.VerticalAlignment = Excel.Constants.xlCenter;
+                //    //r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                //    //r.Borders.Weight = Excel.XlBorderWeight.xlThin;
+                //}
 
                 foreach (DrugRecord d in drugs)
                 {
@@ -255,17 +253,24 @@ namespace SalesOfPharmacy
                         r.HorizontalAlignment = Excel.Constants.xlCenter;
                         r.VerticalAlignment = Excel.Constants.xlBottom;
                         r.Orientation = 90;
-                        wS.Columns[r.Column].ColumnWidth = 3.43;
+                        wS.Columns[r.Column].ColumnWidth = 4.57;
                         r.Interior.Color = 10092543;//d.color;
                         r.Value2 = d.name;
 
                         r = r.get_Offset(1, 0);
-                        r.Formula = "=SUBTOTAL(9,R[2]C:R[" + (posRecords.Count + 2).ToString() + "]C)";
+                        r.Formula = "=SUBTOTAL(9,R[2]C:R[" + (posCount + 2).ToString() + "]C)";
                         r.Interior.Color = 10092543;
 
                         r = r.get_Offset(1, 0);
-                        r.Formula = "=SUBTOTAL(2,R[1]C:R[" + (posRecords.Count + 1).ToString() + "]C)";
+                        r.Formula = "=SUBTOTAL(2,R[1]C:R[" + (posCount + 1).ToString() + "]C)";
                         r.Interior.Color = 10092543;
+
+                        r = wS.get_Range( wS.get_Range(bCellForDrug).get_Offset(3, i * drugs.Count + d.id - 1).Address
+                                        , wS.get_Range(bCellForDrug).get_Offset(posCount + 2, i * drugs.Count + d.id - 1).Address
+                                        );
+                        r.Select();
+
+                        r.Value2 = GetSales(chainID, d.id, posCount, periods[i].year_id, periods[i].month_id);
                     }
                     else
                     {
@@ -273,28 +278,35 @@ namespace SalesOfPharmacy
                         r.HorizontalAlignment = Excel.Constants.xlCenter;
                         r.VerticalAlignment = Excel.Constants.xlBottom;
                         r.Orientation = 90;
-                        wS.Columns[r.Column].ColumnWidth = 3.43;
+                        wS.Columns[r.Column].ColumnWidth = 4.57;
                         r.Value2 = d.name;
                         r.Font.Size = 18;
 
                         r = r.get_Offset(1, 0);
-                        r.Formula = "=SUM(R[2]C:R[" + (posRecords.Count + 1).ToString() + "]C)";
+                        r.Formula = "=SUM(R[2]C:R[" + (posCount + 1).ToString() + "]C)";
 
                         r = r.get_Offset(1, 0);
-                        r.Formula = "=COUNT(R[1]C:R[" + posRecords.Count.ToString() + "]C)";
+                        r.Formula = "=COUNT(R[1]C:R[" + posCount.ToString() + "]C)";
 
                         /* Formulas */
-                        foreach (POSRecord pos in posRecords)
-                        {
-                            r = wS.get_Range(bCellForDrug).get_Offset(pos.order + 2, i * drugs.Count + d.id - 1);
-                            r.Formula = "=SUBTOTAL(9,RC[-1]:RC[" + (-d.order + 1).ToString() + "])";
-                        }
+                       // foreach (POSRecord pos in posRecords)
+                       // {
+                           // r = wS.get_Range(bCellForDrug).get_Offset(pos.order + 2, i * drugs.Count + d.id - 1);
+                           // r = wS.get_Range(bCellForDrug).get_Offset(p + 2, i * drugs.Count + d.id - 1);
+                           // r.Formula = "=SUBTOTAL(9,RC[-1]:RC[" + (-d.order + 1).ToString() + "])";
+                       // }
 
                         /* Colors */
                         r = wS.get_Range( wS.get_Range(bCellForDrug).get_Offset(0, i * drugs.Count + d.id - 1).Cells.Address
-                                        , wS.get_Range(bCellForDrug).get_Offset(posRecords.Count + 2, i * drugs.Count + d.id - 1).Cells.Address
+                                        , wS.get_Range(bCellForDrug).get_Offset(posCount + 2, i * drugs.Count + d.id - 1).Cells.Address
                                         );
                         r.Interior.Color = 13434828;
+
+                        r = wS.get_Range(wS.get_Range(bCellForDrug).get_Offset(3, i * drugs.Count + d.id - 1).Cells.Address
+                                        , wS.get_Range(bCellForDrug).get_Offset(posCount + 2, i * drugs.Count + d.id - 1).Cells.Address
+                                        );
+                        r.set_Value(Type.Missing, subtotal); // thanks HeinrichStack
+                        r.Formula = r.Value; //<--- Boom baby, all 'formula as text' turns into bona fide excel formula
                     }
                 }
 
@@ -303,7 +315,7 @@ namespace SalesOfPharmacy
 
                 /* All Data Range */
                 r = wS.get_Range(wS.get_Range(bCellForDrug).get_Offset(-1, i * drugs.Count).Cells.Address
-                , wS.get_Range(bCellForDrug).get_Offset(posRecords.Count + 2, (i + 1) * drugs.Count - 1).Cells.Address
+                , wS.get_Range(bCellForDrug).get_Offset(posCount + 2, (i + 1) * drugs.Count - 1).Cells.Address
                 );
                 r.Select();
 
@@ -342,7 +354,7 @@ namespace SalesOfPharmacy
                 r.Borders[Excel.XlBordersIndex.xlInsideHorizontal].Weight = Excel.XlBorderWeight.xlThin;
 
                 r = wS.get_Range(wS.get_Range(bCellForDrug).get_Offset(3, i * drugs.Count).Cells.Address
-                , wS.get_Range(bCellForDrug).get_Offset(posRecords.Count + 2, (i + 1) * drugs.Count - 1).Cells.Address
+                , wS.get_Range(bCellForDrug).get_Offset(posCount + 2, (i + 1) * drugs.Count - 1).Cells.Address
                 );
                 r.Select();
 
@@ -374,7 +386,7 @@ namespace SalesOfPharmacy
             r.VerticalAlignment = Excel.Constants.xlCenter;
             r.Font.Size = 8;
 
-            r = wS.get_Range( wS.get_Range(bCellForDrug).get_Offset(2, -1).Cells.Address
+            r = wS.get_Range( wS.get_Range(bCellForDrug).get_Offset(2, -2).Cells.Address
                             , wS.get_Range(bCellForDrug).get_Offset(2, drugs.Count * periods.Count - 1).Cells.Address
                             );
             r.Activate();
@@ -388,7 +400,7 @@ namespace SalesOfPharmacy
                     Type.Missing, 
                     true);
 
-            return drugs.Count * periods.Count + 5;
+            return wS.get_Range(bCellForDrug).get_Offset(0, drugs.Count * periods.Count + 2).Address;
         }
 
         private List<PeriodRecord> GetPeriods()
@@ -421,28 +433,27 @@ namespace SalesOfPharmacy
 
             Excel.Range r;
 
-            wS.Rows[wS.get_Range(bRange).Row].RowHeight = 30;
-
             int j = 0;
             foreach (DrugRecord dr in drugs)
             {
                 j++;
                 r = wS.get_Range(bRange).get_Offset(0, dr.id);
                 r.Value2 = dr.name;
+                r.Orientation = 90;
                 r.HorizontalAlignment = Excel.Constants.xlCenter;
-                r.VerticalAlignment = Excel.Constants.xlCenter;
+                r.VerticalAlignment = Excel.Constants.xlBottom;
                 r.WrapText = true;
                 r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
                 r.Borders.Weight = Excel.XlBorderWeight.xlThin;
-                r.Interior.Color = dr.color;
+                r.Interior.Color = dr.color; //10092543;
             }
 
             wS.Range[wS.get_Range(bRange).get_Offset(1, 0).Address
-                    ,wS.get_Range(bRange).get_Offset(reportRecords.Count, 0).Address].NumberFormat = "МММ.ГГ"; //"dd-mmm-yy";
+                    ,wS.get_Range(bRange).get_Offset(reportRecords.Count, 0).Address].NumberFormat = "MMM.YY"; //"dd-mmm-yy";
 
             int m_id = 0;
             int y_id = 0;
-            int i = 1;
+            int i = 2;
 
             foreach (ReportRecord rr in reportRecords)
             {
@@ -460,23 +471,27 @@ namespace SalesOfPharmacy
                 r = wS.get_Range(bRange).get_Offset(i, rr.drug_id);
                 r.Value2 = rr.num;
                 r.NumberFormat = "0.00";
-                r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                r.Borders.Weight = Excel.XlBorderWeight.xlThin;
             }
+
+            r = wS.get_Range(wS.get_Range(bRange).get_Offset(3, 0).Address
+                            , wS.get_Range(bRange).get_Offset(i, j - 1).Address
+                            );
+            r.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+            r.Borders.Weight = Excel.XlBorderWeight.xlThin;
 
             for (int k = 1; k <= j; k++)
             {
                 r = wS.get_Range(bRange).Offset[1, k];
                 r.Select();
-                r.Formula = "=SUM(R[1]C:R[" + (i - 1).ToString() + "]C)";
+                r.Formula = "=SUM(R[2]C:R[" + (i - 1).ToString() + "]C)";
                 r.NumberFormat = "0.00";
             }
 
-            for (int k = 2; k <= i; k++)
+            for (int k = 3; k <= i; k++)
             {
-                r = wS.get_Range(bRange).Offset[k, j + 1];
+                r = wS.get_Range(bRange).Offset[k, j];
                 r.Select();
-                r.Formula = "=SUM(RC[-" + (j).ToString() + "]:RC[-1])";
+                r.Formula = "=SUM(RC[-" + (j - 1).ToString() + "]:RC[-1])";
                 r.NumberFormat = "0.00";
             }
 
@@ -487,9 +502,10 @@ namespace SalesOfPharmacy
             Excel.Chart chartPage;
 
             /**/
-            r =  wS.get_Range("B4", wS.get_Range("B4").get_Offset(0, 2 + periods.Count * drugs.Count));
+            r = wS.get_Range(bRange).get_Offset(3, drugs.Count + 1);
             double left = r.Left + r.Width;
-            myChart = (Excel.ChartObject)xlCharts.Add(left, 100, 450, 375);
+            double top = r.Top + r.Height;
+            myChart = (Excel.ChartObject)xlCharts.Add(left, top, 450, 375);
             chartPage = myChart.Chart;
             chartPage.ChartType = Excel.XlChartType.xlLineMarkers;
             chartPage.SetSourceData(sourceCells, Excel.XlRowCol.xlColumns);
@@ -531,7 +547,7 @@ namespace SalesOfPharmacy
                 excelApp.SheetsInNewWorkbook = chainRecords.Count;
                 excelApp.Workbooks.Add(Type.Missing);
 
-                excelApp.Visible = true;
+                excelApp.Visible = false;
 
                 try
                 {
@@ -542,19 +558,26 @@ namespace SalesOfPharmacy
                         Excel.Worksheet wS = excelApp.Worksheets.get_Item(chainI + 1);
                         wS.Name = chainRecords[chainI].name;
                         wS.Select();
-                        string bRange = "A2";
-
-                        int posOffset = WriteDetailInfo(bRange, chainRecords[chainI].id, wS, periodRecords, drugRecords);
-
-                        WriteGroupingInfo(wS.get_Range(bRange).get_Offset(1, posOffset).Address, chainRecords[chainI].id, wS, periodRecords, drugRecords); 
 
                         wS.Application.ActiveWindow.SplitRow = 5;
-                        wS.Application.ActiveWindow.SplitColumn = 4;
+                        wS.Application.ActiveWindow.SplitColumn = 5;
                         wS.Application.ActiveWindow.FreezePanes = true;
+
+                        string bRange = "A2";
+
+                        string posOffset = WriteDetailInfo(bRange, chainRecords[chainI].id, wS, periodRecords, drugRecords);
+
+                        WriteGroupingInfo(posOffset, chainRecords[chainI].id, wS, periodRecords, drugRecords);
+
+                        Excel.Range r = wS.Rows[1];
+                        r.Hidden = true;
+
+                        r = wS.Columns[3];
+                        r.Hidden = true;
                     }
 
                     MessageBox.Show("Report is done. Total_mi:" + (DateTime.Now - dStart).TotalMinutes.ToString());
-                    //excelApp.Visible = true;
+                    excelApp.Visible = true;
                 }
                 finally
                 {
@@ -569,6 +592,70 @@ namespace SalesOfPharmacy
                     }
                 }
             }
+        }
+
+        private object [,] GetSales(int chainID, int drugID, int posCount, string yearID, string monthID)
+        {
+            string command = "SELECT                                        "
+                           + "    p_d.drug_id,                              "
+                           + "    p_d.rowNum,                               "
+                           + "    IFNULL( IF(rsbp.num=0,NULL, rsbp.num)     "
+                           + "          , '''') AS NUM      			    "
+                           + "  FROM (SELECT                                "
+                           + "          @rn := @rn + 1 AS rowNum,           "
+                           + "          p.id AS pos_id,                     "
+                           + "      " + drugID.ToString() + " AS drug_id,   "
+                           + "          p.name AS pos_name                  "
+                           + "        FROM tbl_poses p,                     "
+                           + "             (SELECT                          "
+                           + "                 @rn := 0) rn                 "
+                           + "        WHERE ( " + chainID.ToString() + " = p.chain_id "
+                           + "             OR " + chainID.ToString() + " = 0 )        "
+                           + "        ORDER                                 "
+                           + "           BY p.id) AS p_d 			        "
+                           + "    LEFT JOIN (                               "
+                           + "      SELECT pos_id							"
+                           + "           , drug_id							"
+                           + "           , SUM(num) AS NUM                  "
+                           + "        FROM vw_report_sales_by_poses         "
+                           + "       WHERE year_id = " + yearID
+                           + "         AND month_id = " + monthID
+                           + "       GROUP                                  "
+                           + "          BY pos_id,                          "
+                           + "             drug_id                          "
+                           + "       ) AS rsbp                              "
+                           + "      ON rsbp.pos_id = p_d.pos_id             "
+                           + "      AND rsbp.drug_id = p_d.drug_id          ";
+
+            MySqlCommand cmd = new MySqlCommand(command, conn);
+
+            DateTime start = DateTime.Now;
+
+            MySqlDataReader myReader = cmd.ExecuteReader();
+
+            double queryExecTime = (DateTime.Now - start).TotalMilliseconds;
+
+            object [,] result = new object [posCount, 1];
+
+            int i = 0; 
+            
+            while (myReader.Read())
+            {
+                result[i, 0] = myReader.GetString("num");
+                i++;
+            }
+
+            myReader.Close();
+
+            log.AppendLine("----------------- GetSales ----------------------");
+
+            log.AppendLine(command);
+
+            log.AppendFormat("##########  {0} ##########", queryExecTime.ToString());
+
+            log.AppendLine("----------------- GetSales ----------------------");
+
+            return result;
         }
 
         private List<SaleRecord> GetSales(int chainID, string yearID, string monthID)
@@ -592,8 +679,10 @@ namespace SalesOfPharmacy
                            + "        FROM tbl_poses p,                     "
                            + "             (SELECT                          "
                            + "                 @rn := 0) rn                 "
-                           + "        WHERE p.chain_id = " + chainID.ToString()
-                           + "           ) AS pos) AS p_d 					"
+                           + "        WHERE ( " + chainID.ToString() + " = p.chain_id " 
+                           + "             OR " + chainID.ToString() + " = 0 )        "
+                           + "        ORDER                                 "
+                           + "           BY p.id) AS pos) AS p_d 			"
                            + "    LEFT JOIN (                               "
                            + "      SELECT pos_id							"
                            + "           , drug_id							"
@@ -610,7 +699,11 @@ namespace SalesOfPharmacy
 
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
+            DateTime start = DateTime.Now;
+
             MySqlDataReader myReader = cmd.ExecuteReader();
+
+            double queryExecTime = (DateTime.Now - start).TotalMilliseconds;
 
             List<SaleRecord> result = new List<SaleRecord>();
 
@@ -629,26 +722,100 @@ namespace SalesOfPharmacy
 
             log.AppendLine(command);
 
+            log.AppendFormat("##########  {0} ##########", queryExecTime.ToString());
+
             log.AppendLine("----------------- GetSales ----------------------");
+
+            return result;
+        }
+
+        private int GetPOSCount(int chainID)
+        {
+            string command = "SELECT COUNT(p.id)                                "
+                           + "  FROM vw_poses p                                 "
+                           + " WHERE (" + chainID.ToString() + " = p.chain_id   "
+                           + "     OR " + chainID.ToString() + " = 0)           "
+                           ;
+
+            MySqlCommand cmd = new MySqlCommand(command, conn);
+
+            return int.Parse(cmd.ExecuteScalar().ToString());
+        }
+
+        private object[,] GetPOSes(int chainID, int posCount)
+        {
+            string command = "SELECT @rn := @rn + 1 AS rowNum                 "
+                           + "     , p.id                                     "
+                           + "     , IFNULL(p.name, '''') as name             "
+                           + "     , IFNULL(p.address, '''') as address       "
+                           + "     , p.area_id                                "
+                           + "     , IFNULL(p.area_name, '''') as area        "
+                           + "     , p.chain_id                               "
+                           + "     , IFNULL(p.chain_name, '''') as chain_name "
+                           + "  FROM vw_poses p                               "
+                           + "     , (select @rn := 0) rn                     "
+                           + " WHERE (" + chainID.ToString() + " = p.chain_id   "
+                           + "     OR " + chainID.ToString() + " = 0)           "
+                           ;
+
+            MySqlCommand cmd = new MySqlCommand(command, conn);
+
+            DateTime start = DateTime.Now;
+
+            MySqlDataReader myReader = cmd.ExecuteReader();
+
+            double queryExecTime = (DateTime.Now - start).TotalMilliseconds;
+
+            object[,] result = new object[posCount,5];
+
+            int i = 0;
+
+            while (myReader.Read())
+            {
+                result[i, 0] = myReader.GetString("name");
+                result[i, 1] = myReader.GetString("address");
+                result[i, 2] = myReader.GetInt32("id");
+                result[i, 3] = myReader.GetString("chain_name");
+                result[i, 4] = myReader.GetString("area");
+                i++;
+            }
+
+            myReader.Close();
+
+            log.AppendLine("----------------- GetPOSes ----------------------");
+
+            log.AppendLine(command);
+
+            log.AppendFormat("##########  {0} ##########", queryExecTime.ToString());
+
+            log.AppendLine("----------------- GetPOSes ----------------------");
 
             return result;
         }
 
         private List<POSRecord> GetPOSes(int chainID)
         {
-            string command = "SELECT @rn := @rn + 1 AS rowNum         "
-                           + "     , p.id                             "
-                           + "     , IFNULL(p.name, '''')    as name    "
-                           + "     , IFNULL(p.address, '''') as address "
-                           + "     , IFNULL((SELECT a.name FROM tbl_areas a WHERE a.id = p.b_area), '''')  as area "
-                           + "     , p.chain_id                       "
-                           + "  FROM tbl_poses p                      "
-                           + "     , (select @rn := 0) rn             " 
-                           + " WHERE p.chain_id = " + chainID.ToString();
+            string command = "SELECT @rn := @rn + 1 AS rowNum                 "
+                           + "     , p.id                                     "
+                           + "     , IFNULL(p.name, '''') as name             "
+                           + "     , IFNULL(p.address, '''') as address       "
+                           + "     , p.area_id                                "
+                           + "     , IFNULL(p.area_name, '''') as area        "
+                           + "     , p.chain_id                               "
+                           + "     , IFNULL(p.chain_name, '''') as chain_name "
+                           + "  FROM vw_poses p                               "
+                           + "     , (select @rn := 0) rn                     " 
+                           + " WHERE ("+ chainID.ToString() +" = p.chain_id   " 
+                           + "     OR "+ chainID.ToString() +" = 0)           "
+                           ;
 
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
+            DateTime start = DateTime.Now;
+
             MySqlDataReader myReader = cmd.ExecuteReader();
+
+            double queryExecTime = (DateTime.Now - start).TotalMilliseconds;
 
             List<POSRecord> result = new List<POSRecord>();
 
@@ -659,6 +826,7 @@ namespace SalesOfPharmacy
                                            , address = myReader.GetString("address")
                                            , area = myReader.GetString("area")
                                            , chain_id = myReader.GetInt32("chain_id")
+                                           , chain_name = myReader.GetString("chain_name")
                                            , order = myReader.GetInt32("rowNum")
                                            }
                           );
@@ -666,16 +834,33 @@ namespace SalesOfPharmacy
 
             myReader.Close();
 
+            log.AppendLine("----------------- GetPOSes ----------------------");
+
+            log.AppendLine(command);
+
+            log.AppendFormat("##########  {0} ##########", queryExecTime.ToString());
+
+            log.AppendLine("----------------- GetPOSes ----------------------");
+
             return result;
         }
 
         private List<ChainRecord> GetChains()
         {
-            string command = "SELECT c.id, c.name FROM tbl_chains c WHERE c.isd = '0'";
+            string command = "SELECT c.id          "
+                           + "     , c.name        "
+                           + "  FROM tbl_chains c  "
+                           + " WHERE c.isd = '0'   "
+                           + " UNION               "
+                           + "SELECT 0, 'ВСЕ СЕТИ' ";
 
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
+            DateTime start = DateTime.Now;
+
             MySqlDataReader myReader = cmd.ExecuteReader();
+
+            double queryExecTime = (DateTime.Now - start).TotalMilliseconds;
 
             List<ChainRecord> result = new List<ChainRecord>();
 
@@ -689,6 +874,14 @@ namespace SalesOfPharmacy
 
             myReader.Close();
 
+            log.AppendLine("----------------- GetChains ----------------------");
+
+            log.AppendLine(command);
+
+            log.AppendFormat("##########  {0} ##########", queryExecTime.ToString());
+
+            log.AppendLine("----------------- GetChains ----------------------");
+
             return result;
         }
 
@@ -698,7 +891,11 @@ namespace SalesOfPharmacy
 
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
+            DateTime start = DateTime.Now;
+
             MySqlDataReader myReader = cmd.ExecuteReader();
+
+            double queryExecTime = (DateTime.Now - start).TotalMilliseconds;
 
             List<DrugRecord> result = new List<DrugRecord>();
 
@@ -728,7 +925,11 @@ namespace SalesOfPharmacy
         {
             MySqlCommand cmd = new MySqlCommand(GenerateReportSQL(id), conn);
 
+            DateTime start = DateTime.Now;
+
             MySqlDataReader myReader = cmd.ExecuteReader();
+
+            double queryExecTime = (DateTime.Now - start).TotalMilliseconds;
 
             List<ReportRecord> result = new List<ReportRecord>();  
 
@@ -747,14 +948,33 @@ namespace SalesOfPharmacy
 
             myReader.Close();
 
+            log.AppendLine("------------------GenerateReportSQL---------------------");
+
+            log.AppendLine(cmd.CommandText);
+
+            log.AppendFormat("##########  {0} ##########", queryExecTime.ToString());
+
+            log.AppendLine("------------------GenerateReportSQL---------------------");
+
             return result;
         }
 
         private string GenerateReportSQL (int id)
         {
             //string yearInExpr = "";
-            string result = "SELECT rs.* FROM vw_report_sales rs WHERE ";
+            string result = "SELECT						"
+                          + "   rs.drug_id,				"
+                          + "   rs.name,				"
+                          + "   rs.chain_id,			"
+                          + "   rs.year_id,				"
+                          + "   rs.year,				"
+                          + "   rs.month_id,			"
+                          + "   rs.month,				"
+                          + "  SUM(rs.num) AS num		"
+                          + "FROM vw_report_sales rs	"
+                          + "WHERE ";
             string cnainIDexpr = (id > 0) ? " rs.chain_id = " + id.ToString() : " 1 = 1 ";
+            string groupBYexpr = "GROUP BY rs.drug_id, rs.YEAR, rs.month_id ";
             string orderBYexpr = " ORDER BY rs.year, rs.month_id ";
 
             List<string> exprs = new List<string>();
@@ -778,13 +998,7 @@ namespace SalesOfPharmacy
                 monthYEARexpr = (expr != exprs[exprs.Count - 1]) ? String.Concat(monthYEARexpr, expr, " OR ") : String.Concat(monthYEARexpr, expr);
             }
 
-            log.AppendLine("------------------GenerateReportSQL---------------------");
-
-            result = result + cnainIDexpr + " AND ( " + monthYEARexpr + " ) " + orderBYexpr;
-
-            log.AppendLine(result);
-
-            log.AppendLine("------------------GenerateReportSQL---------------------");
+            result = result + cnainIDexpr + " AND (" + monthYEARexpr + ") " + groupBYexpr + orderBYexpr;
 
             return result;
         }
@@ -822,6 +1036,7 @@ namespace SalesOfPharmacy
         public string address { get; set; }
         public string area { get; set; }
         public int chain_id { get; set; }
+        public string chain_name { get; set; }
         public int order { get; set; }
     }
 
