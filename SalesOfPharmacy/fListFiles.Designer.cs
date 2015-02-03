@@ -31,10 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gvFiles = new System.Windows.Forms.DataGridView();
-            this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mi_LoadFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_ViewResult = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_DelDrug = new System.Windows.Forms.ToolStripMenuItem();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.chain_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,6 +39,10 @@
             this.month = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.year_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.year = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mi_LoadFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_ViewResult = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_DelDrug = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gvFiles)).BeginInit();
             this.gvMenu.SuspendLayout();
             this.SuspendLayout();
@@ -51,6 +51,7 @@
             // 
             this.gvFiles.AllowUserToAddRows = false;
             this.gvFiles.AllowUserToDeleteRows = false;
+            this.gvFiles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -80,36 +81,6 @@
             this.gvFiles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvFiles_CellContentClick);
             this.gvFiles.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gvFiles_CellContextMenuStripNeeded);
             // 
-            // gvMenu
-            // 
-            this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mi_LoadFile,
-            this.mi_ViewResult,
-            this.mi_DelDrug});
-            this.gvMenu.Name = "gvMenu";
-            this.gvMenu.Size = new System.Drawing.Size(215, 70);
-            // 
-            // mi_LoadFile
-            // 
-            this.mi_LoadFile.Name = "mi_LoadFile";
-            this.mi_LoadFile.Size = new System.Drawing.Size(214, 22);
-            this.mi_LoadFile.Text = "Загрузить файл";
-            this.mi_LoadFile.Click += new System.EventHandler(this.mi_LoadFile_Click);
-            // 
-            // mi_ViewResult
-            // 
-            this.mi_ViewResult.Name = "mi_ViewResult";
-            this.mi_ViewResult.Size = new System.Drawing.Size(214, 22);
-            this.mi_ViewResult.Text = "Посмотреть содержимое";
-            this.mi_ViewResult.Click += new System.EventHandler(this.mi_ViewResult_Click);
-            // 
-            // mi_DelDrug
-            // 
-            this.mi_DelDrug.Name = "mi_DelDrug";
-            this.mi_DelDrug.Size = new System.Drawing.Size(214, 22);
-            this.mi_DelDrug.Text = "Удалить файл";
-            this.mi_DelDrug.Click += new System.EventHandler(this.mi_DelDrug_Click);
-            // 
             // id
             // 
             this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -126,7 +97,7 @@
             this.name.Name = "name";
             this.name.ReadOnly = true;
             this.name.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.name.Width = 97;
+            this.name.Width = 108;
             // 
             // chain_id
             // 
@@ -162,7 +133,7 @@
             this.month.Name = "month";
             this.month.ReadOnly = true;
             this.month.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.month.Width = 97;
+            this.month.Width = 65;
             // 
             // year_id
             // 
@@ -180,7 +151,37 @@
             this.year.Name = "year";
             this.year.ReadOnly = true;
             this.year.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.year.Width = 96;
+            this.year.Width = 50;
+            // 
+            // gvMenu
+            // 
+            this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mi_LoadFile,
+            this.mi_ViewResult,
+            this.mi_DelDrug});
+            this.gvMenu.Name = "gvMenu";
+            this.gvMenu.Size = new System.Drawing.Size(222, 70);
+            // 
+            // mi_LoadFile
+            // 
+            this.mi_LoadFile.Name = "mi_LoadFile";
+            this.mi_LoadFile.Size = new System.Drawing.Size(221, 22);
+            this.mi_LoadFile.Text = "Загрузить файл";
+            this.mi_LoadFile.Click += new System.EventHandler(this.mi_LoadFile_Click);
+            // 
+            // mi_ViewResult
+            // 
+            this.mi_ViewResult.Name = "mi_ViewResult";
+            this.mi_ViewResult.Size = new System.Drawing.Size(221, 22);
+            this.mi_ViewResult.Text = "Просмотреть содержимое";
+            this.mi_ViewResult.Click += new System.EventHandler(this.mi_ViewResult_Click);
+            // 
+            // mi_DelDrug
+            // 
+            this.mi_DelDrug.Name = "mi_DelDrug";
+            this.mi_DelDrug.Size = new System.Drawing.Size(221, 22);
+            this.mi_DelDrug.Text = "Удалить файл";
+            this.mi_DelDrug.Click += new System.EventHandler(this.mi_DelDrug_Click);
             // 
             // fListFiles
             // 
@@ -189,7 +190,7 @@
             this.ClientSize = new System.Drawing.Size(525, 389);
             this.Controls.Add(this.gvFiles);
             this.Name = "fListFiles";
-            this.Text = "fListFiles";
+            this.Text = "Список загруженных файлов";
             this.Shown += new System.EventHandler(this.fListFiles_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.gvFiles)).EndInit();
             this.gvMenu.ResumeLayout(false);

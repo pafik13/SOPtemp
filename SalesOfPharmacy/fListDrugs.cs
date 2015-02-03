@@ -36,7 +36,15 @@ namespace SalesOfPharmacy
 
         private void fListChains_Shown(object sender, EventArgs e)
         {
-            LoadDrugs();
+            gvDrugs.DataSource = new BindingSource();
+            if (conn.State == ConnectionState.Open)
+            {
+                LoadDrugs();
+            }
+            else
+            {
+                gvMenu.Enabled = false;
+            }
         }
 
         private void LoadDrugs()
@@ -48,7 +56,9 @@ namespace SalesOfPharmacy
             DataSet dataset = new DataSet();
             adapter.Fill(dataset);
             if (dataset.Tables.Count > 0)
-                gvDrugs.DataSource = dataset.Tables[0];
+            {
+                ((BindingSource)gvDrugs.DataSource).DataSource = dataset.Tables[0];
+            }
         }
 
         private void gvDrugs_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)

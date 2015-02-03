@@ -43,9 +43,8 @@ namespace SalesOfPharmacy
 
         private void LoadFiles()
         {
-            gvFiles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-            string command = "SELECT f.* FROM vw_files f";
+            string command = "SELECT f.* FROM vw_files f ORDER BY f.ID";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
@@ -53,15 +52,23 @@ namespace SalesOfPharmacy
             adapter.Fill(dataset);
             if (dataset.Tables.Count > 0)
             {
-                gvFiles.DataSource = new BindingSource() { DataSource = dataset.Tables[0] };
+                ((BindingSource)gvFiles.DataSource).DataSource = dataset.Tables[0];
             }
 
-            gvFiles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
         }
 
         private void fListFiles_Shown(object sender, EventArgs e)
         {
-            LoadFiles();
+            gvFiles.DataSource = new BindingSource();
+            if (conn.State == ConnectionState.Open)
+            {
+                gvMenu.Enabled = true;
+                LoadFiles();
+            }
+            else
+            {
+                gvMenu.Enabled = false;
+            }
         }
 
         private void gvFiles_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)

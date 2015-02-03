@@ -49,8 +49,8 @@
             this.mi_Chains,
             this.mi_POS,
             this.mi_Drug,
-            this.mi_MD,
             this.mi_Reports,
+            this.mi_MD,
             this.mi_Window});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.MdiWindowListItem = this.mi_Window;
@@ -76,8 +76,9 @@
             // mi_POS
             // 
             this.mi_POS.Name = "mi_POS";
-            this.mi_POS.Size = new System.Drawing.Size(98, 20);
-            this.mi_POS.Text = "Точки продаж";
+            this.mi_POS.Size = new System.Drawing.Size(58, 20);
+            this.mi_POS.Text = "Аптеки";
+            this.mi_POS.Visible = false;
             this.mi_POS.Click += new System.EventHandler(this.mi_POS_Click);
             // 
             // mi_Drug
@@ -89,25 +90,26 @@
             // 
             // mi_MD
             // 
+            this.mi_MD.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.mi_MD.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mi_MD_Drugs,
             this.mi_MD_POSes});
             this.mi_MD.Name = "mi_MD";
-            this.mi_MD.Size = new System.Drawing.Size(116, 20);
-            this.mi_MD.Text = "Ключевые фразы";
+            this.mi_MD.Size = new System.Drawing.Size(127, 20);
+            this.mi_MD.Text = "УДАЛЕНИЕ СВЯЗЕЙ";
             // 
             // mi_MD_Drugs
             // 
             this.mi_MD_Drugs.Name = "mi_MD_Drugs";
-            this.mi_MD_Drugs.Size = new System.Drawing.Size(163, 22);
+            this.mi_MD_Drugs.Size = new System.Drawing.Size(153, 22);
             this.mi_MD_Drugs.Text = "Препараты";
             this.mi_MD_Drugs.Click += new System.EventHandler(this.mi_MD_Drugs_Click);
             // 
             // mi_MD_POSes
             // 
             this.mi_MD_POSes.Name = "mi_MD_POSes";
-            this.mi_MD_POSes.Size = new System.Drawing.Size(163, 22);
-            this.mi_MD_POSes.Text = "Торговые точки";
+            this.mi_MD_POSes.Size = new System.Drawing.Size(152, 22);
+            this.mi_MD_POSes.Text = "Аптеки";
             this.mi_MD_POSes.Click += new System.EventHandler(this.mi_MD_POSes_Click);
             // 
             // mi_Reports
@@ -121,15 +123,15 @@
             // mi_Report_Sales
             // 
             this.mi_Report_Sales.Name = "mi_Report_Sales";
-            this.mi_Report_Sales.Size = new System.Drawing.Size(125, 22);
+            this.mi_Report_Sales.Size = new System.Drawing.Size(152, 22);
             this.mi_Report_Sales.Text = "Продажи";
             this.mi_Report_Sales.Click += new System.EventHandler(this.mi_Report_Sales_Click);
             // 
             // mi_Window
             // 
             this.mi_Window.Name = "mi_Window";
-            this.mi_Window.Size = new System.Drawing.Size(48, 20);
-            this.mi_Window.Text = "Окно";
+            this.mi_Window.Size = new System.Drawing.Size(47, 20);
+            this.mi_Window.Text = "Окна";
             // 
             // MainForm
             // 
@@ -140,7 +142,7 @@
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menu;
             this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Text = "Главная форма";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();

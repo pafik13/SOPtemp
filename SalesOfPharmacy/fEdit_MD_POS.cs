@@ -122,7 +122,11 @@ namespace SalesOfPharmacy
             cbPOS.Text = "";
             cbPOS.Items.Clear();
 
-            string command = "SELECT p.id, p.name FROM dbsop.tbl_poses p WHERE p.chain_id = @chain_id";
+            string command = "SELECT p.id, p.name            "
+                           + "  FROM dbsop.tbl_poses p       "
+                           + " WHERE p.chain_id = @chain_id  "
+                           + " ORDER                         "
+                           + "    BY p.name                  ";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             cmd.Parameters.AddWithValue("@chain_id", chains[cbChain.SelectedIndex]);

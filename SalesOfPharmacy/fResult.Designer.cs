@@ -32,10 +32,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gvResult = new System.Windows.Forms.DataGridView();
-            this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mi_Add_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_Add_MD_Drug = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_Refresh = new System.Windows.Forms.ToolStripMenuItem();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rownum = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.pos = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
@@ -48,6 +44,13 @@
             this.fr_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.month_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.year_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mi_Add_POS = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mi_Add_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_Add_MD_Drug = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mi_Refresh = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gvResult)).BeginInit();
             this.gvMenu.SuspendLayout();
             this.SuspendLayout();
@@ -99,36 +102,6 @@
             this.gvResult.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gvResult_CellMouseDown);
             this.gvResult.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.gvResult_RowPrePaint);
             this.gvResult.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.gvResult_RowsAdded);
-            // 
-            // gvMenu
-            // 
-            this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mi_Add_MD_POS,
-            this.mi_Add_MD_Drug,
-            this.mi_Refresh});
-            this.gvMenu.Name = "gvMenu";
-            this.gvMenu.Size = new System.Drawing.Size(181, 70);
-            // 
-            // mi_Add_MD_POS
-            // 
-            this.mi_Add_MD_POS.Name = "mi_Add_MD_POS";
-            this.mi_Add_MD_POS.Size = new System.Drawing.Size(180, 22);
-            this.mi_Add_MD_POS.Text = "Добавить точку";
-            this.mi_Add_MD_POS.Click += new System.EventHandler(this.mi_Add_MD_POS_Click);
-            // 
-            // mi_Add_MD_Drug
-            // 
-            this.mi_Add_MD_Drug.Name = "mi_Add_MD_Drug";
-            this.mi_Add_MD_Drug.Size = new System.Drawing.Size(180, 22);
-            this.mi_Add_MD_Drug.Text = "Добавить препарат";
-            this.mi_Add_MD_Drug.Click += new System.EventHandler(this.mi_Add_MD_Drug_Click);
-            // 
-            // mi_Refresh
-            // 
-            this.mi_Refresh.Name = "mi_Refresh";
-            this.mi_Refresh.Size = new System.Drawing.Size(180, 22);
-            this.mi_Refresh.Text = "Обновить данные";
-            this.mi_Refresh.Click += new System.EventHandler(this.mi_Refresh_Click);
             // 
             // id
             // 
@@ -243,6 +216,57 @@
             this.year_id.Visible = false;
             this.year_id.Width = 78;
             // 
+            // gvMenu
+            // 
+            this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mi_Add_POS,
+            this.toolStripSeparator2,
+            this.mi_Add_MD_POS,
+            this.mi_Add_MD_Drug,
+            this.toolStripSeparator1,
+            this.mi_Refresh});
+            this.gvMenu.Name = "gvMenu";
+            this.gvMenu.Size = new System.Drawing.Size(224, 126);
+            this.gvMenu.Opening += new System.ComponentModel.CancelEventHandler(this.gvMenu_Opening);
+            // 
+            // mi_Add_POS
+            // 
+            this.mi_Add_POS.Name = "mi_Add_POS";
+            this.mi_Add_POS.Size = new System.Drawing.Size(223, 22);
+            this.mi_Add_POS.Text = "Добавить точку";
+            this.mi_Add_POS.Click += new System.EventHandler(this.mi_Add_POS_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(220, 6);
+            // 
+            // mi_Add_MD_POS
+            // 
+            this.mi_Add_MD_POS.Name = "mi_Add_MD_POS";
+            this.mi_Add_MD_POS.Size = new System.Drawing.Size(223, 22);
+            this.mi_Add_MD_POS.Text = "Добавить кл. слова к точку";
+            this.mi_Add_MD_POS.Click += new System.EventHandler(this.mi_Add_MD_POS_Click);
+            // 
+            // mi_Add_MD_Drug
+            // 
+            this.mi_Add_MD_Drug.Name = "mi_Add_MD_Drug";
+            this.mi_Add_MD_Drug.Size = new System.Drawing.Size(223, 22);
+            this.mi_Add_MD_Drug.Text = "Добавить препарат";
+            this.mi_Add_MD_Drug.Click += new System.EventHandler(this.mi_Add_MD_Drug_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(220, 6);
+            // 
+            // mi_Refresh
+            // 
+            this.mi_Refresh.Name = "mi_Refresh";
+            this.mi_Refresh.Size = new System.Drawing.Size(223, 22);
+            this.mi_Refresh.Text = "Обновить данные";
+            this.mi_Refresh.Click += new System.EventHandler(this.mi_Refresh_Click);
+            // 
             // fResult
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -278,5 +302,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fr_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn month_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn year_id;
+        private System.Windows.Forms.ToolStripMenuItem mi_Add_POS;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

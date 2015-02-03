@@ -31,12 +31,12 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gvDrugs = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mi_AddDrug = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_EditDrug = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_DelDrug = new System.Windows.Forms.ToolStripMenuItem();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvDrugs)).BeginInit();
             this.gvMenu.SuspendLayout();
             this.SuspendLayout();
@@ -70,22 +70,6 @@
             this.gvDrugs.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gvDrugs_CellMouseDown);
             this.gvDrugs.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gvDrugs_MouseDown);
             // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Width = 43;
-            // 
-            // name
-            // 
-            this.name.DataPropertyName = "name";
-            this.name.HeaderText = "Наименование";
-            this.name.Name = "name";
-            this.name.ReadOnly = true;
-            this.name.Width = 108;
-            // 
             // gvMenu
             // 
             this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -116,6 +100,22 @@
             this.mi_DelDrug.Text = "Удалить препарат";
             this.mi_DelDrug.Click += new System.EventHandler(this.mi_DelDrug_Click);
             // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Width = 43;
+            // 
+            // name
+            // 
+            this.name.DataPropertyName = "name";
+            this.name.HeaderText = "Наименование";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.Width = 124;
+            // 
             // fListDrugs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -123,7 +123,7 @@
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.gvDrugs);
             this.Name = "fListDrugs";
-            this.Text = "fListDrugs";
+            this.Text = "Препараты";
             this.Shown += new System.EventHandler(this.fListChains_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.gvDrugs)).EndInit();
             this.gvMenu.ResumeLayout(false);
@@ -134,11 +134,11 @@
         #endregion
 
         private System.Windows.Forms.DataGridView gvDrugs;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.ContextMenuStrip gvMenu;
         private System.Windows.Forms.ToolStripMenuItem mi_AddDrug;
         private System.Windows.Forms.ToolStripMenuItem mi_EditDrug;
         private System.Windows.Forms.ToolStripMenuItem mi_DelDrug;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn name;
     }
 }

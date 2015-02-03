@@ -31,8 +31,12 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gv_MD_POSes = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pos_id = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.pos_name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.chain_id = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.chain_name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.mn_id = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
+            this.model_name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mi_Add_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_Edit_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +49,6 @@
             // 
             this.gv_MD_POSes.AllowUserToAddRows = false;
             this.gv_MD_POSes.AllowUserToDeleteRows = false;
-            this.gv_MD_POSes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -56,8 +59,12 @@
             this.gv_MD_POSes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.gv_MD_POSes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gv_MD_POSes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.id,
-            this.name});
+            this.pos_id,
+            this.pos_name,
+            this.chain_id,
+            this.chain_name,
+            this.mn_id,
+            this.model_name});
             this.gv_MD_POSes.ContextMenuStrip = this.gvMenu;
             this.gv_MD_POSes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gv_MD_POSes.Location = new System.Drawing.Point(0, 0);
@@ -66,24 +73,58 @@
             this.gv_MD_POSes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gv_MD_POSes.Size = new System.Drawing.Size(514, 307);
             this.gv_MD_POSes.TabIndex = 0;
-            this.gv_MD_POSes.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gv_MD_Drugs_CellContextMenuStripNeeded);
-            this.gv_MD_POSes.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gv_MD_Drugs_CellMouseDown);
+            this.gv_MD_POSes.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gv_MD_POSes_CellContextMenuStripNeeded);
+            this.gv_MD_POSes.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gv_MD_POSes_CellMouseDown);
             // 
-            // id
+            // pos_id
             // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Width = 43;
+            this.pos_id.DataPropertyName = "pos_id";
+            this.pos_id.HeaderText = "ID";
+            this.pos_id.Name = "pos_id";
+            this.pos_id.ReadOnly = true;
+            this.pos_id.Width = 118;
             // 
-            // name
+            // pos_name
             // 
-            this.name.DataPropertyName = "name";
-            this.name.HeaderText = "Наименование";
-            this.name.Name = "name";
-            this.name.ReadOnly = true;
-            this.name.Width = 108;
+            this.pos_name.DataPropertyName = "pos_name";
+            this.pos_name.HeaderText = "Аптека";
+            this.pos_name.Name = "pos_name";
+            this.pos_name.ReadOnly = true;
+            this.pos_name.Width = 118;
+            // 
+            // chain_id
+            // 
+            this.chain_id.DataPropertyName = "chain_id";
+            this.chain_id.HeaderText = "CHAIN_ID";
+            this.chain_id.Name = "chain_id";
+            this.chain_id.ReadOnly = true;
+            this.chain_id.Visible = false;
+            this.chain_id.Width = 82;
+            // 
+            // chain_name
+            // 
+            this.chain_name.DataPropertyName = "chain_name";
+            this.chain_name.HeaderText = "Сеть";
+            this.chain_name.Name = "chain_name";
+            this.chain_name.ReadOnly = true;
+            this.chain_name.Width = 117;
+            // 
+            // mn_id
+            // 
+            this.mn_id.DataPropertyName = "mn_id";
+            this.mn_id.HeaderText = "MN_ID";
+            this.mn_id.Name = "mn_id";
+            this.mn_id.ReadOnly = true;
+            this.mn_id.Visible = false;
+            this.mn_id.Width = 66;
+            // 
+            // model_name
+            // 
+            this.model_name.DataPropertyName = "model_name";
+            this.model_name.HeaderText = "Связанная кл. фраза";
+            this.model_name.Name = "model_name";
+            this.model_name.ReadOnly = true;
+            this.model_name.Width = 118;
             // 
             // gvMenu
             // 
@@ -123,7 +164,7 @@
             this.Controls.Add(this.gv_MD_POSes);
             this.Name = "fList_MD_POSes";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.Text = "fList_MD_POSes";
+            this.Text = "СВЯЗИ - Аптеки";
             this.Shown += new System.EventHandler(this.fList_MD_POSes_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.gv_MD_POSes)).EndInit();
             this.gvMenu.ResumeLayout(false);
@@ -134,11 +175,15 @@
         #endregion
 
         private System.Windows.Forms.DataGridView gv_MD_POSes;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.ContextMenuStrip gvMenu;
         private System.Windows.Forms.ToolStripMenuItem mi_Add_MD_POS;
         private System.Windows.Forms.ToolStripMenuItem mi_Edit_MD_POS;
         private System.Windows.Forms.ToolStripMenuItem mi_Del_MD_POS;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn pos_id;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn pos_name;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn chain_id;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn chain_name;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn mn_id;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn model_name;
     }
 }

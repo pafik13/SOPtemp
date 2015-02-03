@@ -212,5 +212,86 @@ namespace SalesOfPharmacy
 
             gvResult.Columns["num"].HeaderText = "Количество [" + numOfDrugs.ToString() + "] ";
         }
+
+        private void gvMenu_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void mi_Add_POS_Click(object sender, EventArgs e)
+        {
+            if (currentRow != -1)
+            {
+                if (MessageBox.Show("Хотите добавить точку?", "Добавление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    foreach (DataGridViewRow row in gvResult.SelectedRows)
+                    {
+                        MySqlTransaction trans = conn.BeginTransaction();
+                        try
+                        {
+                            string command = "INSERT INTO dbsop.tbl_poses(name, chain_id) VALUES(@name, @chain_id)";
+                            MySqlCommand cmd = new MySqlCommand(command, conn, trans);
+
+                            cmd.Parameters.AddWithValue("@name", row.Cells["pos"].Value);
+                            cmd.Parameters.AddWithValue("@chain_id", row.Cells["chain_id"].Value);
+
+                            if (cmd.ExecuteNonQuery() == 1)
+                            {
+                                string command2 = "INSERT INTO dbsop.tbl_model_data_of_poses(model_name, pos_id) VALUES(@model_name, @pos_id)";
+                                MySqlCommand cmd2 = new MySqlCommand(command2, conn, trans);
+
+                                cmd2.Parameters.AddWithValue("@model_name", row.Cells["pos"].Value);
+                                cmd2.Parameters.AddWithValue("@pos_id", cmd.LastInsertedId);
+
+                                if (cmd2.ExecuteNonQuery() == 1)
+                                {
+                                    MessageBox.Show("Добавлена!");
+                                    try
+                                    {
+                                        trans.Commit();
+                                    }
+                                    catch (MySqlException exc)
+                                    {
+                                        MessageBox.Show("Произошла ошибка сохранения транзакции! Текст ошибки: \n {0}", exc.Message);
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Не добавлена - попробуйте еще!");
+                                    try
+                                    {
+                                        trans.Rollback();
+                                    }
+                                    catch (MySqlException exc)
+                                    {
+                                        MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Не добавлена - попробуйте еще!");
+                                try
+                                {
+                                    trans.Rollback();
+                                }
+                                catch (MySqlException exc)
+                                {
+                                    MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
+                                }
+                            }
+                        }
+                        catch (MySqlException mysqlExc)
+                        {
+                            trans.Rollback();
+                            MessageBox.Show(mysqlExc.Message, mysqlExc.ErrorCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    LoadResults();
+                    gvResult.Rows[currentRow].Selected = true;
+                    gvResult.FirstDisplayedScrollingRowIndex = currentRow;
+                }
+            }
+        }
     }
 }

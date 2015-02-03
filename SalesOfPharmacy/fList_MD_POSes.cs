@@ -36,15 +36,33 @@ namespace SalesOfPharmacy
 
         private void fList_MD_POSes_Shown(object sender, EventArgs e)
         {
-            Load_MD_POSes();
+            gv_MD_POSes.DataSource = new BindingSource();
+            if (conn.State == ConnectionState.Open)
+            {
+                gvMenu.Enabled = true;
+                Load_MD_POSes();
+            }
+            else
+            {
+                gvMenu.Enabled = false;
+            }
+
+            //int widthCol = 0;
+            //foreach (DataGridViewColumn column in gv_MD_POSes.Columns)
+            //{
+            //    widthCol = column.Width;
+            //    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            //    column.Width = widthCol;
+            //}
+            //gv_MD_POSes.AutoR
         }
 
         private void Load_MD_POSes()
         {
-            string command = "SELECT mdop.id                       "
+            string command = "SELECT mdop.id           AS mn_id    "
                            + "     , mdop.model_name               "
-                           + "     , p.id                          "
-                           + "     , p.name                        "
+                           + "     , p.id              AS pos_id   "
+                           + "     , p.name            AS pos_name "
                            + "     , p.chain_id                    "
                            + "     , p.chain_name                  "
                            + "  FROM tbl_model_data_of_poses mdop  "
@@ -58,17 +76,19 @@ namespace SalesOfPharmacy
             DataSet dataset = new DataSet();
             adapter.Fill(dataset);
             if (dataset.Tables.Count > 0)
-                gv_MD_POSes.DataSource = dataset.Tables[0];
+            {
+                ((BindingSource)gv_MD_POSes.DataSource).DataSource = dataset.Tables[0];
+            }
         }
 
-        private void gv_MD_Drugs_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        private void gv_MD_POSes_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
         {
             if (e.RowIndex > -1) {
                 currentRow = e.RowIndex;
             }
         }
 
-        private void gv_MD_Drugs_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        private void gv_MD_POSes_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if ((e.Button == MouseButtons.Right) && (e.RowIndex > -1))
             {

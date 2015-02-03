@@ -26,7 +26,15 @@ namespace SalesOfPharmacy
 
         internal void AddContext(string key, string value)
         {
-            context.Add(key, value);
+            if (!context.ContainsKey(key))
+            {
+                context.Add(key, value);
+            }
+            else
+            {
+                context[key] = value;
+            }
+            
         }
 
         internal void AddContext(MySqlConnection connection)
@@ -42,13 +50,25 @@ namespace SalesOfPharmacy
         private void LoadPOSes()
         {
             string command = "SELECT * FROM vw_poses";
+            if (context.ContainsKey("CHAIN_ID"))
+            {
+                command = command + " WHERE chain_id = " + context["CHAIN_ID"];
+            }
+
+            gvPOSes.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
             DataSet dataset = new DataSet();
             adapter.Fill(dataset);
             if (dataset.Tables.Count > 0)
-                gvPOSes.DataSource = dataset.Tables[0];
+            {
+                gvPOSes.DataSource = new BindingSource() { DataSource = dataset.Tables[0] };
+            }
+
+            gvPOSes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            gvPOSes.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
         }
 
         private void gvPOSes_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
@@ -129,6 +149,17 @@ namespace SalesOfPharmacy
                 gvPOSes.CurrentCell = gvPOSes.Rows[currentRow].Cells[1];
                 gvPOSes.FirstDisplayedScrollingRowIndex = currentRow;
             }
+        }
+
+        private void fListPOSes_Activated(object sender, EventArgs e)
+        {
+            //if (context.ContainsKey("NEED_UPDATE"))
+            //{
+            //    if (context["NEED_UPDATE"] == "TRUE")
+            //    {
+            //        LoadPOSes();
+            //    }
+            //}
         }
     }
 }

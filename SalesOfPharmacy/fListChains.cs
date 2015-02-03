@@ -17,6 +17,18 @@ namespace SalesOfPharmacy
 
         private int currentRow = -1;
 
+        private Form FindForm(Type formType)
+        {
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form.GetType() == formType)
+                {
+                    return form;
+                }
+            }
+            return null;
+        }
+
         public fListChains()
         {
             InitializeComponent();
@@ -36,19 +48,32 @@ namespace SalesOfPharmacy
 
         private void fListChains_Shown(object sender, EventArgs e)
         {
-            LoadChains();
+            gvChains.DataSource = new BindingSource();
+            if (conn.State == ConnectionState.Open)
+            {
+                gvMenu.Enabled = true;
+                LoadChains();
+            }
+            else
+            {
+                gvMenu.Enabled = false;
+            }
         }
 
         private void LoadChains()
         {
-            string command = "SELECT c.id, c.name FROM dbsop.tbl_chains c";
+
+            string command = "SELECT c.id, c.name FROM dbsop.tbl_chains c ORDER BY c.name";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
             DataSet dataset = new DataSet();
             adapter.Fill(dataset);
             if (dataset.Tables.Count > 0)
-                gvChains.DataSource = dataset.Tables[0];
+            {
+                ((BindingSource)gvChains.DataSource).DataSource = dataset.Tables[0];
+            }
+
         }
 
         private void gvChains_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
@@ -94,9 +119,11 @@ namespace SalesOfPharmacy
             if (gvChains.RowCount == 0) {
                 EditChain.Enabled = false;
                 DelChain.Enabled  = false;
+                ShowPOSes.Enabled = false;
             } else {
                 EditChain.Enabled = true;
                 DelChain.Enabled  = true;
+                ShowPOSes.Enabled = true;
             }
         }
 
@@ -108,6 +135,7 @@ namespace SalesOfPharmacy
             {
                 LoadChains();
                 gvChains.CurrentCell = gvChains.Rows[gvChains.RowCount - 1].Cells[1];
+                gvChains.FirstDisplayedScrollingRowIndex = gvChains.RowCount - 1;
             }
         }
 
@@ -120,7 +148,24 @@ namespace SalesOfPharmacy
             {
                 LoadChains();
                 gvChains.CurrentCell = gvChains.Rows[currentRow].Cells[1];
+                gvChains.FirstDisplayedScrollingRowIndex = currentRow;
             }
+        }
+
+        private void ShowPOSes_Click(object sender, EventArgs e)
+        {
+            fListPOSes lst = (fListPOSes)FindForm(typeof(fListPOSes));
+            if (lst != null)
+            {
+                lst.Close();
+            }
+
+            lst = new fListPOSes();
+            lst.MdiParent = this.MdiParent;
+            lst.AddContext(conn);
+            lst.AddContext("CHAIN_ID", gvChains.Rows[currentRow].Cells[0].Value.ToString());
+            lst.Text = "Список аптек аптечной сети - " + gvChains.Rows[currentRow].Cells[1].Value.ToString();
+            lst.Show();
         }
     }
 }

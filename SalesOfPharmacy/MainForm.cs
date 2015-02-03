@@ -50,6 +50,22 @@ namespace SalesOfPharmacy
             return null;
         }
 
+        private void mi_Files_Click(object sender, EventArgs e)
+        {
+            fListFiles lst = (fListFiles)FindForm(typeof(fListFiles));
+            if (lst != null)
+            {
+                lst.Activate();
+            }
+            else
+            {
+                lst = new fListFiles();
+                lst.MdiParent = this;
+                lst.AddContext(conn);
+                lst.Show();
+            }
+        }
+
         private void mi_Chains_Click(object sender, EventArgs e)
         {
             fListChains lst = (fListChains) FindForm(typeof(fListChains));
@@ -66,37 +82,68 @@ namespace SalesOfPharmacy
             }
         }
 
+        private void mi_POS_Click(object sender, EventArgs e)
+        {
+            fListPOSes lst = (fListPOSes)FindForm(typeof(fListPOSes));
+            if (lst != null)
+            {
+                lst.Activate();
+            }
+            else
+            {
+                lst = new fListPOSes();
+                lst.MdiParent = this;
+                lst.AddContext(conn);
+                lst.Show();
+            }
+        }
+
         private void mi_Drug_Click(object sender, EventArgs e)
         {
-
-            fListDrugs lst = new fListDrugs();
-            lst.MdiParent = this;
-            lst.AddContext(conn);
-            lst.Show();
+            fListDrugs lst = (fListDrugs)FindForm(typeof(fListDrugs));
+            if (lst != null)
+            {
+                lst.Activate();
+            }
+            else
+            {
+                lst = new fListDrugs();
+                lst.MdiParent = this;
+                lst.AddContext(conn);
+                lst.Show();
+            }
         }
 
         private void mi_MD_Drugs_Click(object sender, EventArgs e)
         {
-            fList_MD_Drugs lst = new fList_MD_Drugs();
-            lst.MdiParent = this;
-            lst.AddContext(conn);
-            lst.Show();
+            fList_MD_Drugs lst = (fList_MD_Drugs)FindForm(typeof(fList_MD_Drugs));
+            if (lst != null)
+            {
+                lst.Activate();
+            }
+            else
+            {
+                lst = new fList_MD_Drugs();
+                lst.MdiParent = this;
+                lst.AddContext(conn);
+                lst.Show();
+            }
         }
 
         private void mi_MD_POSes_Click(object sender, EventArgs e)
         {
-            fList_MD_POSes lst = new fList_MD_POSes();
-            lst.MdiParent = this;
-            lst.AddContext(conn);
-            lst.Show();
-        }
-
-        private void mi_POS_Click(object sender, EventArgs e)
-        {
-            fListPOSes lst = new fListPOSes();
-            lst.MdiParent = this;
-            lst.AddContext(conn);
-            lst.Show();
+            fList_MD_POSes lst = (fList_MD_POSes)FindForm(typeof(fList_MD_POSes));
+            if (lst != null)
+            {
+                lst.Activate();
+            }
+            else
+            {
+                lst = new fList_MD_POSes();
+                lst.MdiParent = this;
+                lst.AddContext(conn);
+                lst.Show();
+            }
         }
 
         private void mi_Report_Sales_Click(object sender, EventArgs e)
@@ -104,22 +151,6 @@ namespace SalesOfPharmacy
             fReportSales rSales = new fReportSales();
             rSales.AddContext(conn);
             rSales.ShowDialog(this);
-        }
-
-        private void mi_Files_Click(object sender, EventArgs e)
-        {
-            fListFiles lst = (fListFiles) FindForm(typeof(fListFiles));
-            if (lst != null)
-            {
-                lst.Activate();
-            }
-            else
-            {
-                lst = new fListFiles();
-                lst.MdiParent = this;
-                lst.AddContext(conn);
-                lst.Show();
-            }
         }
 
     }

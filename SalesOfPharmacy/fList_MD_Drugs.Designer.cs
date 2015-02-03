@@ -125,10 +125,10 @@
             // model_name
             // 
             this.model_name.DataPropertyName = "model_name";
-            this.model_name.HeaderText = "Ключевая фраза";
+            this.model_name.HeaderText = "Связанная кл. фраза";
             this.model_name.Name = "model_name";
             this.model_name.ReadOnly = true;
-            this.model_name.Width = 128;
+            this.model_name.Width = 120;
             // 
             // drug_id
             // 
@@ -136,7 +136,8 @@
             this.drug_id.HeaderText = "drug_id";
             this.drug_id.Name = "drug_id";
             this.drug_id.ReadOnly = true;
-            this.drug_id.Width = 88;
+            this.drug_id.Visible = false;
+            this.drug_id.Width = 67;
             // 
             // fList_MD_Drugs
             // 
@@ -145,7 +146,7 @@
             this.ClientSize = new System.Drawing.Size(514, 307);
             this.Controls.Add(this.gv_MD_Drugs);
             this.Name = "fList_MD_Drugs";
-            this.Text = "fList_MD_Drugs";
+            this.Text = "СВЯЗИ - Препараты";
             this.Shown += new System.EventHandler(this.fList_MD_Drugs_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.gv_MD_Drugs)).EndInit();
             this.gvMenu.ResumeLayout(false);
