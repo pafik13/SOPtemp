@@ -36,7 +36,10 @@ namespace SalesOfPharmacy
         {
             if (context.ContainsKey("ID"))
             {
-                string command = "SELECT c.id, c.name FROM dbsop.tbl_chains c WHERE c.id = @id";
+                string command = "SELECT c.id         "
+                               + "     , c.name       "
+                               + "  FROM tbl_chains c "
+                               + " WHERE c.id = @id   ";
                 MySqlCommand cmd = new MySqlCommand(command, conn);
 
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
@@ -70,13 +73,13 @@ namespace SalesOfPharmacy
 
             if (context.ContainsKey("ID"))
             {
-                cmd.CommandText = "UPDATE dbsop.tbl_chains SET name = @name WHERE id = @id";
+                cmd.CommandText = "UPDATE tbl_chains SET name = @name WHERE id = @id";
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
                 cmd.Parameters.AddWithValue("@name", txtChain.Text);
             }
             else
             {
-                cmd.CommandText = "INSERT INTO dbsop.tbl_chains ( name ) VALUES ( @name )";
+                cmd.CommandText = "INSERT INTO tbl_chains ( name ) VALUES ( @name )";
                 cmd.Parameters.AddWithValue("@name", txtChain.Text);
             }
 

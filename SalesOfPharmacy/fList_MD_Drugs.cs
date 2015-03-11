@@ -14,6 +14,7 @@ namespace SalesOfPharmacy
     {
         Dictionary<string, string> context;
         private MySqlConnection conn = null;
+        DataSet dataset = null;
 
         private int currentRow = -1;
 
@@ -22,6 +23,7 @@ namespace SalesOfPharmacy
             InitializeComponent();
 
             context = new Dictionary<string, string>();
+            dataset = new DataSet();
         }
 
         internal void AddContext(string key, string value)
@@ -40,37 +42,37 @@ namespace SalesOfPharmacy
             if (conn.State == ConnectionState.Open)
             {
                 gvMenu.Enabled = true;
-                Load_MD_Drugs();
+                if (dataset.Tables.Count > 0)
+                {
+                    ((BindingSource)gv_MD_Drugs.DataSource).DataSource = dataset.Tables[0];
+                }
             }
             else
             {
+                MessageBox.Show("Нет соединения с базой данных. Проверьте работоспособность БД.", "Отсутствует соединение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 gvMenu.Enabled = false;
             }
         }
 
-        private void Load_MD_Drugs()
+        public void Load_MD_Drugs()
         {
-
-            string command = "SELECT tmdod.id                       "
-                           + "     , tmdod.model_name               "
-                           + "     , tmdod.drug_id                  "
-                           //+ "     , td.id                          "
-                           + "     , td.name                        "
-                           + "  FROM tbl_model_data_of_drugs tmdod  "
-                           + "  JOIN tbl_drugs td                   "
-                           + "    ON ( td.id = tmdod.drug_id )      "
-                           + " ORDER                                "
-                           + "    BY td.name                        ";
-            MySqlCommand cmd = new MySqlCommand(command, conn);
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            DataSet dataset = new DataSet();
-            adapter.Fill(dataset);
-            if (dataset.Tables.Count > 0)
+            if (conn.State == ConnectionState.Open)
             {
-                ((BindingSource)gv_MD_Drugs.DataSource).DataSource = dataset.Tables[0];
-            }
+                string command = "SELECT tmdod.id                       "
+                               + "     , tmdod.model_name               "
+                               + "     , tmdod.drug_id                  "
+                    //+ "     , td.id                          "
+                               + "     , td.name                        "
+                               + "  FROM tbl_model_data_of_drugs tmdod  "
+                               + "  JOIN tbl_drugs td                   "
+                               + "    ON ( td.id = tmdod.drug_id )      "
+                               + " ORDER                                "
+                               + "    BY td.name                        ";
+                MySqlCommand cmd = new MySqlCommand(command, conn);
 
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dataset);
+            }
         }
 
         private void gv_MD_Drugs_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
@@ -93,8 +95,9 @@ namespace SalesOfPharmacy
         {
             if (currentRow != -1)
             {
-                string command = "DELETE FROM dbsop.tbl_model_data_of_drugs WHERE id = @id";
+                string command = "DELETE FROM tbl_model_data_of_drugs WHERE id = @id";
                 MySqlCommand cmd = new MySqlCommand(command, conn);
+                cmd.Prepare();
 
                 cmd.Parameters.AddWithValue("@id", gv_MD_Drugs.Rows[currentRow].Cells[0].Value);
 
@@ -126,6 +129,7 @@ namespace SalesOfPharmacy
         {
             fEdit_MD_Drug edt = new fEdit_MD_Drug();
             edt.AddContext(conn);
+            edt.Text = "Добавление кл. слов к препарату";
             if (edt.ShowDialog() == DialogResult.OK)
             {
                 Load_MD_Drugs();
@@ -137,6 +141,7 @@ namespace SalesOfPharmacy
         {
             fEdit_MD_Drug edt = new fEdit_MD_Drug();
             edt.AddContext(conn);
+            edt.Text = "Редактирование кл. слов";
             if (currentRow != -1) { edt.AddContext("ID", gv_MD_Drugs.Rows[currentRow].Cells[0].Value.ToString()); }
             if (edt.ShowDialog() == DialogResult.OK)
             {

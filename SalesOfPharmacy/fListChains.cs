@@ -14,6 +14,7 @@ namespace SalesOfPharmacy
     {
         Dictionary<string, string> context;
         private MySqlConnection conn = null;
+        DataSet dataset = null;
 
         private int currentRow = -1;
 
@@ -34,6 +35,7 @@ namespace SalesOfPharmacy
             InitializeComponent();
 
             context = new Dictionary<string, string>();
+            dataset = new DataSet();
         }
 
         internal void AddContext(string key, string value)
@@ -52,28 +54,28 @@ namespace SalesOfPharmacy
             if (conn.State == ConnectionState.Open)
             {
                 gvMenu.Enabled = true;
-                LoadChains();
+                if (dataset.Tables.Count > 0)
+                {
+                    ((BindingSource)gvChains.DataSource).DataSource = dataset.Tables[0];
+                }
             }
             else
             {
+                MessageBox.Show("Нет соединения с базой данных. Проверьте работоспособность БД.", "Отсутствует соединение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 gvMenu.Enabled = false;
             }
         }
 
-        private void LoadChains()
+        public void LoadChains()
         {
-
-            string command = "SELECT c.id, c.name FROM dbsop.tbl_chains c ORDER BY c.name";
-            MySqlCommand cmd = new MySqlCommand(command, conn);
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            DataSet dataset = new DataSet();
-            adapter.Fill(dataset);
-            if (dataset.Tables.Count > 0)
+            if (conn.State == ConnectionState.Open)
             {
-                ((BindingSource)gvChains.DataSource).DataSource = dataset.Tables[0];
-            }
+                string command = "SELECT c.id, c.name FROM tbl_chains c ORDER BY c.name";
+                MySqlCommand cmd = new MySqlCommand(command, conn);
 
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dataset);
+            }
         }
 
         private void gvChains_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
@@ -96,7 +98,7 @@ namespace SalesOfPharmacy
         {
             if (currentRow != -1)
             {
-                string command = "DELETE FROM dbsop.tbl_chains WHERE id = @id";
+                string command = "DELETE FROM tbl_chains WHERE id = @id";
                 MySqlCommand cmd = new MySqlCommand(command, conn);
 
                 cmd.Parameters.AddWithValue("@id", gvChains.Rows[currentRow].Cells[0].Value);
@@ -130,6 +132,7 @@ namespace SalesOfPharmacy
         private void AddChain_Click(object sender, EventArgs e)
         {
             fEditChain edt = new fEditChain();
+            edt.Text = "Добавление аптечной сети";
             edt.AddContext(conn);
             if (edt.ShowDialog() == DialogResult.OK)
             {
@@ -142,6 +145,7 @@ namespace SalesOfPharmacy
         private void EditChain_Click(object sender, EventArgs e)
         {
             fEditChain edt = new fEditChain();
+            edt.Text = "Редактирование аптечной сети";
             edt.AddContext(conn);
             if (currentRow != -1) { edt.AddContext("ID", gvChains.Rows[currentRow].Cells[0].Value.ToString()); }
             if (edt.ShowDialog() == DialogResult.OK)
@@ -165,6 +169,7 @@ namespace SalesOfPharmacy
             lst.AddContext(conn);
             lst.AddContext("CHAIN_ID", gvChains.Rows[currentRow].Cells[0].Value.ToString());
             lst.Text = "Список аптек аптечной сети - " + gvChains.Rows[currentRow].Cells[1].Value.ToString();
+            Program.DoWithWait(lst.LoadPOSes);
             lst.Show();
         }
     }

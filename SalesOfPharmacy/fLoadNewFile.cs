@@ -72,7 +72,12 @@ namespace SalesOfPharmacy
 
         private void LoadChains()
         {
-            string command = "SELECT c.id, c.name FROM dbsop.tbl_chains c";
+            string command = "SELECT c.id           "
+                           + "     , c.name         "
+                           + "  FROM tbl_chains c   "
+                           + " ORDER                "
+                           + "    BY c.name         ";
+
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataReader myReader = cmd.ExecuteReader();
@@ -92,7 +97,7 @@ namespace SalesOfPharmacy
 
         private void LoadMonths()
         {
-            string command = "SELECT m.id, m.name FROM dbsop.tbl_months m ORDER BY m.id";
+            string command = "SELECT m.id, m.name FROM tbl_months m ORDER BY m.id";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataReader myReader = cmd.ExecuteReader();
@@ -112,7 +117,7 @@ namespace SalesOfPharmacy
 
         private void LoadYears()
         {
-            string command = "SELECT y.id, y.name FROM dbsop.tbl_years y";
+            string command = "SELECT y.id, y.name FROM tbl_years y";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataReader myReader = cmd.ExecuteReader();
@@ -199,7 +204,7 @@ namespace SalesOfPharmacy
 
                         MySqlTransaction trans = conn.BeginTransaction();
 
-                        string command = "INSERT INTO dbsop.tbl_file_raw ( bFile, file_name, chain_id, year_id, month_id ) VALUES ( @bFile, @file_name, @chain_id, @year_id, @month_id )";
+                        string command = "INSERT INTO tbl_file_raw ( bFile, file_name, chain_id, year_id, month_id ) VALUES ( @bFile, @file_name, @chain_id, @year_id, @month_id )";
 
                         MySqlCommand cmd = new MySqlCommand(command, conn, trans);
 
@@ -527,7 +532,7 @@ namespace SalesOfPharmacy
             int insertedRows = 0;
             try
             {
-                cmd.CommandText = "INSERT INTO dbsop.tbl_file_data ( pos, drug, num, fr_id ) VALUES ( @pos, @drug, @num, @fr_id )";
+                cmd.CommandText = "INSERT INTO tbl_file_data ( pos, drug, num, fr_id ) VALUES ( @pos, @drug, @num, @fr_id )";
                 for (int i = 0; i < POSes.Count; i++)
                 {
                     cmd.Parameters.Clear();

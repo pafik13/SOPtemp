@@ -14,6 +14,7 @@ namespace SalesOfPharmacy
     {
         Dictionary<string, string> context;
         Dictionary<string, string> pcontext;
+        DataSet dataset;
 
         private MySqlConnection conn = null;
 
@@ -24,6 +25,7 @@ namespace SalesOfPharmacy
             InitializeComponent();
 
             context = new Dictionary<string, string>();
+            dataset = new DataSet();
         }
 
         internal void AddContext(string key, string value)
@@ -41,18 +43,16 @@ namespace SalesOfPharmacy
             pcontext = parentContext;
         }
 
-        private void LoadFiles()
+        public void LoadFiles()
         {
-
-            string command = "SELECT f.* FROM vw_files f ORDER BY f.ID";
-            MySqlCommand cmd = new MySqlCommand(command, conn);
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            DataSet dataset = new DataSet();
-            adapter.Fill(dataset);
-            if (dataset.Tables.Count > 0)
+            if (conn.State == ConnectionState.Open)
             {
-                ((BindingSource)gvFiles.DataSource).DataSource = dataset.Tables[0];
+                string command = "SELECT f.* FROM vw_files f ORDER BY f.ID";
+                MySqlCommand cmd = new MySqlCommand(command, conn);
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+
+                adapter.Fill(dataset);
             }
 
         }
@@ -63,10 +63,18 @@ namespace SalesOfPharmacy
             if (conn.State == ConnectionState.Open)
             {
                 gvMenu.Enabled = true;
-                LoadFiles();
+
+                if (dataset != null)
+                {
+                    if (dataset.Tables.Count > 0)
+                    {
+                        ((BindingSource)gvFiles.DataSource).DataSource = dataset.Tables[0];
+                    }
+                }
             }
             else
             {
+                MessageBox.Show("Нет соединения с базой данных. Проверьте работоспособность БД.", "Отсутствует соединение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 gvMenu.Enabled = false;
             }
         }
@@ -109,6 +117,9 @@ namespace SalesOfPharmacy
                 fRes.AddContext(conn);
                 fRes.AddContext("FILE_ID", gvFiles.Rows[currentRow].Cells[0].Value.ToString());
                 fRes.MdiParent = this.MdiParent;
+
+                Program.DoWithWait(fRes.LoadResults);
+
                 fRes.Show();
             }
         }

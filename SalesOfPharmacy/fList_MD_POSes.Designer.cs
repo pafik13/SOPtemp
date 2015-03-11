@@ -31,16 +31,16 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gv_MD_POSes = new System.Windows.Forms.DataGridView();
+            this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mi_Add_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_Edit_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
+            this.mi_Del_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
             this.pos_id = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.pos_name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.chain_id = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.chain_name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.mn_id = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.model_name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
-            this.gvMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mi_Add_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_Edit_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
-            this.mi_Del_MD_POS = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gv_MD_POSes)).BeginInit();
             this.gvMenu.SuspendLayout();
             this.SuspendLayout();
@@ -76,13 +76,43 @@
             this.gv_MD_POSes.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.gv_MD_POSes_CellContextMenuStripNeeded);
             this.gv_MD_POSes.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gv_MD_POSes_CellMouseDown);
             // 
+            // gvMenu
+            // 
+            this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mi_Add_MD_POS,
+            this.mi_Edit_MD_POS,
+            this.mi_Del_MD_POS});
+            this.gvMenu.Name = "gvMenu";
+            this.gvMenu.Size = new System.Drawing.Size(363, 70);
+            // 
+            // mi_Add_MD_POS
+            // 
+            this.mi_Add_MD_POS.Name = "mi_Add_MD_POS";
+            this.mi_Add_MD_POS.Size = new System.Drawing.Size(362, 22);
+            this.mi_Add_MD_POS.Text = "Добавить ключевую фразу для торговой точки";
+            this.mi_Add_MD_POS.Click += new System.EventHandler(this.mi_Add_MD_POS_Click);
+            // 
+            // mi_Edit_MD_POS
+            // 
+            this.mi_Edit_MD_POS.Name = "mi_Edit_MD_POS";
+            this.mi_Edit_MD_POS.Size = new System.Drawing.Size(362, 22);
+            this.mi_Edit_MD_POS.Text = "Редактировать ключевую фразу для торговой точки";
+            this.mi_Edit_MD_POS.Click += new System.EventHandler(this.mi_Edit_MD_POS_Click);
+            // 
+            // mi_Del_MD_POS
+            // 
+            this.mi_Del_MD_POS.Name = "mi_Del_MD_POS";
+            this.mi_Del_MD_POS.Size = new System.Drawing.Size(362, 22);
+            this.mi_Del_MD_POS.Text = "Удалить ключевую фразу для торговой точки";
+            this.mi_Del_MD_POS.Click += new System.EventHandler(this.mi_Del_MD_POS_Click);
+            // 
             // pos_id
             // 
             this.pos_id.DataPropertyName = "pos_id";
             this.pos_id.HeaderText = "ID";
             this.pos_id.Name = "pos_id";
             this.pos_id.ReadOnly = true;
-            this.pos_id.Width = 118;
+            this.pos_id.Width = 60;
             // 
             // pos_name
             // 
@@ -125,36 +155,6 @@
             this.model_name.Name = "model_name";
             this.model_name.ReadOnly = true;
             this.model_name.Width = 118;
-            // 
-            // gvMenu
-            // 
-            this.gvMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mi_Add_MD_POS,
-            this.mi_Edit_MD_POS,
-            this.mi_Del_MD_POS});
-            this.gvMenu.Name = "gvMenu";
-            this.gvMenu.Size = new System.Drawing.Size(363, 70);
-            // 
-            // mi_Add_MD_POS
-            // 
-            this.mi_Add_MD_POS.Name = "mi_Add_MD_POS";
-            this.mi_Add_MD_POS.Size = new System.Drawing.Size(362, 22);
-            this.mi_Add_MD_POS.Text = "Добавить ключевую фразу для торговой точки";
-            this.mi_Add_MD_POS.Click += new System.EventHandler(this.mi_Add_MD_POS_Click);
-            // 
-            // mi_Edit_MD_POS
-            // 
-            this.mi_Edit_MD_POS.Name = "mi_Edit_MD_POS";
-            this.mi_Edit_MD_POS.Size = new System.Drawing.Size(362, 22);
-            this.mi_Edit_MD_POS.Text = "Редактировать ключевую фразу для торговой точки";
-            this.mi_Edit_MD_POS.Click += new System.EventHandler(this.mi_Edit_MD_POS_Click);
-            // 
-            // mi_Del_MD_POS
-            // 
-            this.mi_Del_MD_POS.Name = "mi_Del_MD_POS";
-            this.mi_Del_MD_POS.Size = new System.Drawing.Size(362, 22);
-            this.mi_Del_MD_POS.Text = "Удалить ключевую фразу для торговой точки";
-            this.mi_Del_MD_POS.Click += new System.EventHandler(this.mi_Del_MD_POS_Click);
             // 
             // fList_MD_POSes
             // 

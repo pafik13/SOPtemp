@@ -14,6 +14,7 @@ namespace SalesOfPharmacy
     {
         Dictionary<string, string> context;
         private MySqlConnection conn = null;
+        DataSet dataset = null;
 
         private int currentRow = -1;
 
@@ -22,6 +23,7 @@ namespace SalesOfPharmacy
             InitializeComponent();
 
             context = new Dictionary<string, string>();
+            dataset = new DataSet();
         }
 
         internal void AddContext(string key, string value)
@@ -39,25 +41,27 @@ namespace SalesOfPharmacy
             gvDrugs.DataSource = new BindingSource();
             if (conn.State == ConnectionState.Open)
             {
-                LoadDrugs();
+                if (dataset.Tables.Count > 0)
+                {
+                    ((BindingSource)gvDrugs.DataSource).DataSource = dataset.Tables[0];
+                }
             }
             else
             {
+                MessageBox.Show("Нет соединения с базой данных. Проверьте работоспособность БД.", "Отсутствует соединение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 gvMenu.Enabled = false;
             }
         }
 
-        private void LoadDrugs()
+        public void LoadDrugs()
         {
-            string command = "SELECT d.id, d.name FROM dbsop.tbl_drugs d";
-            MySqlCommand cmd = new MySqlCommand(command, conn);
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            DataSet dataset = new DataSet();
-            adapter.Fill(dataset);
-            if (dataset.Tables.Count > 0)
+            if (conn.State == ConnectionState.Open)
             {
-                ((BindingSource)gvDrugs.DataSource).DataSource = dataset.Tables[0];
+                string command = "SELECT d.id, d.name FROM tbl_drugs d ORDER BY d.name";
+                MySqlCommand cmd = new MySqlCommand(command, conn);
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dataset);
             }
         }
 
@@ -82,7 +86,7 @@ namespace SalesOfPharmacy
         {
             if (currentRow != -1)
             {
-                string command = "DELETE FROM dbsop.tbl_drugs WHERE id = @id";
+                string command = "DELETE FROM tbl_drugs WHERE id = @id";
                 MySqlCommand cmd = new MySqlCommand(command, conn);
 
                 cmd.Parameters.AddWithValue("@id", gvDrugs.Rows[currentRow].Cells[0].Value);
@@ -117,6 +121,7 @@ namespace SalesOfPharmacy
         private void mi_AddChain_Click(object sender, EventArgs e)
         {
             fEditDrug edt = new fEditDrug();
+            edt.Text = "Добавление препарата";
             edt.AddContext(conn);
             if (edt.ShowDialog() == DialogResult.OK)
             {
@@ -128,6 +133,7 @@ namespace SalesOfPharmacy
         private void mi_EditChain_Click(object sender, EventArgs e)
         {
             fEditDrug edt = new fEditDrug();
+            edt.Text = "Редактирование препарата";
             edt.AddContext(conn);
             if (currentRow != -1) { edt.AddContext("ID", gvDrugs.Rows[currentRow].Cells[0].Value.ToString()); }
             if (edt.ShowDialog() == DialogResult.OK)

@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesOfPharmacy", "SalesOfPharmacy\SalesOfPharmacy.csproj", "{1BFC8A16-217B-4FA5-BA4A-3A3F68B8427A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A4B4B14-D3B5-4D54-80EC-0877C1E6E73A} = {5A4B4B14-D3B5-4D54-80EC-0877C1E6E73A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridViewAutoFilter", "DataGridViewAutoFilter\DataGridViewAutoFilter.csproj", "{5A4B4B14-D3B5-4D54-80EC-0877C1E6E73A}"
 EndProject

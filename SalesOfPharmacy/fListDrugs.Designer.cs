@@ -35,7 +35,7 @@
             this.mi_AddDrug = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_EditDrug = new System.Windows.Forms.ToolStripMenuItem();
             this.mi_DelDrug = new System.Windows.Forms.ToolStripMenuItem();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             this.name = new DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvDrugs)).BeginInit();
             this.gvMenu.SuspendLayout();
@@ -106,7 +106,7 @@
             this.id.HeaderText = "ID";
             this.id.Name = "id";
             this.id.ReadOnly = true;
-            this.id.Width = 43;
+            this.id.Width = 59;
             // 
             // name
             // 
@@ -138,7 +138,7 @@
         private System.Windows.Forms.ToolStripMenuItem mi_AddDrug;
         private System.Windows.Forms.ToolStripMenuItem mi_EditDrug;
         private System.Windows.Forms.ToolStripMenuItem mi_DelDrug;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn id;
         private DataGridViewAutoFilter.DataGridViewAutoFilterTextBoxColumn name;
     }
 }

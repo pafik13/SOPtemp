@@ -31,7 +31,8 @@ namespace SalesOfPharmacy
 
             if ((conn.State != ConnectionState.Closed) && bool.Parse(ConfigurationManager.AppSettings["isShowConnectionInfo"])) {
                 MessageBox.Show( "   ServerVersion : " + conn.ServerVersion
-                               + "\n Connection State : " + conn.State.ToString());
+                               + "\n Connection State : " + conn.State.ToString()
+                               + "\n DataBase : " + conn.Database);
             }
 
             //excelApp = new Excel.Application();
@@ -62,6 +63,7 @@ namespace SalesOfPharmacy
                 lst = new fListFiles();
                 lst.MdiParent = this;
                 lst.AddContext(conn);
+                Program.DoWithWait(lst.LoadFiles);
                 lst.Show();
             }
         }
@@ -78,6 +80,7 @@ namespace SalesOfPharmacy
                 lst = new fListChains();
                 lst.MdiParent = this;
                 lst.AddContext(conn);
+                Program.DoWithWait(lst.LoadChains);
                 lst.Show();
             }
         }
@@ -110,6 +113,7 @@ namespace SalesOfPharmacy
                 lst = new fListDrugs();
                 lst.MdiParent = this;
                 lst.AddContext(conn);
+                Program.DoWithWait(lst.LoadDrugs);
                 lst.Show();
             }
         }
@@ -126,6 +130,7 @@ namespace SalesOfPharmacy
                 lst = new fList_MD_Drugs();
                 lst.MdiParent = this;
                 lst.AddContext(conn);
+                Program.DoWithWait(lst.Load_MD_Drugs);
                 lst.Show();
             }
         }
@@ -142,6 +147,7 @@ namespace SalesOfPharmacy
                 lst = new fList_MD_POSes();
                 lst.MdiParent = this;
                 lst.AddContext(conn);
+                Program.DoWithWait(lst.Load_MD_POSes);
                 lst.Show();
             }
         }

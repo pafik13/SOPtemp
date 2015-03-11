@@ -1,11 +1,14 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
+//using System.Windowss
 using MySql.Data.MySqlClient;
 
 namespace SalesOfPharmacy
@@ -13,6 +16,7 @@ namespace SalesOfPharmacy
     public partial class fResult : Form
     {
         Dictionary<string, string> context;
+        DataSet dataset;
         private MySqlConnection conn = null;
 
         private int currentRow = -1;
@@ -23,6 +27,7 @@ namespace SalesOfPharmacy
             InitializeComponent();
 
             context = new Dictionary<string, string>();
+            dataset = new DataSet();
         }
 
         internal void AddContext(string key, string value)
@@ -37,31 +42,46 @@ namespace SalesOfPharmacy
 
         private void fResult_Shown(object sender, EventArgs e)
         {
-            LoadResults();
+            gvResult.DataSource = new BindingSource();
+            if (conn.State == ConnectionState.Open)
+            {
+                gvMenu.Enabled = true;
+
+                if (dataset != null)
+                {
+                    if (dataset.Tables.Count > 0)
+                    {
+                        ((BindingSource)gvResult.DataSource).DataSource = dataset.Tables[0];
+                    }
+                }
+
+            }
+            else
+            {
+                gvMenu.Enabled = false;
+            }
         }
 
-        private void LoadResults()
+        public void LoadResults()
         {
             if (context.ContainsKey("FILE_ID"))
             {
-                gvResult.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+ //               gvResult.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-                string command = "SELECT @rn := @rn + 1 AS rowNum, r.* FROM vw_results r, (select @rn := 0) rn WHERE r.fr_id = @fr_id";
+                string command = "SELECT @rn := @rn + 1 AS rowNum                       "
+                               + "     , r.*                                            "
+                               + "     , (3 - r.p_flag - r.d_flag  - r.n_flag) AS num_oe"                  
+                               + "  FROM vw_results r                                   "
+                               + "     , (select @rn := 0) rn                           "
+                               + " WHERE r.fr_id = @fr_id                               ";
 
                 MySqlCommand cmd = new MySqlCommand(command, conn);
 
                 cmd.Parameters.AddWithValue("@fr_id", context["FILE_ID"]);
 
                 MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                DataSet dataset = new DataSet();
                 adapter.Fill(dataset);
 
-                if (dataset.Tables.Count > 0)
-                {
-                    gvResult.DataSource = new BindingSource() { DataSource = dataset.Tables[0] };
-                }
-
-                gvResult.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             }
             else
             {
@@ -88,14 +108,36 @@ namespace SalesOfPharmacy
             {
                 currentRow = e.RowIndex;
             }
+
+            if (gvResult.RowCount == 0)
+            {
+                mi_Add_POS.Enabled = false;
+                mi_Add_MD_POS.Enabled = false;
+                mi_Add_MD_Drug.Enabled = false;
+            }
+            else if (gvResult.SelectedRows.Count > 1)
+            {
+                mi_Add_POS.Enabled = true;
+                mi_Add_POS.Text = "Добавить аптеки";
+                mi_Add_MD_POS.Enabled = false;
+                mi_Add_MD_Drug.Enabled = false;
+            }
+            else
+            {
+                mi_Add_POS.Enabled = true;
+                mi_Add_POS.Text = "Добавить аптеку";
+                mi_Add_MD_POS.Enabled = true;
+                mi_Add_MD_Drug.Enabled = true;
+            }
         }
 
         private void gvResult_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if ((e.Button == MouseButtons.Right) && (e.RowIndex > -1))
+            if ((e.Button == MouseButtons.Right) && (gvResult.SelectedRows.Count < 2) && (e.RowIndex > -1) && (e.ColumnIndex > -1))
             {
                 // Add this
                 gvResult.CurrentCell = gvResult.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
             }
         }
 
@@ -107,7 +149,7 @@ namespace SalesOfPharmacy
                 {
                     try
                     {
-                        string command = "DELETE FROM dbsop.tbl_poses WHERE id = @id";
+                        string command = "DELETE FROM tbl_poses WHERE id = @id";
                         MySqlCommand cmd = new MySqlCommand(command, conn);
 
                         cmd.Parameters.AddWithValue("@id", gvResult.Rows[currentRow].Cells[0].Value);
@@ -133,16 +175,7 @@ namespace SalesOfPharmacy
 
         private void gvDrugs_MouseDown(object sender, MouseEventArgs e)
         {
-            if (gvResult.RowCount == 0)
-            {
-                mi_Add_MD_POS.Enabled = false;
-                mi_Add_MD_Drug.Enabled = false;
-            }
-            else
-            {
-                mi_Add_MD_POS.Enabled = true;
-                mi_Add_MD_Drug.Enabled = true;
-            }
+
         }
 
         private void Locate(string col, string val)
@@ -220,44 +253,68 @@ namespace SalesOfPharmacy
 
         private void mi_Add_POS_Click(object sender, EventArgs e)
         {
+            int countOfNewPoses = 0;
             if (currentRow != -1)
             {
-                if (MessageBox.Show("Хотите добавить точку?", "Добавление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Хотите добавить аптеки с ключевыми фразами?", "Добавление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     foreach (DataGridViewRow row in gvResult.SelectedRows)
                     {
-                        MySqlTransaction trans = conn.BeginTransaction();
-                        try
+                        string command = "SELECT count(*) FROM vw_md_pos WHERE model_name = @name AND chain_id = @chain_id";
+                        MySqlCommand cmd = new MySqlCommand(command, conn);
+
+                        cmd.Parameters.AddWithValue("@name", row.Cells["pos"].Value);
+                        cmd.Parameters.AddWithValue("@chain_id", row.Cells["chain_id"].Value);
+
+                        if (int.Parse(cmd.ExecuteScalar().ToString()) == 0)
                         {
-                            string command = "INSERT INTO dbsop.tbl_poses(name, chain_id) VALUES(@name, @chain_id)";
-                            MySqlCommand cmd = new MySqlCommand(command, conn, trans);
 
-                            cmd.Parameters.AddWithValue("@name", row.Cells["pos"].Value);
-                            cmd.Parameters.AddWithValue("@chain_id", row.Cells["chain_id"].Value);
-
-                            if (cmd.ExecuteNonQuery() == 1)
+                            MySqlTransaction trans = conn.BeginTransaction();
+                            try
                             {
-                                string command2 = "INSERT INTO dbsop.tbl_model_data_of_poses(model_name, pos_id) VALUES(@model_name, @pos_id)";
-                                MySqlCommand cmd2 = new MySqlCommand(command2, conn, trans);
+                                cmd.CommandText = "INSERT INTO tbl_poses(name, chain_id) VALUES(@name, @chain_id)";
+                                cmd.Transaction = trans;
 
-                                cmd2.Parameters.AddWithValue("@model_name", row.Cells["pos"].Value);
-                                cmd2.Parameters.AddWithValue("@pos_id", cmd.LastInsertedId);
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue("@name", row.Cells["pos"].Value);
+                                cmd.Parameters.AddWithValue("@chain_id", row.Cells["chain_id"].Value);
 
-                                if (cmd2.ExecuteNonQuery() == 1)
+                                if (cmd.ExecuteNonQuery() == 1)
                                 {
-                                    MessageBox.Show("Добавлена!");
-                                    try
+                                    string command2 = "INSERT INTO tbl_model_data_of_poses(model_name, pos_id) VALUES(@model_name, @pos_id)";
+                                    MySqlCommand cmd2 = new MySqlCommand(command2, conn, trans);
+
+                                    cmd2.Parameters.AddWithValue("@model_name", row.Cells["pos"].Value);
+                                    cmd2.Parameters.AddWithValue("@pos_id", cmd.LastInsertedId);
+
+                                    if (cmd2.ExecuteNonQuery() == 1)
                                     {
-                                        trans.Commit();
+                                        countOfNewPoses = countOfNewPoses + 1;
+                                        try
+                                        {
+                                            trans.Commit();
+                                        }
+                                        catch (MySqlException exc)
+                                        {
+                                            MessageBox.Show("Произошла ошибка сохранения транзакции! Текст ошибки: \n {0}", exc.Message);
+                                        }
                                     }
-                                    catch (MySqlException exc)
+                                    else
                                     {
-                                        MessageBox.Show("Произошла ошибка сохранения транзакции! Текст ошибки: \n {0}", exc.Message);
+                                        MessageBox.Show("Ошибки добавления записей - попробуйте еще!");
+                                        try
+                                        {
+                                            trans.Rollback();
+                                        }
+                                        catch (MySqlException exc)
+                                        {
+                                            MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Не добавлена - попробуйте еще!");
+                                    MessageBox.Show("Ошибки добавления записей - попробуйте еще!");
                                     try
                                     {
                                         trans.Rollback();
@@ -268,28 +325,33 @@ namespace SalesOfPharmacy
                                     }
                                 }
                             }
-                            else
+                            catch (MySqlException mysqlExc)
                             {
-                                MessageBox.Show("Не добавлена - попробуйте еще!");
-                                try
-                                {
-                                    trans.Rollback();
-                                }
-                                catch (MySqlException exc)
-                                {
-                                    MessageBox.Show("Произошла ошибка отката транзакции! Текст ошибки: \n {0}", exc.Message);
-                                }
+                                trans.Rollback();
+                                MessageBox.Show(mysqlExc.Message, mysqlExc.ErrorCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
-                        catch (MySqlException mysqlExc)
-                        {
-                            trans.Rollback();
-                            MessageBox.Show(mysqlExc.Message, mysqlExc.ErrorCode.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
                     }
+                    MessageBox.Show(String.Format("Было добавлено {0} записей!", countOfNewPoses));
                     LoadResults();
                     gvResult.Rows[currentRow].Selected = true;
                     gvResult.FirstDisplayedScrollingRowIndex = currentRow;
+                }
+            }
+        }
+
+        private void gvResult_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+        }
+
+        private void gvResult_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (Control.ModifierKeys == Keys.Control)
+            {
+                foreach (DataGridViewColumn column in this.gvResult.Columns)
+                {
+                    gvResult.Sort(gvResult.Columns["id"], ListSortDirection.Ascending);
                 }
             }
         }

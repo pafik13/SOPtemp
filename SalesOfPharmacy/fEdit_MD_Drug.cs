@@ -38,7 +38,7 @@ namespace SalesOfPharmacy
             LoadDrugs();
             if (context.ContainsKey("ID"))
             {
-                string command = "SELECT tmdod.id, tmdod.model_name, tmdod.drug_id FROM dbsop.tbl_model_data_of_drugs tmdod WHERE tmdod.id = @id";
+                string command = "SELECT tmdod.id, tmdod.model_name, tmdod.drug_id FROM tbl_model_data_of_drugs tmdod WHERE tmdod.id = @id";
                 MySqlCommand cmd = new MySqlCommand(command, conn);
 
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
@@ -61,14 +61,17 @@ namespace SalesOfPharmacy
             }
             else
             {
-                txt_MD_Drug.Text = context["Drug"];
+                if (context.ContainsKey("Drug"))
+                {
+                    txt_MD_Drug.Text = context["Drug"];
+                }
             }
             
         }
 
         private void LoadDrugs()
         {
-            string command = "SELECT d.id, d.name FROM dbsop.tbl_drugs d";
+            string command = "SELECT d.id, d.name FROM tbl_drugs d";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataReader myReader = cmd.ExecuteReader();

@@ -14,6 +14,7 @@ namespace SalesOfPharmacy
     {
         Dictionary<string, string> context;
         private MySqlConnection conn = null;
+        DataSet dataset = null;
 
         private int currentRow = -1;
 
@@ -44,31 +45,44 @@ namespace SalesOfPharmacy
 
         private void fListChains_Shown(object sender, EventArgs e)
         {
-            LoadPOSes();
+            gvPOSes.DataSource = new BindingSource();
+            if (conn.State == ConnectionState.Open)
+            {
+                gvMenu.Enabled = true;
+                AssignData();
+            }
+            else
+            {
+                MessageBox.Show("Нет соединения с базой данных. Проверьте работоспособность БД.", "Отсутствует соединение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                gvMenu.Enabled = false;
+            }
         }
 
-        private void LoadPOSes()
+        public void LoadPOSes()
         {
-            string command = "SELECT * FROM vw_poses";
-            if (context.ContainsKey("CHAIN_ID"))
+            if (conn.State == ConnectionState.Open)
             {
-                command = command + " WHERE chain_id = " + context["CHAIN_ID"];
+                string command = "SELECT * FROM vw_poses";
+                if (context.ContainsKey("CHAIN_ID"))
+                {
+                    command = command + " WHERE chain_id = " + context["CHAIN_ID"];
+                }
+
+                MySqlCommand cmd = new MySqlCommand(command, conn);
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+
+                dataset = new DataSet();
+                adapter.Fill(dataset);
             }
+        }
 
-            gvPOSes.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            
-            MySqlCommand cmd = new MySqlCommand(command, conn);
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            DataSet dataset = new DataSet();
-            adapter.Fill(dataset);
+        private void AssignData()
+        {
             if (dataset.Tables.Count > 0)
             {
-                gvPOSes.DataSource = new BindingSource() { DataSource = dataset.Tables[0] };
+                ((BindingSource)gvPOSes.DataSource).DataSource = dataset.Tables[0];
             }
-
-            gvPOSes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-            gvPOSes.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
         }
 
         private void gvPOSes_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
@@ -130,9 +144,11 @@ namespace SalesOfPharmacy
         {
             fEditPOS edt = new fEditPOS();
             edt.AddContext(conn);
+            edt.Text = "Добавление аптеки";
             if (edt.ShowDialog() == DialogResult.OK)
             {
                 LoadPOSes();
+                AssignData();
                 gvPOSes.CurrentCell = gvPOSes.Rows[gvPOSes.RowCount - 1].Cells[1];
                 gvPOSes.FirstDisplayedScrollingRowIndex = gvPOSes.RowCount - 1;
             }
@@ -142,10 +158,12 @@ namespace SalesOfPharmacy
         {
             fEditPOS edt = new fEditPOS();
             edt.AddContext(conn);
+            edt.Text = "Редактирование аптеки";
             if (currentRow != -1) { edt.AddContext("ID", gvPOSes.Rows[currentRow].Cells[0].Value.ToString()); }
             if (edt.ShowDialog() == DialogResult.OK)
             {
                 LoadPOSes();
+                AssignData();
                 gvPOSes.CurrentCell = gvPOSes.Rows[currentRow].Cells[1];
                 gvPOSes.FirstDisplayedScrollingRowIndex = currentRow;
             }

@@ -43,7 +43,13 @@ namespace SalesOfPharmacy
             LoadAreas();
             if (context.ContainsKey("ID"))
             {
-                string command = "SELECT p.id, p.name, p.chain_id, p.b_no, p.b_area FROM dbsop.tbl_poses p WHERE p.id = @id";
+                string command = "SELECT p.id           "
+                               + "     , p.name         "
+                               + "     , p.chain_id     "
+                               + "     , p.b_no         "
+                               + "     , p.b_area       "
+                               + "  FROM tbl_poses p    "
+                               + " WHERE p.id = @id     ";
                 MySqlCommand cmd = new MySqlCommand(command, conn);
 
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
@@ -87,7 +93,7 @@ namespace SalesOfPharmacy
 
         private void LoadChains()
         {
-            string command = "SELECT c.id, c.name FROM dbsop.tbl_chains c";
+            string command = "SELECT c.id, c.name FROM tbl_chains c";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataReader myReader = cmd.ExecuteReader();
@@ -107,7 +113,7 @@ namespace SalesOfPharmacy
 
         private void LoadAreas()
         {
-            string command = "SELECT a.id, a.name FROM dbsop.tbl_areas a ORDER BY a.name";
+            string command = "SELECT a.id, a.name FROM tbl_areas a ORDER BY a.name";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataReader myReader = cmd.ExecuteReader();
@@ -146,7 +152,7 @@ namespace SalesOfPharmacy
 
             if (String.IsNullOrEmpty(txtB_No.Text))
             {
-                context["Errors"] = context["Errors"] + "  - Не заполнен Номер из выгрузки; \n";
+                //context["Errors"] = context["Errors"] + "  - Не заполнен Номер из выгрузки; \n";
             }
             else
             {
@@ -159,7 +165,7 @@ namespace SalesOfPharmacy
 
             if (cbB_Area.SelectedIndex == -1)
             {
-                context["Errors"] = context["Errors"] + "  - Не выбран Город/Округ; \n";
+                //context["Errors"] = context["Errors"] + "  - Не выбран Город/Округ; \n";
             }
 
             return string.IsNullOrEmpty(context["Errors"]);
@@ -174,19 +180,34 @@ namespace SalesOfPharmacy
 
                 if (context.ContainsKey("ID"))
                 {
-                    cmd.CommandText = "UPDATE dbsop.tbl_poses SET name = @name, chain_id = @chain_id, b_no = @b_no, b_area = @b_area WHERE id = @id";
+                    cmd.CommandText = "UPDATE tbl_poses SET name = @name, chain_id = @chain_id, b_no = @b_no, b_area = @b_area WHERE id = @id";
                     cmd.Parameters.AddWithValue("@id", context["ID"]);
                 }
                 else
                 {
-                    cmd.CommandText = "INSERT INTO dbsop.tbl_poses ( name, chain_id, b_no, b_area ) VALUES ( @name, @chain_id, @b_no, @b_area )";
+                    cmd.CommandText = "INSERT INTO tbl_poses ( name, chain_id, b_no, b_area ) VALUES ( @name, @chain_id, @b_no, @b_area )";
                 }
 
                 cmd.Parameters.AddWithValue("@name", txtPOS.Text);
                 cmd.Parameters.AddWithValue("@chain_id", chains[cbChain.SelectedIndex]);
-                cmd.Parameters.AddWithValue("@b_no", txtB_No.Text);
-                cmd.Parameters.AddWithValue("@b_area", areas[cbB_Area.SelectedIndex]);
+                if (String.IsNullOrEmpty(txtB_No.Text))
+                {
+                    cmd.Parameters.AddWithValue("@b_no", DBNull.Value);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@b_no", txtB_No.Text);
+                }
 
+                if (cbB_Area.SelectedIndex == -1)
+                {
+                    cmd.Parameters.AddWithValue("@b_area", DBNull.Value);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@b_area", areas[cbB_Area.SelectedIndex]);
+                }
+                
                 if (cmd.ExecuteNonQuery() == 1)
                 {
                     MessageBox.Show("Successful!");
@@ -234,7 +255,7 @@ namespace SalesOfPharmacy
             if ((e.KeyCode == Keys.Back)
              || (e.KeyCode == Keys.Delete))
             {
-                cbChain.SelectedIndex = -1;
+                cbB_Area.SelectedIndex = -1;
             }
         }
     }

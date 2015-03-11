@@ -40,7 +40,14 @@ namespace SalesOfPharmacy
             LoadChains();
             if (context.ContainsKey("ID"))
             {
-                string command = "SELECT mdop.id, mdop.model_name, p.id, p.chain_id FROM tbl_model_data_of_poses mdop JOIN vw_poses p ON mdop.pos_id = p.id WHERE mdop.id = @id";
+                string command = "SELECT mdop.id                        "
+                               + "     , mdop.model_name                "
+                               + "     , p.id                           "
+                               + "     , p.chain_id                     "
+                               + "  FROM tbl_model_data_of_poses mdop   "
+                               + "  JOIN tbl_poses p                    "
+                               + "     ON mdop.pos_id = p.id            "
+                               + " WHERE mdop.id = @id                  ";    
                 MySqlCommand cmd = new MySqlCommand(command, conn);
 
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
@@ -84,7 +91,7 @@ namespace SalesOfPharmacy
 
         private void LoadChains()
         {
-            string command = "SELECT c.id, c.name FROM dbsop.tbl_chains c";
+            string command = "SELECT c.id, c.name FROM tbl_chains c";
             MySqlCommand cmd = new MySqlCommand(command, conn);
 
             MySqlDataReader myReader = cmd.ExecuteReader();
@@ -109,7 +116,7 @@ namespace SalesOfPharmacy
 
         private void cbChain_TextChanged(object sender, EventArgs e)
         {
-            //MessageBox.Show(String.Format("tEXT : SelectedIndex = {0}", cbChain.SelectedIndex));
+            //MessageBox.Show(String.Format("Text : SelectedIndex = {0}", cbChain.SelectedIndex));
             if (cbChain.SelectedIndex > -1)
             {
                 //MessageBox.Show(String.Format("SelectedID = {0}", chains[cbChain.SelectedIndex]));
@@ -122,8 +129,9 @@ namespace SalesOfPharmacy
             cbPOS.Text = "";
             cbPOS.Items.Clear();
 
-            string command = "SELECT p.id, p.name            "
-                           + "  FROM dbsop.tbl_poses p       "
+            string command = "SELECT p.id                    "
+                           + "       , p.name                "
+                           + "  FROM tbl_poses p             "
                            + " WHERE p.chain_id = @chain_id  "
                            + " ORDER                         "
                            + "    BY p.name                  ";
@@ -171,12 +179,12 @@ namespace SalesOfPharmacy
 
             if (context.ContainsKey("ID"))
             {
-                cmd.CommandText = "UPDATE dbsop.tbl_model_data_of_poses SET model_name = @model_name, pos_id = @pos_id WHERE id = @id";
+                cmd.CommandText = "UPDATE tbl_model_data_of_poses SET model_name = @model_name, pos_id = @pos_id WHERE id = @id";
                 cmd.Parameters.AddWithValue("@id", context["ID"]);
             }
             else
             {
-                cmd.CommandText = "INSERT INTO dbsop.tbl_model_data_of_poses ( model_name, pos_id ) VALUES ( @model_name, @pos_id )";
+                cmd.CommandText = "INSERT INTO tbl_model_data_of_poses ( model_name, pos_id ) VALUES ( @model_name, @pos_id )";
             }
 
             cmd.Parameters.AddWithValue("@model_name", txt_MD_POS.Text);

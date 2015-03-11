@@ -2,4 +2,3 @@ C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\DataGridVi
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\DataGridViewAutoFilter\bin\Release\DataGridViewAutoFilter.pdb
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\DataGridViewAutoFilter\obj\Release\DataGridViewAutoFilter.dll
 C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\DataGridViewAutoFilter\obj\Release\DataGridViewAutoFilter.pdb
-C:\Users\lenovo\Documents\Visual Studio 2010\Projects\SalesOfPharmacy\DataGridViewAutoFilter\obj\Release\DataGridViewAutoFilter.csprojResolveAssemblyReference.cache

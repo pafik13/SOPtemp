@@ -14,6 +14,7 @@ namespace SalesOfPharmacy
     {
         Dictionary<string, string> context;
         private MySqlConnection conn = null;
+        DataSet dataset = null;
 
         private int currentRow = -1;
 
@@ -22,6 +23,7 @@ namespace SalesOfPharmacy
             InitializeComponent();
 
             context = new Dictionary<string, string>();
+            dataset = new DataSet();
         }
 
         internal void AddContext(string key, string value)
@@ -40,44 +42,37 @@ namespace SalesOfPharmacy
             if (conn.State == ConnectionState.Open)
             {
                 gvMenu.Enabled = true;
-                Load_MD_POSes();
+                if (dataset.Tables.Count > 0)
+                {
+                    ((BindingSource)gv_MD_POSes.DataSource).DataSource = dataset.Tables[0];
+                }
             }
             else
             {
+                MessageBox.Show("Нет соединения с базой данных. Проверьте работоспособность БД.", "Отсутствует соединение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 gvMenu.Enabled = false;
             }
-
-            //int widthCol = 0;
-            //foreach (DataGridViewColumn column in gv_MD_POSes.Columns)
-            //{
-            //    widthCol = column.Width;
-            //    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            //    column.Width = widthCol;
-            //}
-            //gv_MD_POSes.AutoR
         }
 
-        private void Load_MD_POSes()
+        public void Load_MD_POSes()
         {
-            string command = "SELECT mdop.id           AS mn_id    "
-                           + "     , mdop.model_name               "
-                           + "     , p.id              AS pos_id   "
-                           + "     , p.name            AS pos_name "
-                           + "     , p.chain_id                    "
-                           + "     , p.chain_name                  "
-                           + "  FROM tbl_model_data_of_poses mdop  "
-                           + "  JOIN vw_poses p                    "
-                           + "    ON ( mdop.pos_id = p.id )        "
-                           + " ORDER                               "
-                           + "    BY p.chain_name, p.name          ";
-            MySqlCommand cmd = new MySqlCommand(command, conn);
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            DataSet dataset = new DataSet();
-            adapter.Fill(dataset);
-            if (dataset.Tables.Count > 0)
+            if (conn.State == ConnectionState.Open)
             {
-                ((BindingSource)gv_MD_POSes.DataSource).DataSource = dataset.Tables[0];
+                string command = "SELECT mdop.id           AS mn_id    "
+                               + "     , mdop.model_name               "
+                               + "     , p.id              AS pos_id   "
+                               + "     , p.name            AS pos_name "
+                               + "     , p.chain_id                    "
+                               + "     , p.chain_name                  "
+                               + "  FROM tbl_model_data_of_poses mdop  "
+                               + "  JOIN vw_poses p                    "
+                               + "    ON ( mdop.pos_id = p.id )        "
+                               + " ORDER                               "
+                               + "    BY p.chain_name, p.name          ";
+                MySqlCommand cmd = new MySqlCommand(command, conn);
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                adapter.Fill(dataset);
             }
         }
 
@@ -101,7 +96,7 @@ namespace SalesOfPharmacy
         {
             if (currentRow != -1)
             {
-                string command = "DELETE FROM dbsop.tbl_model_data_of_poses WHERE id = @id";
+                string command = "DELETE FROM tbl_model_data_of_poses WHERE id = @id";
                 MySqlCommand cmd = new MySqlCommand(command, conn);
 
                 cmd.Parameters.AddWithValue("@id", gv_MD_POSes.Rows[currentRow].Cells[0].Value);
@@ -134,6 +129,7 @@ namespace SalesOfPharmacy
         {
             fEdit_MD_POS edt = new fEdit_MD_POS();
             edt.AddContext(conn);
+            edt.Text = "Добавление кл. слов к аптеке";
             edt.AddContext("POS", "");
             if (edt.ShowDialog() == DialogResult.OK)
             {
@@ -147,6 +143,7 @@ namespace SalesOfPharmacy
         {
             fEdit_MD_POS edt = new fEdit_MD_POS();
             edt.AddContext(conn);
+            edt.Text = "Редактирование кл. слов";
             if (currentRow != -1) { edt.AddContext("ID", gv_MD_POSes.Rows[currentRow].Cells[0].Value.ToString()); }
             if (edt.ShowDialog() == DialogResult.OK)
             {
